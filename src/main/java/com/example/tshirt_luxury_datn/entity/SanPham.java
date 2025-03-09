@@ -1,6 +1,8 @@
 package com.example.tshirt_luxury_datn.entity;
+
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.Nationalized;
 
 import java.util.Date;
 import java.util.List;
@@ -11,7 +13,7 @@ import java.util.List;
 @NoArgsConstructor
 @Entity
 @ToString
-@Table(name ="san_pham")
+@Table(name = "san_pham")
 public class SanPham {
 
     @Id
@@ -21,9 +23,10 @@ public class SanPham {
     @Column(name = "ma_san_pham")
     private String maSanPham;
 
+    @Nationalized
     @Column(name = "ten_san_pham")
     private String tenSanPham;
-    
+
     @ManyToOne
     @JoinColumn(name = "id_danh_muc")
     private DanhMuc danhMuc;

@@ -1,5 +1,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <jsp:include page="../DanhMuc/gio-hang.jsp"/>
 <!DOCTYPE html>
 <html lang="en">
@@ -239,32 +240,22 @@
     <div class="col-4">
         <form action="/t-shirt-luxury/san-pham-chi-tiet/add-cart" method="post">
             <input type="text" value="${spDetail.id}" hidden="hidden" name="idSPDetail">
-            <h6>${spDetail.tenSanPham}</h6>
+            <h6>${SanPhamChiTiet.sanPham.tenSanPham}</h6>
             <p>Còn hàng</p>
             <hr>
+            <h6>${giaFormatted}</h6>
+            <h6>${SanPhamChiTiet.mauSac.tenMauSac}</h6>
             <div class="color">
                 <h6>MÀU SẮC</h6>
+                <p>${SanPhamChiTiet.mauSac.tenMauSac}</p>
                 <div class="d-flex gap-2">
-                    <c:forEach var="ms" items="${mauSac}">
+                    <c:forEach var="ms" items="${}">
                         <input type="radio" class="btn" name="mauSac" value="${ms.id}">
                         <span>${ms.tenMauSac}</span>
                     </c:forEach>
                 </div>
             </div>
-            <h6>${spDetail.tenSanPham}</h6>
-            <p>Còn hàng</p>
             <hr>
-            <div class="color">
-                <h6>MÀU SẮC</h6>
-                <div class="d-flex gap-2">
-                    <c:forEach var="ms" items="${mauSac}">
-                        <input type="radio" class="btn" name="mauSac" value="${ms.id}">
-                        <span>${ms.tenMauSac}</span>
-                    </c:forEach>
-                </div>
-
-
-            </div>
 
             <div class="size" style="margin-top: 5px;">
                 <div class="row">
@@ -333,7 +324,7 @@
                     <h2 class="accordion-header" id="headingOne">
                         <button class="accordion-button" type="button" data-bs-toggle="collapse"
                                 data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                            THUỘC TÍNH SẢN PHẨM 123
+                            THUỘC TÍNH SẢN PHẨM
                         </button>
                     </h2>
                     <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne"

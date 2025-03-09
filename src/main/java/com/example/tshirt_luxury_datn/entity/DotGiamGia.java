@@ -2,6 +2,7 @@ package com.example.tshirt_luxury_datn.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.Nationalized;
 
 import java.util.Date;
 import java.util.List;
@@ -18,6 +19,7 @@ public class DotGiamGia {
     private Integer id;
     @Column(name = "ma_dot_giam_gia")
     private String maDotGiamGia;
+    @Nationalized
     @Column(name = "ten_dot_giam_gia")
     private String tenDotGiamGia;
     @Column(name = "mo_ta")

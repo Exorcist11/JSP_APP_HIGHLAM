@@ -32,7 +32,7 @@ public class VoucherExpiryScheduler {
             voucherRepository.save(voucher);
         });
 
-        System.out.println("Updated expired vouchers at: " + now);
+//        System.out.println("Updated expired vouchers at: " + now);
     }
 
     //Set thành hoạt động

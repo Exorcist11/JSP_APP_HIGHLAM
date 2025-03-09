@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.Nationalized;
 
 import java.util.Date;
 
@@ -34,6 +35,7 @@ public class Size {
     @Column(name = "ngay_sua")
     private Date ngaySua;
 
+    @Nationalized
     @Column(name = "mo_ta")
     private String moTa;
 }

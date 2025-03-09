@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.Nationalized;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDateTime;
@@ -24,9 +25,11 @@ public class Voucher {
     @Column(name = "ma_voucher")
     private String maVoucher;
 
+    @Nationalized
     @Column(name = "ten_voucher")
     private String tenVoucher;
 
+    @Nationalized
     @Column(name = "mo_ta")
     private String moTa;
 
@@ -51,12 +54,14 @@ public class Voucher {
     @Column(name = "trang_thai")
     private Integer trangThai;
 
+    @Nationalized
     @Column(name = "dieu_kien_ap_dung")
     private String dieuKienApDung;
 
     @Column(name = "muc_chi_toi_thieu")
     private Double mucChiToiThieu;
 
+    @Nationalized
     @Column(name = "ghi_chu")
     private String ghiChu;
 

@@ -1,9 +1,11 @@
 package com.example.tshirt_luxury_datn.entity;
+
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.Nationalized;
 
 import java.util.Date;
 
@@ -22,14 +24,15 @@ public class NguoiDungChiTiet {
     @Column(name = "ma_ndct")
     private String maNguoiDungChiTiet;
 
-
+    @Nationalized
     @Column(name = "ho")
     private String ho;
 
-
+    @Nationalized
     @Column(name = "ten_dem")
     private String tenDem;
 
+    @Nationalized
     @Column(name = "ten")
     private String ten;
 
@@ -39,6 +42,7 @@ public class NguoiDungChiTiet {
     @Column(name = "ngay_sinh")
     private Date ngaySinh;
 
+    @Nationalized
     @Column(name = "dia_chi")
     private String diaChi;
 

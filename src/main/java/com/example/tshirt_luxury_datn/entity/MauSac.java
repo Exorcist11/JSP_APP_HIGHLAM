@@ -1,6 +1,8 @@
 package com.example.tshirt_luxury_datn.entity;
+
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.Nationalized;
 
 import java.util.Date;
 
@@ -19,6 +21,7 @@ public class MauSac {
     @Column(name = "ma_mau_sac")
     private String maMauSac;
 
+    @Nationalized
     @Column(name = "ten_mau_sac")
     private String tenMauSac;
 

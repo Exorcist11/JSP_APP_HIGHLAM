@@ -1,6 +1,7 @@
 package com.example.tshirt_luxury_datn.services;
 
 import com.example.tshirt_luxury_datn.dto.DangKyRequest;
+import com.example.tshirt_luxury_datn.dto.DangNhapRequest;
 import com.example.tshirt_luxury_datn.entity.ChucVu;
 import com.example.tshirt_luxury_datn.entity.NguoiDung;
 import com.example.tshirt_luxury_datn.repository.ChucVuRepository;
@@ -46,7 +47,14 @@ public class NguoiDungService {
 
         userRepository.save(nguoiDung);
         return "Success";
+    }
 
+    public Optional<NguoiDung> dangNhap(DangNhapRequest request) {
+        try {
+            return userRepository.findByTenDangNhapAndMatKhau(request.getTenDangNhap(), request.getMatKhau());
+        } catch (Exception e) {
+            throw new RuntimeException("error", e);
+        }
     }
 }
 

@@ -97,7 +97,6 @@
                         <a href="#" class="name-type hover-change-color">Áo phông Polo</a>
                     </li>
                     <li>
-
                         <a href="#" class="name-type hover-change-color">Áo phông Unisex</a>
                     </li>
                     <ul class="login-and-signin">
@@ -120,7 +119,7 @@
                     <i class="fa-solid fa-magnifying-glass"></i>
                     <input class="input-search" type="text" name="" id="" placeholder="Tìm kiếm">
                 </form>
-                <a href="#">
+                <a href="/t-shirt-luxury/login">
                     <i class="fa-regular fa-user ps-5"></i>
                 </a>
                 <a href="#">

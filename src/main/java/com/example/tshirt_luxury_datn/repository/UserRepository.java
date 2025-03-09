@@ -9,4 +9,6 @@ public interface UserRepository extends JpaRepository<NguoiDung, Integer> {
     Optional<NguoiDung> findByEmail(String email);
 
     Optional<NguoiDung> findByTenDangNhap(String tenDangNhap);
+
+    Optional<NguoiDung> findByTenDangNhapAndMatKhau(String tenDangNhap, String matKhau);
 }

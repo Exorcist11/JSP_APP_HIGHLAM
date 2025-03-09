@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.Nationalized;
 
 import java.util.Date;
 
@@ -23,6 +24,7 @@ public class NguoiDung {
     @Column(name = "ma_nguoi_dung")
     private String maNguoiDung;
 
+    @Nationalized
     @Column(name = "ten_nguoi_dung")
     private String tenNguoiDung;
 

@@ -30,9 +30,9 @@
             <p>Welcome back!</p>
             <p>Thương hiệu thời trang của người Việt</p>
         </div>
-        <form action="/manhDay" method="POST">
-            <input type="text" class="tai-khoan" name="ten_dang_nhap" placeholder="Tên đăng nhập">
-            <input type="password" class="mat-khau" name="mat_khau" placeholder="Mật khẩu">
+        <form th:action="@{/t-shirt-luxury/login}" method="POST">
+            <input type="text" class="tai-khoan" name="tenDangNhap" placeholder="Tên đăng nhập">
+            <input type="password" class="mat-khau" name="matKhau" placeholder="Mật khẩu">
             <a href="#" class="forgot-password">Quên mật khẩu ?</a>
             <button type="submit" class="button-dang-nhap">Đăng nhập</button>
         </form>
