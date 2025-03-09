@@ -1,0 +1,678 @@
+
+* {
+    margin: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --main-font: 'Poppins';
+}
+
+.wrapper {
+    max-width: 100%;
+    max-height: 753px;
+    position: relative;
+}
+
+.display-hidden {
+    visibility: hidden;
+}
+
+.banner-top {
+    min-width: 100%;
+    height: 753px;
+}
+
+.side-bar {
+    width: 100%;
+    position: absolute;
+    top: 0;
+    transition: all ease-in-out 1s;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.danh-muc {
+    width: 40%;
+    padding: 40px 0px 40px 10px;
+    display: flex;
+    flex-direction: column;
+    height: 753px;
+
+}
+.danh-muc-page-ctsp {
+    width: 40%;
+    padding: 40px 0px 40px 10px;
+    display: flex;
+    flex-direction: column;
+    height: 753px;
+
+}
+.danh-muc ul {
+    display: flex;
+    margin: 0;
+    padding: 0;
+}
+.danh-muc-page-ctsp ul {
+    display: flex;
+    margin: 0;
+    padding: 0;
+}
+.danh-muc ul li {
+    list-style-type: none;
+}
+.danh-muc-page-ctsp ul li {
+    list-style-type: none;
+}
+.danh-muc ul li a {
+    text-decoration: none;
+    color: #fff;
+    font-size: 20px;
+    top: 0;
+    text-transform: uppercase;
+    font-weight: 700;
+    padding: 0 18px;
+
+    line-height: 30px;
+}
+.danh-muc-page-ctsp ul li a {
+    text-decoration: none;
+    color: #000;
+    font-size: 20px;
+    top: 0;
+    text-transform: uppercase;
+    font-weight: 700;
+    padding: 0 18px;
+
+    line-height: 30px;
+}
+
+.border-right {
+    border-right: 0.5px solid #ffff;
+}
+
+.bg-white {
+    background-color: #ffff;
+}
+
+.text-black {
+    color: #000;
+}
+
+.text-gray {
+    color: gray;
+}
+
+.logo-header {
+    width: 170px;
+    height: 100px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.logo-header img {
+    width: 140px;
+    height: 140px;
+    object-fit: contain;
+
+}
+
+.form-search {
+    border-bottom: 1px solid #fff;
+    height: 35px;
+    width: 350px;
+}
+
+.input-search {
+
+    border: none;
+    background-color: transparent;
+
+}
+
+
+.input-search::placeholder {
+    color: #fff;
+    font-size: 24px;
+
+}
+
+.input-search:focus {
+    outline: none;
+}
+
+.form-search i {
+    color: #fff;
+    font-size: 24px;
+}
+
+.search-favourite-cart {
+    display: flex;
+    flex-direction: row;
+    padding-top: 40px;
+
+}
+
+.search-favourite-cart a i {
+    color: #fff;
+    font-size: 24px;
+    padding-top: 10px;
+
+}
+
+#type-tshirt {
+    display: flex;
+    flex-direction: column;
+    margin-top: 30px;
+    align-content: space-between;
+
+}
+
+#type-tshirt > li {
+    padding-bottom: 20px;
+
+}
+
+ul .login-and-signin {
+    margin-top: 300px;
+}
+
+.login-and-signin i {
+    padding-left: 18px;
+    font-size: 24px;
+}
+
+.login-and-signin li {
+    padding-bottom: 0px;
+}
+
+.header-popup {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    position: relative;
+    top: 0;
+    background-color: #fff;
+    z-index: 5;
+}
+
+.header-popup ul li {
+    list-style-type: none;
+
+}
+
+.menu-popup {
+    display: flex;
+    padding-top: 30px;
+    gap: 20px;
+    padding-left: 0px;
+}
+
+.header-popup ul li a {
+    color: #000;
+    text-decoration: none;
+    font-size: 18px;
+    font-weight: 500;
+}
+
+.search-favourite-cart-popup {
+    display: flex;
+    flex-direction: row;
+    padding-top: 20px;
+    margin-left: 340px;
+
+}
+
+.search-favourite-cart-popup a i {
+    color: #000;
+    font-size: 18px;
+    padding-top: 15px;
+
+}
+
+.logo-header-popup {
+    width: 120px;
+    height: 80px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.logo-header-popup img {
+    width: 80px;
+    height: 80px;
+    object-fit: contain;
+    filter: brightness(0);
+
+}
+
+.input-search-popup {
+    border: none;
+    background-color: transparent;
+
+}
+
+
+.input-search-popup::placeholder {
+    color: #000;
+    font-size: 18px;
+
+}
+
+.input-search-popup:focus {
+    outline: none;
+}
+
+.form-search-popup i {
+    color: #000;
+    font-size: 24px;
+}
+
+.form-search-popup {
+    border-bottom: 1px solid #000;
+    height: 35px;
+    width: 350px;
+}
+
+.type-tshirt-popup {
+    background: #fff;
+    width: 700px;
+    height: 300px;
+    display: flex;
+    position: absolute;
+    top: 90px;
+    left: 120px;
+}
+
+.type-tshirt-popup ul {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+    padding-left: 10px;
+}
+
+.type-tshirt-popup ul li {
+    list-style-type: none;
+}
+
+.type-tshirt-popup ul li a {
+    text-decoration: none;
+    color: #666666;
+    font-size: 16px;
+    font-weight: 700;
+}
+
+.img-type-tshirt-popup {
+    object-fit: contain;
+}
+
+.img-type-tshirt-popup img {
+    width: 158px;
+    object-fit: contain;
+}
+
+
+.type-tshirt-popup > .img-type-tshirt-popup {
+    display: flex;
+    flex-direction: row;
+}
+
+.border-bottom-menu-popup {
+    border-bottom: 2px solid black;
+}
+
+.display-none {
+    display: none;
+}
+
+.header-popup,
+.type-tshirt-popup {
+    display: none;
+}
+
+
+/* Start Login */
+.wrapper-login {
+    width: 100%;
+    height: 746px;
+    display: flex;
+    justify-content: end;
+    align-items: center;
+    position: relative;
+    /* Để điều chỉnh vị trí */
+    left: -10%;
+    /* Đặt vị trí bên ngoài khung nhìn (bên trái) */
+    opacity: 0;
+    /* Ẩn phần tử lúc đầu */
+}
+
+.login {
+    width: 500px;
+    height: 100%;
+    background: #fff;
+    border-radius: 8px;
+    opacity: 0.8;
+}
+
+.logo-login img {
+    filter: brightness(0);
+    width: 80px;
+    height: 80px;
+    padding-left: 10px;
+}
+
+.text-welcome p {
+    color: #333;
+    text-align: center;
+    font-family: Poppins;
+    font-size: 32px;
+    font-style: normal;
+    font-weight: 800;
+    line-height: normal;
+    margin: 0;
+    display: flex;
+    padding-left: 10px;
+}
+
+.text-welcome p:nth-child(2) {
+    color: #666;
+
+    font-family: var(--main-font);
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+}
+
+.login form {
+    margin-top: 50px;
+    display: flex;
+    flex-direction: column;
+    padding: 0 20px;
+    align-items: center;
+}
+
+.login form input {
+    border-radius: 15px;
+    height: 40px;
+    width: 100%;
+
+}
+
+.login form input:nth-child(1) {
+
+    margin-bottom: 20px;
+}
+
+.login form input::placeholder {
+    color: #000;
+    font-family: Poppins;
+    padding-left: 10px;
+}
+
+.login form .button-dang-nhap {
+    border-radius: 8px;
+    height: 50px;
+    width: 150px;
+    font-weight: 500;
+}
+
+.text-or {
+    margin-top: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.text-or .line-left {
+    width: 200px;
+    margin: 0;
+    background-color: #666;
+    height: 1.5px;
+    margin-left: 10px;
+}
+
+.text-or .line-right {
+    width: 200px;
+    margin: 0;
+    background-color: #666;
+    height: 1.5px;
+    margin-right: 10px;
+}
+
+.text-or p {
+    font-family: Poppins;
+    margin: 0;
+    font-size: 16px;
+}
+
+.login-by-facebook-google {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    margin-top: 20px;
+    gap: 20px;
+}
+
+.button-login-by-facebook {
+    border: 1.5px solid #000;
+    border-radius: 8px;
+    display: flex;
+    justify-content: center;
+    width: 60%;
+}
+
+.button-login-by-facebook {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    text-decoration: none;
+    color: #000;
+    font-family: Poppins;
+}
+
+
+.button-login-by-facebook img {
+    max-width: 40px;
+    max-height: 40px;
+    margin: 5px 0;
+
+}
+
+.button-login-by-google {
+    border: 1.5px solid #000;
+    border-radius: 8px;
+    display: flex;
+    justify-content: center;
+    width: 60%;
+}
+
+.button-login-by-google {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    text-decoration: none;
+    color: #000;
+    font-family: Poppins;
+}
+
+.button-login-by-google img {
+    max-width: 40px;
+    max-height: 40px;
+    margin: 5px 0;
+
+}
+
+.forgot-password {
+    text-decoration: none;
+    color: #666;
+    padding-left: 339px;
+    font-weight: 400;
+}
+
+.change-page-register {
+    padding-top: 20px;
+    display: flex;
+    justify-content: center;
+
+}
+
+.change-page-register a {
+    text-decoration: none;
+    color: #666;
+}
+
+/* End Login */
+
+/* Start Register */
+.wrapper-register {
+    width: 100%;
+    height: 746px;
+    display: flex;
+    justify-content: end;
+    align-items: center;
+    position: relative;
+    /* Để điều chỉnh vị trí */
+    left: -10%;
+    /* Đặt vị trí bên ngoài khung nhìn (bên trái) */
+    opacity: 0;
+    /* Ẩn phần tử lúc đầu */
+}
+
+.register {
+    width: 500px;
+    height: 100%;
+    background: #fff;
+    border-radius: 8px;
+    opacity: 0.8;
+}
+
+.logo-register img {
+    filter: brightness(0);
+    width: 80px;
+    height: 80px;
+    padding-left: 10px;
+}
+
+.register form {
+    margin-top: 30px;
+    display: flex;
+    flex-direction: column;
+    padding: 0 20px;
+    align-items: center;
+}
+
+.register form input {
+    border-radius: 15px;
+    height: 40px;
+    width: 100%;
+
+}
+
+.register form input:nth-child(1) {
+
+    margin-bottom: 20px;
+}
+
+.register form input::placeholder {
+    color: #000;
+    font-family: Poppins;
+    padding-left: 10px;
+}
+
+.register form .button-dang-ky {
+    border-radius: 8px;
+    height: 50px;
+    width: 150px;
+    font-weight: 500;
+}
+
+
+.register-by-facebook-google {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    margin-top: 20px;
+    gap: 20px;
+}
+
+.button-register-by-facebook {
+    border: 1.5px solid #000;
+    border-radius: 8px;
+    display: flex;
+    justify-content: center;
+    width: 60%;
+}
+
+.button-register-by-facebook {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    text-decoration: none;
+    color: #000;
+    font-family: Poppins;
+}
+
+
+.button-register-by-facebook img {
+    max-width: 40px;
+    max-height: 40px;
+    margin: 5px 0;
+
+}
+
+.button-register-by-google {
+    border: 1.5px solid #000;
+    border-radius: 8px;
+    display: flex;
+    justify-content: center;
+    width: 60%;
+}
+
+.button-register-by-google {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    text-decoration: none;
+    color: #000;
+    font-family: Poppins;
+}
+
+.button-register-by-google img {
+    max-width: 40px;
+    max-height: 40px;
+    margin: 5px 0;
+
+}
+
+.change-page-login {
+    padding-top: 20px;
+    display: flex;
+    justify-content: center;
+
+}
+
+.change-page-login a {
+    text-decoration: none;
+    color: #666;
+}
+
+
+/* End Register */
+.counter {
+    display: flex;
+    align-items: last baseline;
+    justify-content: left;
+    font-size: 15px;
+}
+
+button {
+    width: 40px;
+    height: 40px;
+    font-size: 15px;
+    cursor: pointer;
+}
