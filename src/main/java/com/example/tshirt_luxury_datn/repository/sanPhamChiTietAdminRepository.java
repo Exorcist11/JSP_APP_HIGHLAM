@@ -45,11 +45,4 @@ public interface sanPhamChiTietAdminRepository extends JpaRepository<SanPhamChiT
             @Param("idSanPham") Integer idSanPham
     );
 
-
-
-
-
-
-
-
 }

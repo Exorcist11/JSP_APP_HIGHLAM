@@ -1,8 +1,10 @@
 package com.example.tshirt_luxury_datn.controller;
 
+import com.example.tshirt_luxury_datn.dto.SanPhamChiTietDTO;
 import com.example.tshirt_luxury_datn.entity.SanPham;
 import com.example.tshirt_luxury_datn.entity.SanPhamChiTiet;
 import com.example.tshirt_luxury_datn.repository.*;
+import com.example.tshirt_luxury_datn.services.SanPhamChiTietService;
 
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,12 +13,12 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-
 
 import java.util.Date;
 
-
+@RequestMapping("/t-shirt-luxury/admin/san-pham-chi-tiet")
 @Controller
 public class sanPhamChiTietAdminController {
     @Autowired
@@ -31,21 +33,22 @@ public class sanPhamChiTietAdminController {
     sanPhamChiTietAdminRepository sanPhamChiTietAdminRepo;
     @Autowired
     sanPhamRepository sanPhamRepo;
-
+    @Autowired
+    SanPhamChiTietService spctService;
 
     @ModelAttribute("sanPham")
-    public Integer getSanPham(Model model, @RequestParam(name ="id")Integer id) {
+    public Integer getSanPham(Model model, @RequestParam(name = "id") Integer id) {
         SanPham sanPham = sanPhamRepo.getReferenceById(id);
         Integer sanPhamId = sanPham.getId();
         model.addAttribute("SanPham", sanPhamId);
         return sanPhamId;
     }
-//    @ModelAttribute("sanPham")
-//    public String getSanPham(Model model) {
-//        SanPham sanPham = sanPhamRepo.findAll().get(0);
-//        model.addAttribute("SanPham", sanPham.getId());
-//        return "SanPhamChiTiet/san-pham-chi-tiet-admin";
-//    }
+    // @ModelAttribute("sanPham")
+    // public String getSanPham(Model model) {
+    // SanPham sanPham = sanPhamRepo.findAll().get(0);
+    // model.addAttribute("SanPham", sanPham.getId());
+    // return "SanPhamChiTiet/san-pham-chi-tiet-admin";
+    // }
 
     @ModelAttribute("size")
     public String getSize(Model model) {
@@ -59,13 +62,11 @@ public class sanPhamChiTietAdminController {
         return "SanPhamChiTiet/san-pham-chi-tiet-admin";
     }
 
-
     @ModelAttribute("chatLieu")
     public String getchatLieu(Model model) {
         model.addAttribute("chatLieu", chatLieuRepo.findAll());
         return "SanPhamChiTiet/san-pham-chi-tiet-admin";
     }
-
 
     @ModelAttribute("mauSac")
     public String getMauSac(Model model) {
@@ -73,7 +74,7 @@ public class sanPhamChiTietAdminController {
         return "SanPhamChiTiet/san-pham-chi-tiet-admin";
     }
 
-    @GetMapping("t-shirt-luxury/admin/san-pham-chi-tiet")
+    @GetMapping("")
     public String sanPhamChiTietAdmin(@RequestParam("id") Integer id, Model model, HttpSession session) {
         model.addAttribute("spct", sanPhamChiTietAdminRepo.findBySanPhamId(id));
         session.setAttribute("idSanPham", id);
@@ -81,38 +82,26 @@ public class sanPhamChiTietAdminController {
         return "SanPhamChiTiet/san-pham-chi-tiet-admin";
     }
 
+    @PostMapping("/add")
+    public String sanPhamChiTietSave(HttpSession session,
+            @ModelAttribute SanPhamChiTietDTO spct, Model model) {
+        try {
+            spctService.taoMoiSanPham(spct, (Integer) session.getAttribute("idSanPham"));
+            model.addAttribute("message", "Thêm mới sản phẩm thành công");
+        } catch (Exception e) {
+            model.addAttribute("error", e.getMessage());
+        }
 
-    @PostMapping("t-shirt-luxury/admin/san-pham-chi-tiet/add")
-    public String sanPhamChiTietSave(
-            HttpSession session,
-//            @RequestParam("idSanPham") Integer idSanPham,
-            @RequestParam("id_anh_san_pham_chi_tiet") Integer idAnhSanPham,
-            @RequestParam("id_size") Integer idSize,
-            @RequestParam("id_chat_lieu") Integer idChatLieu,
-            @RequestParam("id_mau_sac") Integer idMauSac,
-            @ModelAttribute("sanPhamChiTiet") SanPhamChiTiet sanPhamChiTiet) {
-
-
-        SanPham sanPhamAdd = sanPhamRepo.getReferenceById((Integer) session.getAttribute("idSanPham"));
-        sanPhamChiTiet.setSanPham(sanPhamAdd);
-        sanPhamChiTiet.setNgayTao(new Date());
-        sanPhamChiTiet.setNgaySua(new Date());
-        sanPhamChiTiet.setAnhSanPham(anhSanPhamRepo.findById(idAnhSanPham).get());
-        sanPhamChiTiet.setSize(sizeRepo.findById(idSize).get());
-        sanPhamChiTiet.setChatLieu(chatLieuRepo.findById(idChatLieu).get());
-        sanPhamChiTiet.setMauSac(mauSacRepo.findById(idMauSac).get());
-        sanPhamChiTietAdminRepo.save(sanPhamChiTiet);
         return "redirect:/t-shirt-luxury/admin/san-pham-chi-tiet?id=" + (Integer) session.getAttribute("idSanPham");
     }
 
-
-    @GetMapping("t-shirt-luxury/admin/san-pham-chi-tiet/delete")
+    @GetMapping("/delete")
     public String sanPhamChiTietDelete(@RequestParam("id") Integer id, HttpSession session) {
         sanPhamChiTietAdminRepo.deleteById(id);
         return "redirect:/t-shirt-luxury/admin/san-pham-chi-tiet?id=" + (Integer) session.getAttribute("idSanPham");
     }
 
-    @GetMapping("t-shirt-luxury/admin/sua-san-pham-chi-tiet/getOne")
+    @GetMapping("/getOne")
     public String getSanPham(@RequestParam(name = "id") Integer id, Model model) {
 
         // Lấy đối tượng san pham theo ID
@@ -121,8 +110,9 @@ public class sanPhamChiTietAdminController {
         return "SanPhamChiTiet/sua-san-pham-chi-tiet";
     }
 
-    @PostMapping("t-shirt-luxury/admin/updateSanPhamChiTiet")
-    public String updateNguoiDung(@RequestParam("id") Integer id, @ModelAttribute("SPCT") SanPhamChiTiet sanPhamChiTiet) {
+    @PostMapping("/updateSanPhamChiTiet")
+    public String updateNguoiDung(@RequestParam("id") Integer id,
+            @ModelAttribute("SPCT") SanPhamChiTiet sanPhamChiTiet) {
         SanPhamChiTiet getOne = sanPhamChiTietAdminRepo.getReferenceById(id);
         if (getOne.getId() == id) {
             Date ngaySua = new Date();

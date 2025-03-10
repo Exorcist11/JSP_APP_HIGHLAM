@@ -87,62 +87,50 @@
 
 
                     <!-- --Modal-- -->
-                    <form action="/t-shirt-luxury/admin/san-pham-chi-tiet/add" method="post">
-                        <div class="modal fade" id="themSanPhamChiTiet" tabindex="-1"
-                            aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <form action="/t-shirt-luxury/admin/san-pham-chi-tiet/add" method="POST">
+                     
+                        <div class="modal fade" id="themSanPhamChiTiet" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                             <div class="modal-dialog modal-xl">
                                 <div class="modal-content">
                                     <div class="modal-header">
                                         <h5 class="modal-title" id="exampleModalLabel">Thêm Mới Sản Phẩm Chi Tiết</h5>
-                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                            aria-label="Close"></button>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                     </div>
-                                    <div class="modal-body  d-flex flex-column gap-3">
+                                    <div class="modal-body d-flex flex-column gap-3">
                                         <div class="row">
-                                            <div class="form-group  w-50 col">
-                                                <label for="maSanPham" class="fw-bold">Mã Sản Phẩm:</label>
-                                                <input type="text" class="form-control" id="maSanPham"
-                                                    placeholder="Tên Sản Phẩm" disabled readonly value="${idSanPham}">
+                                            <div class="form-group w-50 col">
+                                                <label class="fw-bold">Mã Sản Phẩm:</label>
+                                                <input type="text" name="idSanPham" class="form-control" disabled readonly value="${idSanPham}">
                                             </div>
                                             <div class="form-group w-50 col">
-                                                <label for="tenSanPham" class="fw-bold">Tên Sản Phẩm:</label>
-                                                <input type="text" class="form-control" id="tenSanPham"
-                                                    placeholder="Tên Sản Phẩm" disabled readonly value="${idSanPham}">
+                                                <label class="fw-bold">Tên Sản Phẩm:</label>
+                                                <input type="text" class="form-control" disabled readonly value="${tenSanPham}">
                                             </div>
                                         </div>
-
-
-
+                    
                                         <div class="row">
                                             <div class="form-group col">
-                                                <label for="floatingInput" class="fw-bold">Số Lượng:</label>
-                                                <input type="number" class="form-control" id="floatingInput" min="0"
-                                                    placeholder="Số Lượng" name="soLuong">
-
+                                                <label class="fw-bold">Số Lượng:</label>
+                                                <input type="number" class="form-control" min="0" placeholder="Số Lượng" name="soLuong">
                                             </div>
-
                                             <div class="form-group col">
-                                                <label for="floatingInput" class="fw-bold">Khối Lượng:</label>
-                                                <input type="number" class="form-control" id="floatingInput"
-                                                    placeholder="Khối Lượng" name="khoiLuongSanPham">
+                                                <label class="fw-bold">Khối Lượng:</label>
+                                                <input type="number" class="form-control" placeholder="Khối Lượng" name="khoiLuongSanPham">
                                             </div>
                                         </div>
-
+                    
                                         <div class="row">
                                             <div class="col">
                                                 <label class="form-label fw-bold">Chọn Size Sản Phẩm:</label>
-                                                <select class="form-select" aria-label="Default select example"
-                                                    name="id_size">
+                                                <select class="form-select" name="idSize">
                                                     <c:forEach var="s" items="${size}">
                                                         <option value="${s.id}">${s.tenSize}</option>
                                                     </c:forEach>
                                                 </select>
                                             </div>
                                             <div class="col">
-                                                <label class="form-label fw-bold">Chọn Chất Liệu Sản
-                                                    Phẩm:</label>
-                                                <select class="form-select" aria-label="Default select example"
-                                                    name="id_chat_lieu">
+                                                <label class="form-label fw-bold">Chọn Chất Liệu Sản Phẩm:</label>
+                                                <select class="form-select" name="idChatLieu">
                                                     <c:forEach var="s" items="${chatLieu}">
                                                         <option value="${s.id}">${s.tenChatLieu}</option>
                                                     </c:forEach>
@@ -150,60 +138,37 @@
                                             </div>
                                             <div class="col">
                                                 <label class="form-label fw-bold">Chọn Màu Sắc Sản Phẩm:</label>
-                                                <select class="form-select" aria-label="Default select example"
-                                                    name="id_mau_sac">
+                                                <select class="form-select" name="idMauSac">
                                                     <c:forEach var="s" items="${mauSac}">
                                                         <option value="${s.id}">${s.tenMauSac}</option>
                                                     </c:forEach>
                                                 </select>
                                             </div>
                                         </div>
-
-                                        <div>
-                                            <label class="text fw-bold">
-                                                Trạng Thái:
-                                            </label>
-                                            <div class="form-check form-check-inline mt-2">
-                                                <input class="form-check-input" type="radio" name="trangThai"
-                                                    id="inlineRadio1" value="1">
-                                                <label class="form-check-label" for="inlineRadio1">Bán</label>
-                                            </div>
-                                            <div class="form-check form-check-inline mt-2">
-                                                <input class="form-check-input" type="radio" name="trangThai"
-                                                    id="inlineRadio2" value="0">
-                                                <label class="form-check-label" for="inlineRadio2">Chưa Bán</label>
-                                            </div>
-                                        </div>
-
+                    
                                         <div class="">
                                             <label class="fw-bold">Chọn Ảnh Sản Phẩm:</label>
-                                            <select class="form-select" aria-label="Default select example"
-                                                name="id_anh_san_pham_chi_tiet">
+                                            <select class="form-select" name="idAnhSanPham">
                                                 <c:forEach var="s" items="${anhSanPham}">
                                                     <option value="${s.id}">${s.tenAnhSanPham}</option>
                                                 </c:forEach>
                                             </select>
                                         </div>
-
+                    
                                         <div class="">
-                                            <label for="exampleFormControlTextarea1" class="fw-bold">Mô tả sản
-                                                phẩm:</label>
-                                            <textarea class="form-control" id="exampleFormControlTextarea1" name="moTa"
-                                                rows="3"></textarea>
+                                            <label class="fw-bold">Mô tả sản phẩm:</label>
+                                            <textarea class="form-control" name="moTa" rows="3"></textarea>
                                         </div>
                                     </div>
                                     <div class="modal-footer">
-                                        <button type="button" class="btn btn-secondary"
-                                            data-bs-dismiss="modal">Đóng</button>
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
                                         <button type="submit" class="btn btn-success">Thêm Mới</button>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </form>
-
-
-
+                    
                     <!-- Modal update -->
                     <div class="modal fade" id="suaNguoiDung" tabindex="-1" aria-labelledby="exampleModalLabel"
                         aria-hidden="true">
