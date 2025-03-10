@@ -24,18 +24,18 @@
                 <div class="row mt-3 ">
                     <jsp:include page="/WEB-INF/views/fragments/menuAdmin.jsp" />
 
-                    <div class="col-9" >
+                    <div class="col-9">
                         <div class="row">
                             <h2 class="">Quản Lý Danh Mục</h2>
 
                             <div class="p-2 bd-highlight d-flex justify-content-end">
-                                <button type="button" class="btn btn-outline-success" data-bs-toggle="modal"
-                                    data-bs-target="#themSanPham">
+                                <button type="button" class="btn btn-outline-success" style="font-size: 14px;"
+                                    data-bs-toggle="modal" data-bs-target="#themSanPham">
                                     <i class="fa-solid fa-circle-plus"></i> Thêm Mới
                                 </button>
                             </div>
 
-                            <table class="table table-striped">
+                            <table class="table table-striped" style="font-size: 14px;">
                                 <thead>
                                     <tr>
                                         <th scope="col">#</th>
@@ -62,12 +62,14 @@
                                                     <span class="badge bg-danger">Không Hoạt Động</span>
                                                 </c:if>
                                             </td>
-                                            <td>
-                                                <a href="/t-shirt-luxury/admin/danh-muc/getOne?id=${danhmuc.id}"
+                                            <td class="d-flex gap-2">
+                                                <a style="font-size: 14px;"
+                                                    href="/t-shirt-luxury/admin/danh-muc/getOne?id=${danhmuc.id}"
                                                     class="btn btn-warning rounded-pill" data-toggle="tooltip"
                                                     data-placement="top" title="Chỉnh Sửa"><i
                                                         class="fa-solid fa-pen-to-square"></i></a>
-                                                <a href="/t-shirt-luxury/admin/danh-muc/delete?id=${danhmuc.id}"
+                                                <a style="font-size: 14px;"
+                                                    href="/t-shirt-luxury/admin/danh-muc/delete?id=${danhmuc.id}"
                                                     onclick="return confirmDelete()" class="btn btn-danger rounded-pill"
                                                     data-toggle="tooltip" data-placement="top" title="Xóa"><i
                                                         class="fa-solid fa-trash"></i></a>
@@ -86,7 +88,7 @@
                 <div class="modal fade" id="themSanPham" tabindex="-1" aria-labelledby="exampleModalLabel"
                     aria-hidden="true">
                     <div class="modal-dialog">
-                        <div class="modal-content">
+                        <div class="modal-content" style="font-size: 14px;">
                             <div class="modal-header">
                                 <h5 class="modal-title" id="exampleModalLabel">Thêm Mới Danh Mục</h5>
                                 <button type="button" class="btn-close" data-bs-dismiss="modal"
@@ -107,8 +109,9 @@
                                 </div>
                             </div>
                             <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
-                                <button type="submit" class="btn btn-success">Thêm Mới</button>
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"
+                                    style="font-size: 14px;">Đóng</button>
+                                <button type="submit" class="btn btn-success" style="font-size: 14px;">Thêm Mới</button>
                             </div>
                         </div>
                     </div>

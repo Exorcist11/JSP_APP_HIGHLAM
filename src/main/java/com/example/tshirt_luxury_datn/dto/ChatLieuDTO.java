@@ -3,9 +3,9 @@ package com.example.tshirt_luxury_datn.dto;
 import lombok.Getter;
 import lombok.Setter;
 
-@Getter
 @Setter
-public class DanhMucDTO {
-    private String tenDanhMuc;
+@Getter
+public class ChatLieuDTO {
+    private String tenChatLieu;
     private String moTa;
 }

@@ -17,6 +17,7 @@
             <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
 
             <%-- <script src="../js/script.js"></script>--%>
+                <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
         </head>
 
         <body class="container">
@@ -26,38 +27,89 @@
 
                 <div class="row mt-3 ">
                     <jsp:include page="/WEB-INF/views/fragments/menuAdmin.jsp" />
-                    <div class="col-9" style="">
+                    <div class="col-9">
                         <div class="row">
                             <h2 class="">Quản Lý Người Dùng</h2>
                             <div class="p-2 bd-highlight d-flex justify-content-between align-items-center">
                                 <nav class="navbar navbar-expand-lg navbar-light bg-light shadow-sm w-100 rounded">
                                     <div class="container-fluid">
-                                        <form action="/t-shirt-luxury/admin/timNguoiDung" method="get"
-                                            class="d-flex align-items-center w-100 gap-2">
-                                            <input style="max-width: 600px;" class="form-control py-2" type="search"
-                                                name="timKiemNguoiDung" placeholder="Tìm người dùng"
-                                                aria-label="Search">
-                                            <select class="form-select" name="idChucVu">
-                                                <option value="" hidden>-- Chọn chức vụ --</option>
-                                                <c:forEach items="${listChucVu}" var="cv">
-                                                    <option value="${cv.id}">${cv.tenChucVu}</option>
-                                                </c:forEach>
-                                            </select>
-                                            <button class="btn btn-success d-flex align-items-center px-4"
-                                                type="submit">
-                                                <i class="bi bi-search me-1"></i> Tìm Kiếm
-                                            </button>
-                                            <a href="/t-shirt-luxury/admin/timNguoiDung"
-                                                class="btn btn-secondary d-flex align-items-center px-4">
-                                                <i class="bi bi-arrow-clockwise me-1"></i> Reset
-                                            </a>
+                                        <!-- <form action="/t-shirt-luxury/admin/timNguoiDung" method="get"
+                                            class="row g-1 w-100">
+                                            <div class="col-5">
+                                                <input class="form-control py-2" type="search" name="timKiemNguoiDung"
+                                                    style="font-size: 14px;" placeholder="Tìm người dùng"
+                                                    aria-label="Search">
+                                            </div>
+                                            
+                                            <div class="col-2">
+                                                <select class="form-select" name="idChucVu" style="font-size: 14px;">
+                                                    <option value="" hidden>Chọn chức vụ</option>
+                                                    <c:forEach items="${listChucVu}" var="cv">
+                                                        <option value="${cv.id}">${cv.tenChucVu}</option>
+                                                    </c:forEach>
+                                                </select>
+                                            </div>
+
+                                            <div class="col-5 d-flex justify-content-between">
+                                                <button class="btn btn-success d-flex align-items-center flex-fill mx-1"
+                                                    style="font-size: 14px;" type="submit">
+                                                    <i class="bi bi-search me-1"></i> Tìm Kiếm
+                                                </button>
+                                                <a href="/t-shirt-luxury/admin/timNguoiDung" style="font-size: 14px;"
+                                                    class="btn btn-secondary d-flex align-items-center flex-fill mx-1">
+                                                    <i class="bi bi-arrow-clockwise me-1"></i> Reset
+                                                </a>
+                                                <button type="button" style="font-size: 14px;"
+                                                    class="btn btn-outline-success ms-2 flex-fill mx-1"
+                                                    data-bs-toggle="modal" data-bs-target="#themNguoiDung">
+                                                    <i class="fa-solid fa-circle-plus me-1"></i> Thêm Mới
+                                                </button>
+                                            </div>
+                                        </form> -->
+
+
+                                        <form action="/t-shirt-luxury/admin/timNguoiDung" method="GET"
+                                            class="row g-1 w-100">
+                                            <!-- Ô tìm kiếm -->
+                                            <div class="col-5">
+                                                <input name="timKiemNguoiDung" class="form-control" type="search"
+                                                    placeholder="Tìm tên người dùng" aria-label="Search"
+                                                    style="font-size: 14px;" value="${timKiemNguoiDung}">
+
+                                            </div>
+
+                                            <!-- Dropdown trạng thái -->
+                                            <div class="col-2">
+                                                <select class="form-select" name="idChucVu" style="font-size: 14px;">
+                                                    <option value="" hidden>Chọn chức vụ</option>
+                                                    <c:forEach items="${listChucVu}" var="cv">
+                                                        <option value="${cv.id}">${cv.tenChucVu}</option>
+                                                    </c:forEach>
+                                                </select>
+                                            </div>
+
+                                            <div class="col-5 d-flex justify-content-between">
+                                                <button style="font-size: 14px;" class="btn btn-success flex-fill mx-1"
+                                                    type="submit">
+                                                    <i class="bi bi-search me-1"></i> Tìm Kiếm
+                                                </button>
+
+                                                <a href="/t-shirt-luxury/admin/timNguoiDung" style="font-size: 14px;"
+                                                    class="btn btn-secondary flex-fill mx-1">
+                                                    <i class="bi bi-arrow-clockwise"></i> Reset
+                                                </a>
+
+                                                <button type="button" class="btn btn-outline-primary flex-fill mx-1"
+                                                    style="font-size: 14px;" data-bs-toggle="modal"
+                                                    data-bs-target="#themNguoiDung">
+                                                    <i class="fa-solid fa-circle-plus"></i> Thêm Mới
+                                                </button>
+                                            </div>
+
                                         </form>
                                     </div>
                                 </nav>
-                                <button type="button" class="btn btn-outline-success ms-2" data-bs-toggle="modal"
-                                    data-bs-target="#themNguoiDung">
-                                    <i class="fa-solid fa-circle-plus me-1"></i> Thêm Mới
-                                </button>
+
                             </div>
 
                             <table class="table table-striped">

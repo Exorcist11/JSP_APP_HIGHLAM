@@ -5,7 +5,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class DanhMucDTO {
-    private String tenDanhMuc;
+public class SizeDTO {
+    private String tenSize;
     private String moTa;
 }

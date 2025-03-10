@@ -22,13 +22,13 @@
 
                 <div class="row mt-3 ">
                     <jsp:include page="/WEB-INF/views/fragments/menuAdmin.jsp" />
-                    <div class="col-9" style="">
+                    <div class="col-9">
                         <div class="row">
                             <h2 class="">Quản Lý Màu Sắc</h2>
 
                             <div class="p-2 bd-highlight d-flex justify-content-end">
                                 <button type="button" class="btn btn-outline-success" data-bs-toggle="modal"
-                                    data-bs-target="#themSanPham">
+                                    style="font-size: 14px;" data-bs-target="#themSanPham">
                                     <i class="fa-solid fa-circle-plus"></i> Thêm Mới
                                 </button>
                             </div>
@@ -84,37 +84,21 @@
                 <div class="modal fade" id="themSanPham" tabindex="-1" aria-labelledby="exampleModalLabel"
                     aria-hidden="true">
                     <div class="modal-dialog">
-                        <div class="modal-content">
+                        <div class="modal-content" style="font-size: 14px;">
                             <div class="modal-header">
                                 <h5 class="modal-title" id="exampleModalLabel">Thêm Mới Màu Sắc</h5>
                                 <button type="button" class="btn-close" data-bs-dismiss="modal"
                                     aria-label="Close"></button>
                             </div>
                             <div class="modal-body">
-                                <div class="form-floating mb-3">
-                                    <input type="text" class="form-control" id="floatingInput" placeholder="Mã Màu Sắc"
-                                        name="maMauSac">
-                                    <label for="floatingInput">Mã Màu Sắc</label>
-                                </div>
+
 
                                 <div class="form-floating mb-3">
                                     <input type="text" class="form-control" id="floatingInput" placeholder="Tên Màu Sắc"
                                         name="tenMauSac">
                                     <label for="floatingInput">Tên Màu Sắc</label>
                                 </div>
-                                <div class="mt-3">
-                                    <div class="text mt-2">
-                                        Trạng Thái
-                                    </div>
-                                    <div class="form-check form-check-inline mt-2">
-                                        <input class="form-check-input" type="radio" value="1" name="trangThai">
-                                        <label class="form-check-label">Hoạt Động</label>
-                                    </div>
-                                    <div class="form-check form-check-inline mt-2">
-                                        <input class="form-check-input" type="radio" value="0" name="trangThai">
-                                        <label class="form-check-label">Không Hoạt Động</label>
-                                    </div>
-                                </div>
+
                                 <div class="mb-3 mt-3">
                                     <label for="exampleFormControlTextarea1" class="form-label">Mô tả</label>
                                     <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"
@@ -122,8 +106,9 @@
                                 </div>
                             </div>
                             <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
-                                <button type="submit" class="btn btn-success">Thêm Mới</button>
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"
+                                    style="font-size: 14px;">Đóng</button>
+                                <button type="submit" class="btn btn-success" style="font-size: 14px;">Thêm Mới</button>
                             </div>
                         </div>
                     </div>

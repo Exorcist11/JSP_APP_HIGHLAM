@@ -22,22 +22,22 @@
 
                 <div class="row mt-3 ">
                     <jsp:include page="/WEB-INF/views/fragments/menuAdmin.jsp" />
-                    <div class="col-9" style="">
+                    <div class="col-9">
                         <div class="row">
                             <h2 class="">Quản Lý Chất Liệu</h2>
 
                             <div class="p-2 bd-highlight d-flex justify-content-end">
-                                <button type="button" class="btn btn-outline-success" data-bs-toggle="modal"
-                                    data-bs-target="#themChatLieu">
+                                <button style="font-size: 14px;" type="button" class="btn btn-outline-success"
+                                    data-bs-toggle="modal" data-bs-target="#themChatLieu">
                                     <i class="fa-solid fa-circle-plus"></i> Thêm Mới
                                 </button>
                             </div>
 
-                            <table class="table table-striped">
+                            <table class="table table-striped" style="font-size: 14px;">
                                 <thead>
                                     <tr>
                                         <th scope="col">#</th>
-                                        <th scope="col">Mã Chất Liệu</th>
+
                                         <th scope="col">Tên Chất Liệu</th>
                                         <th scope="col">Mô Tả</th>
                                         <th scope="col">Trạng Thái</th>
@@ -49,7 +49,7 @@
 
                                         <tr>
                                             <th scope="row">${i.index + 1}</th>
-                                            <td>${chatlieu.maChatLieu}</td>
+
                                             <td>${chatlieu.tenChatLieu}</td>
                                             <td>${chatlieu.moTa}</td>
                                             <td>
@@ -86,48 +86,30 @@
                 <div class="modal fade" id="themChatLieu" tabindex="-1" aria-labelledby="exampleModalLabel"
                     aria-hidden="true">
                     <div class="modal-dialog">
-                        <div class="modal-content">
+                        <div class="modal-content" style="font-size: 14px;">
                             <div class="modal-header">
                                 <h5 class="modal-title" id="exampleModalLabel">Thêm Mới Chất Liệu</h5>
                                 <button type="button" class="btn-close" data-bs-dismiss="modal"
                                     aria-label="Close"></button>
                             </div>
                             <div class="modal-body">
-                                <div class="form-floating mb-3">
-                                    <input type="text" class="form-control" id="floatingInput"
-                                        placeholder="Mã Chất Liệu" name="maChatLieu">
-                                    <label for="floatingInput">Mã Chất Liệu</label>
-                                </div>
 
                                 <div class="form-floating mb-3">
                                     <input type="text" class="form-control" id="floatingInput"
                                         placeholder="Tên Chất Liệu" name="tenChatLieu">
                                     <label for="floatingInput">Tên Chất Liệu</label>
                                 </div>
-                                <div class="mt-3">
-                                    <div class="text mt-2">
-                                        Trạng Thái
-                                    </div>
-                                    <div class="form-check form-check-inline mt-2">
-                                        <input class="form-check-input" type="radio" name="trangThai" id="hoatDong"
-                                            value="1">
-                                        <label class="form-check-label" for="inlineRadio1">Hoạt Động</label>
-                                    </div>
-                                    <div class="form-check form-check-inline mt-2">
-                                        <input class="form-check-input" type="radio" name="trangThai" id="khongHoatDong"
-                                            value="0">
-                                        <label class="form-check-label" for="inlineRadio2">Không Hoạt Động</label>
-                                    </div>
-                                </div>
+
                                 <div class="mb-3 mt-3">
                                     <label for="exampleFormControlTextarea1" class="form-label">Mô tả</label>
                                     <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"
                                         name="moTa"></textarea>
                                 </div>
                             </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
-                                <button type="submit" class="btn btn-success">Thêm Mới</button>
+                            <div class="modal-footer ">
+                                <button type="button" style="font-size: 14px;" class="btn btn-secondary"
+                                    data-bs-dismiss="modal">Đóng</button>
+                                <button type="submit" style="font-size: 14px;" class="btn btn-success">Thêm Mới</button>
                             </div>
                         </div>
                     </div>
@@ -173,8 +155,9 @@
                             </div>
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
-                            <button type="button" class="btn btn-success">Cập Nhật</button>
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"
+                                style="font-size: 14px;">Đóng</button>
+                            <button type="button" class="btn btn-success" style="font-size: 14px;">Cập Nhật</button>
                         </div>
                     </div>
                 </div>

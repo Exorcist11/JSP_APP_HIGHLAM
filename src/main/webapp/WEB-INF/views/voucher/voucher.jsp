@@ -13,6 +13,7 @@
                 crossorigin="anonymous">
             <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" />
             <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+            <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
         </head>
 
         <body class="container">
@@ -21,103 +22,110 @@
 
                 <div class="row mt-3 ">
                     <jsp:include page="/WEB-INF/views/fragments/menuAdmin.jsp" />
-                    <div class="col-9" style="">
+                    <div class="col-9">
                         <div class="row">
                             <h2 class="">Quản Lý Voucher</h2>
 
-                            <div class="p-3 bg-light rounded border mt-3">
+                            <div class="p-3 bg-light rounded border mt-3" style="font-size: 14px;">
                                 <form action="${pageContext.request.contextPath}/t-shirt-luxury/admin/timVoucher"
-                                    method="get" class="row g-3 align-items-center">
-                                    <div class="col-md-3">
-                                        <input name="tenVoucher" class="form-control" placeholder="Tìm Voucher" />
+                                    method="get" class="row g-1 align-items-center">
+                                    <div class="col-3">
+                                        <input name="tenVoucher" class="form-control" placeholder="Tìm Voucher"
+                                            style="font-size: 14px;" />
                                     </div>
-                                    <div class="col-md-2">
-                                        <select class="form-select" name="trangThai" id="trangThai">
-                                            <option value="">-- Chọn Trạng Thái --</option>
+                                    <div class="col-2">
+                                        <select class="form-select" name="trangThai" id="trangThai"
+                                            style="font-size: 14px;">
+                                            <option value="">Trạng Thái</option>
                                             <option value="1">Hoạt Động</option>
                                             <option value="0">Không hoạt động</option>
                                         </select>
                                     </div>
-                                    <div class="col-md-2">
-                                        <input type="date" name="ngayBatDau" class="form-control" />
+                                    <div class="col-2">
+                                        <input type="date" name="ngayBatDau" class="form-control"
+                                            style="font-size: 14px;" />
                                     </div>
-                                    <div class="col-md-2">
-                                        <input type="date" name="ngayKetThuc" class="form-control" />
-                                    </div>
-                                    <div class="col-md-1 d-flex align-items-center">
-                                        <button type="submit" class="btn btn-primary w-100 mt-2">Tìm Kiếm</button>
-                                    </div>
-                                    <div class="col-md-1 d-flex align-items-center">
-                                        <a href="${pageContext.request.contextPath}/t-shirt-luxury/admin/timVoucher"
-                                            class="btn btn-secondary w-100 mt-2">Reset</a>
-                                    </div>
-                                    <div class="col-md-1 d-flex align-items-center">
-                                        <button type="button" class="btn btn-outline-success w-100 mt-2"
-                                            data-bs-toggle="modal" data-bs-target="#themVoucher">
-                                            <i class="fa-solid fa-circle-plus"></i> Thêm
-                                        </button>
+                                    <div class="col-2">
+                                        <input type="date" name="ngayKetThuc" class="form-control"
+                                            style="font-size: 14px;" />
                                     </div>
 
-                                </form>
+                                    <div class="col-3 d-flex justify-content-between gap-1">
+
+                                        <button type="submit" class="btn btn-primary w-100 mt-2"
+                                            style="font-size: 14px;">Tìm Kiếm</button>
+
+                                        <a href="${pageContext.request.contextPath}/t-shirt-luxury/admin/timVoucher"
+                                            style="font-size: 14px;" class="btn btn-secondary w-100 mt-2">Reset</a>
+
+
+                                        <button type="button" class="btn btn-outline-success w-100 mt-2"
+                                            style="font-size: 14px;" data-bs-toggle="modal"
+                                            data-bs-target="#themVoucher">
+                                            <i class="fa-solid fa-circle-plus"></i> Thêm
+
+                                    </div>
                             </div>
 
-
-                            <table class="table table-striped">
-                                <thead>
-                                    <tr>
-                                        <th scope="col">STT</th>
-                                        <th scope="col">Mã Voucher</th>
-                                        <th scope="col">Tên Voucher</th>
-                                        <th scope="col">Giá Trị Giảm (%)</th>
-                                        <th scope="col">Ngày Bắt Đầu</th>
-                                        <th scope="col">Ngày Kết Thúc</th>
-                                        <th scope="col">Số Lượng</th>
-                                        <th scope="col">Mức Chi Tối Thiểu</th>
-                                        <th scope="col">Giới Hạn Giảm</th>
-                                        <th scope="col">Trạng Thái</th>
-                                        <th scope="col">Hành Động</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <c:forEach items="${listVoucher}" var="voucher" varStatus="i">
-                                        <tr>
-                                            <td>${i.index+1}</td>
-                                            <td>${voucher.maVoucher}</td>
-                                            <td>${voucher.tenVoucher}</td>
-                                            <td>${voucher.giaTriGiam}</td>
-                                            <td>${voucher.ngayBatDau}</td>
-                                            <td>${voucher.ngayKetThuc}</td>
-                                            <td>${voucher.soLuong}</td>
-                                            <td>${voucher.mucChiToiThieu}</td>
-                                            <td>${voucher.gioiHan}</td>
-                                            <td>
-                                                <c:if test="${voucher.trangThai == 1}">
-                                                    <span class="badge bg-success">Hoạt Động</span>
-                                                </c:if>
-                                                <c:if test="${voucher.trangThai == 0}">
-
-                                                    <span class="badge bg-danger">Không Hoạt Động</span>
-                                                </c:if>
-                                            </td>
-                                            <td>
-                                                <a class="btn btn-warning rounded-pill" data-toggle="tooltip"
-                                                    data-placement="top"
-                                                    href="/t-shirt-luxury/admin/voucher/getOne?id=${voucher.id}"
-                                                    title="Chỉnh Sửa"><i class="fa-solid fa-pen-to-square"></i></a>
-                                                <a class="btn btn-danger rounded-pill" data-toggle="tooltip"
-                                                    data-placement="top" title="Xóa"
-                                                    href="/t-shirt-luxury/admin/voucher/delete?id=${voucher.id}"
-                                                    onclick="return confirmDelete()"><i
-                                                        class="fa-solid fa-trash"></i></a>
-
-                                            </td>
-                                        </tr>
-                                    </c:forEach>
-                                </tbody>
-                            </table>
+                            </form>
                         </div>
+
+
+                        <table class="table table-striped" style="font-size: 14px;">
+                            <thead>
+                                <tr>
+                                    <th scope="col">STT</th>
+                                    <th scope="col">Mã Voucher</th>
+                                    <th scope="col">Tên Voucher</th>
+                                    <th scope="col">Giá Trị Giảm (%)</th>
+                                    <th scope="col">Ngày Bắt Đầu</th>
+                                    <th scope="col">Ngày Kết Thúc</th>
+                                    <th scope="col">Số Lượng</th>
+                                    <th scope="col">Mức Chi Tối Thiểu</th>
+                                    <th scope="col">Giới Hạn Giảm</th>
+                                    <th scope="col">Trạng Thái</th>
+                                    <th scope="col">Hành Động</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <c:forEach items="${listVoucher}" var="voucher" varStatus="i">
+                                    <tr>
+                                        <td>${i.index+1}</td>
+                                        <td>${voucher.maVoucher}</td>
+                                        <td>${voucher.tenVoucher}</td>
+                                        <td>${voucher.giaTriGiam}</td>
+                                        <td>${voucher.ngayBatDau}</td>
+                                        <td>${voucher.ngayKetThuc}</td>
+                                        <td>${voucher.soLuong}</td>
+                                        <td>${voucher.mucChiToiThieu}</td>
+                                        <td>${voucher.gioiHan}</td>
+                                        <td>
+                                            <c:if test="${voucher.trangThai == 1}">
+                                                <span class="badge bg-success">Hoạt Động</span>
+                                            </c:if>
+                                            <c:if test="${voucher.trangThai == 0}">
+
+                                                <span class="badge bg-danger">Không Hoạt Động</span>
+                                            </c:if>
+                                        </td>
+                                        <td>
+                                            <a class="btn btn-warning rounded-pill" data-toggle="tooltip"
+                                                data-placement="top"
+                                                href="/t-shirt-luxury/admin/voucher/getOne?id=${voucher.id}"
+                                                title="Chỉnh Sửa"><i class="fa-solid fa-pen-to-square"></i></a>
+                                            <a class="btn btn-danger rounded-pill" data-toggle="tooltip"
+                                                data-placement="top" title="Xóa"
+                                                href="/t-shirt-luxury/admin/voucher/delete?id=${voucher.id}"
+                                                onclick="return confirmDelete()"><i class="fa-solid fa-trash"></i></a>
+
+                                        </td>
+                                    </tr>
+                                </c:forEach>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
+            </div>
             </div>
             <!-- Modal add-->
             <div class="modal fade" id="themVoucher" tabindex="-1" aria-labelledby="exampleModalLabel"

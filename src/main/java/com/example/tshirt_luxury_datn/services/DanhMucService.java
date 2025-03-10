@@ -15,7 +15,7 @@ public class DanhMucService {
     @Autowired
     private danhMucRepository danhMucRepository;
 
-    public String taoMoiDanhMuc(DanhMucDTO request) {
+    public DanhMuc taoMoiDanhMuc(DanhMucDTO request) {
         try {
             DanhMuc danhMuc = new DanhMuc();
             danhMuc.setMaDanhMuc("DM" + UUID.randomUUID().toString().replace("-", "").substring(0, 6).toUpperCase());
@@ -25,8 +25,7 @@ public class DanhMucService {
             danhMuc.setNgaySua(new Date());
             danhMuc.setNgayTao(new Date());
 
-            danhMucRepository.save(danhMuc);
-            return "Success";
+            return danhMucRepository.save(danhMuc);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
