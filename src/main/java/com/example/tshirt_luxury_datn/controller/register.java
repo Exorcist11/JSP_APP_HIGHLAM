@@ -1,7 +1,6 @@
 package com.example.tshirt_luxury_datn.controller;
 
 import com.example.tshirt_luxury_datn.dto.DangKyRequest;
-import com.example.tshirt_luxury_datn.entity.NguoiDung;
 import com.example.tshirt_luxury_datn.services.NguoiDungService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -25,7 +24,7 @@ public class register {
     @PostMapping("/register")
     public String dangKy(@ModelAttribute("nguoiDung") DangKyRequest request, Model model) {
         try {
-            String result = nguoiDungService.dangKy(request);
+            nguoiDungService.dangKy(request);
             model.addAttribute("message", "Đăng ký thành công!");
         } catch (Exception e) {
             model.addAttribute("error", e.getMessage());

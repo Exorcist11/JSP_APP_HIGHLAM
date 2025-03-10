@@ -1,7 +1,6 @@
 package com.example.tshirt_luxury_datn.controller;
 
 import com.example.tshirt_luxury_datn.entity.AnhSanPham;
-import com.example.tshirt_luxury_datn.entity.Size;
 import org.springframework.beans.factory.annotation.Autowired;
 import com.example.tshirt_luxury_datn.repository.anhSanPhamRepository;
 import org.springframework.stereotype.Controller;

@@ -1,7 +1,6 @@
 package com.example.tshirt_luxury_datn.repository;
 
 import com.example.tshirt_luxury_datn.entity.GioHangChiTiet;
-import com.example.tshirt_luxury_datn.entity.SanPhamChiTiet;
 import jakarta.transaction.Transactional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;

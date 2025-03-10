@@ -23,7 +23,7 @@
 
                 <div class="row mt-3 ">
                     <jsp:include page="/WEB-INF/views/fragments/menuAdmin.jsp" />
-                    <div class="col-9" style="">
+                    <div class="col-9" >
                         <div class="row">
                             <h2 class="">Cập Nhật Danh Mục</h2>
 
@@ -37,7 +37,7 @@
                                 <div class="form-floating mb-3">
                                     <input name="tenDanhMuc" type="text" class="form-control" id="floatingInput"
                                         placeholder="Tên Danh Mục" value="${danhMuc.tenDanhMuc}">
-                                    <label for="floatingInput">Tên Danh Mục</label>
+                                    <label for="floatingInput">Tên Danh Mục <span class="text-danger">*</span></label>
                                 </div>
                                 <div class="mt-3">
                                     <div class="text mt-2">

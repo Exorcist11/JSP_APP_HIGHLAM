@@ -13,6 +13,7 @@
                 crossorigin="anonymous">
             <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" />
             <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+            <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
         </head>
 
         <body class="container">
@@ -22,43 +23,54 @@
 
                 <div class="row mt-3 ">
                     <jsp:include page="/WEB-INF/views/fragments/menuAdmin.jsp" />
-                    <div class="col-9" style="">
+                    <div class="col-9" >
                         <div class="row">
                             <h2 class="">Quản Lý Sản Phẩm</h2>
 
-
-
                             <div class="p-3 bg-light rounded border mt-3">
-                                <nav class="navbar navbar-expand-lg navbar-light bg-light shadow-sm rounded">
-                                    <div class="container-fluid">
-                                        <form action="/t-shirt-luxury/admin/timSP" method="get"
-                                            class="d-flex align-items-center gap-2 w-100">
-                                            <input name="timKiemSanPham" class="form-control" type="search"
-                                                placeholder="Tìm sản phẩm" aria-label="Search" value="${timKiemSanPham}"
-                                                style="max-width: 600px;">
+                                <nav class="navbar navbar-expand-lg navbar-light bg-light">
+                                    <div class="w-100">
+                                        <form action="/t-shirt-luxury/admin/timSP" method="get" class="row g-1">
+                                            <!-- Ô tìm kiếm -->
+                                            <div class="col-5">
+                                                <input name="timKiemSanPham" class="form-control" type="search"
+                                                    placeholder="Tìm sản phẩm" aria-label="Search"
+                                                    style="font-size: 14px;" value="${timKiemSanPham}">
 
-                                            <select class="form-select" name="trangThai" id="trangThai"
-                                                style="width: 30%;">
-                                                <option value="">-- Chọn Trạng Thái --</option>
-                                                <option value="1" ${sanPham.trangThai==1 ? 'selected' : '' }>Còn Hàng
-                                                </option>
-                                                <option value="0" ${sanPham.trangThai==0 ? 'selected' : '' }>Hết Hàng
-                                                </option>
-                                            </select>
-                                            <button class="btn btn-success d-flex align-items-center px-4 mt-2"
-                                                type="submit">
-                                                <i class="bi bi-search me-1"></i> Tìm Kiếm
-                                            </button>
-                                            <a href="/t-shirt-luxury/admin/timSP"
-                                                class="btn btn-secondary d-flex align-items-center px-4 mt-2">
-                                                <i class="bi bi-arrow-clockwise me-1"></i> Reset
-                                            </a>
-                                            <button type="button" class="btn btn-outline-success ms-2 mt-2"
-                                                data-bs-toggle="modal" data-bs-target="#themSanPham">
-                                                <i class="fa-solid fa-circle-plus"></i> Thêm Mới
-                                            </button>
+                                            </div>
+
+                                            <!-- Dropdown trạng thái -->
+                                            <div class="col-2">
+                                                <select class="form-select" name="trangThai" id="trangThai"
+                                                    style="font-size: 14px;">
+                                                    <option value="">Trạng Thái</option>
+                                                    <option value="1" ${sanPham.trangThai==1 ? 'selected' : '' }>Còn
+                                                        Hàng</option>
+                                                    <option value="0" ${sanPham.trangThai==0 ? 'selected' : '' }>Hết
+                                                        Hàng</option>
+                                                </select>
+                                            </div>
+
+                                            <div class="col-5 d-flex justify-content-between">
+                                                <button style="font-size: 14px;" class="btn btn-success flex-fill mx-1"
+                                                    type="submit">
+                                                    <i class="bi bi-search me-1"></i> Tìm Kiếm
+                                                </button>
+
+                                                <a href="/t-shirt-luxury/admin/timSP" style="font-size: 14px;"
+                                                    class="btn btn-secondary flex-fill mx-1">
+                                                    <i class="bi bi-arrow-clockwise"></i> Reset
+                                                </a>
+
+                                                <button type="button" class="btn btn-outline-primary flex-fill mx-1"
+                                                    style="font-size: 14px;" data-bs-toggle="modal"
+                                                    data-bs-target="#themSanPham">
+                                                    <i class="fa-solid fa-circle-plus"></i> Thêm Mới
+                                                </button>
+                                            </div>
 
                                         </form>
+
                                     </div>
                                 </nav>
                             </div>
@@ -138,8 +150,9 @@
                                 <!-- Tên Sản Phẩm -->
                                 <div class="form-floating mb-3">
                                     <input type="text" class="form-control" id="floatingInputTenSanPham"
-                                        placeholder="Tên Sản Phẩm" name="tenSanPham">
-                                    <label for="floatingInputTenSanPham">Tên Sản Phẩm</label>
+                                        placeholder="Tên Sản Phẩm" name="tenSanPham" required>
+                                    <label for="floatingInputTenSanPham">Tên Sản Phẩm <span
+                                            class="text-danger">*</span></label>
                                 </div>
 
                                 <!-- Danh Mục Sản Phẩm -->

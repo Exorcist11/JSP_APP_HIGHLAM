@@ -24,7 +24,7 @@
                 <div class="row mt-3 ">
                     <jsp:include page="/WEB-INF/views/fragments/menuAdmin.jsp" />
 
-                    <div class="col-9" style="">
+                    <div class="col-9" >
                         <div class="row">
                             <h2 class="">Quản Lý Danh Mục</h2>
 
@@ -39,7 +39,7 @@
                                 <thead>
                                     <tr>
                                         <th scope="col">#</th>
-                                        <th scope="col">Mã Danh Mục</th>
+                                        <!-- <th scope="col">Mã Danh Mục</th> -->
                                         <th scope="col">Tên Danh Mục</th>
                                         <th scope="col">Mô Tả</th>
                                         <th scope="col">Trạng Thái</th>
@@ -50,7 +50,7 @@
                                     <c:forEach items="${danhMuc}" varStatus="i" var="danhmuc">
                                         <tr>
                                             <th scope="row">${i.index + 1}</th>
-                                            <td>${danhmuc.maDanhMuc}</td>
+                                            <!-- <td>${danhmuc.maDanhMuc}</td> -->
                                             <td>${danhmuc.tenDanhMuc}</td>
                                             <td>${danhmuc.moTa}</td>
                                             <td>
@@ -82,7 +82,7 @@
             </div>
 
             <!-- Modal -->
-            <form action="/t-shirt-luxury/admin/danh-muc/add" method="post">
+            <form method="POST" action="/t-shirt-luxury/admin/danh-muc/add">
                 <div class="modal fade" id="themSanPham" tabindex="-1" aria-labelledby="exampleModalLabel"
                     aria-hidden="true">
                     <div class="modal-dialog">
@@ -94,31 +94,12 @@
                             </div>
                             <div class="modal-body">
                                 <div class="form-floating mb-3">
-                                    <input type="text" class="form-control" id="floatingInput" placeholder="Mã Danh Mục"
-                                        name="maDanhMuc">
-                                    <label for="floatingInput">Mã Danh Mục</label>
+                                    <input type="text" class="form-control" id="floatingInput"
+                                        placeholder="Tên Danh Mục" name="tenDanhMuc" required>
+                                    <label for="floatingInput">Tên Danh Mục <span class="text-danger">*</span></label>
                                 </div>
 
-                                <div class="form-floating mb-3">
-                                    <input type="text" class="form-control" id="floatingInput"
-                                        placeholder="Tên Danh Mục" name="tenDanhMuc">
-                                    <label for="floatingInput">Tên Danh Mục</label>
-                                </div>
-                                <div class="mt-3">
-                                    <div class="text mt-2">
-                                        Trạng Thái
-                                    </div>
-                                    <div class="form-check form-check-inline mt-2">
-                                        <input class="form-check-input" type="radio" name="trangThai" id="hoatDong"
-                                            value="1">
-                                        <label class="form-check-label" for="inlineRadio1">Hoạt Động</label>
-                                    </div>
-                                    <div class="form-check form-check-inline mt-2">
-                                        <input class="form-check-input" type="radio" name="trangThai" id="khongHoatDong"
-                                            value="0">
-                                        <label class="form-check-label" for="inlineRadio2">Không Hoạt Động</label>
-                                    </div>
-                                </div>
+
                                 <div class="mb-3 mt-3">
                                     <label for="exampleFormControlTextarea1" class="form-label">Mô tả</label>
                                     <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"

@@ -1,16 +1,11 @@
 package com.example.tshirt_luxury_datn.request;
 
 import com.example.tshirt_luxury_datn.entity.*;
-import jakarta.persistence.Column;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToOne;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.Date;
 
 @Getter
 @Setter

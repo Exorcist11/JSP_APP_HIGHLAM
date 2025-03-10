@@ -108,7 +108,7 @@ public class trangChuController {
             return "redirect:/t-shirt-luxury/san-pham-chi-tiet-detail?idSPDetail=" + idSanPham;
         }
         SanPhamChiTiet sanPhamChiTiet = sanPhamChiTietAdminRepo.getSanPhamChiTiet(idMauSac, idSize, idSanPham);
-        Integer soLuongSPCT = sanPhamChiTietAdminRepo.getSoLuongTonSanPhamChiTiet(idMauSac, idSize, idSanPham);
+        // Integer soLuongSPCT = sanPhamChiTietAdminRepo.getSoLuongTonSanPhamChiTiet(idMauSac, idSize, idSanPham);
         Integer idGioHang = (Integer) session.getAttribute("idGioHang");
         GioHang gioHang = gioHangRepo.getReferenceById(idGioHang);
         List<Integer> idSPCTExistList = gioHangChiTietRepo.findIdSanPhamChiTietByIdGioHang(idGioHang);

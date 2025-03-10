@@ -1,11 +1,9 @@
 package com.example.tshirt_luxury_datn.controller;
 
-import com.example.tshirt_luxury_datn.entity.AnhSanPham;
 import com.example.tshirt_luxury_datn.entity.SanPham;
 import com.example.tshirt_luxury_datn.entity.SanPhamChiTiet;
-import com.example.tshirt_luxury_datn.entity.Size;
 import com.example.tshirt_luxury_datn.repository.*;
-import com.example.tshirt_luxury_datn.response.sanPhamChiTietAdminRespone;
+
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -15,9 +13,9 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import java.util.ArrayList;
+
 import java.util.Date;
-import java.util.List;
+
 
 @Controller
 public class sanPhamChiTietAdminController {

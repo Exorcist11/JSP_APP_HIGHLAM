@@ -5,7 +5,6 @@ import lombok.*;
 import org.hibernate.annotations.Nationalized;
 
 import java.util.Date;
-import java.util.List;
 
 @Getter
 @Setter

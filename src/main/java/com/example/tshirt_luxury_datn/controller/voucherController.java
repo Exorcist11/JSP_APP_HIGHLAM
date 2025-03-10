@@ -1,6 +1,5 @@
 package com.example.tshirt_luxury_datn.controller;
 
-import com.example.tshirt_luxury_datn.entity.DotGiamGia;
 import com.example.tshirt_luxury_datn.entity.Voucher;
 import com.example.tshirt_luxury_datn.repository.voucherRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,11 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.Date;

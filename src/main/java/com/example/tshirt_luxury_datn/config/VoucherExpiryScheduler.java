@@ -2,13 +2,10 @@ package com.example.tshirt_luxury_datn.config;
 
 import com.example.tshirt_luxury_datn.entity.Voucher;
 import com.example.tshirt_luxury_datn.repository.voucherRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.Date;
 import java.util.List;
 
 @Component

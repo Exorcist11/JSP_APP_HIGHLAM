@@ -1,14 +1,11 @@
 package com.example.tshirt_luxury_datn.repository;
 
-import com.example.tshirt_luxury_datn.entity.SanPham;
 import com.example.tshirt_luxury_datn.entity.Voucher;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.Date;
 import java.util.Date;
 import java.util.List;
 

@@ -4,7 +4,6 @@ import com.example.tshirt_luxury_datn.entity.ChucVu;
 import com.example.tshirt_luxury_datn.entity.NguoiDung;
 import com.example.tshirt_luxury_datn.repository.ChucVuRepository;
 import com.example.tshirt_luxury_datn.repository.nguoiDungRepository;
-import com.example.tshirt_luxury_datn.services.NguoiDungService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;

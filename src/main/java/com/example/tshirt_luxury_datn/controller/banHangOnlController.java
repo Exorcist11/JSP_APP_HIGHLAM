@@ -123,7 +123,7 @@ public class banHangOnlController {
         // Chuyển đổi sang Float
         float tongTienParsed = Float.parseFloat(tongTien);
 
-        HoaDonChiTiet hoaDonChiTiet = new HoaDonChiTiet();
+        // HoaDonChiTiet hoaDonChiTiet = new HoaDonChiTiet();
 
         HoaDon  hoaDon = (HoaDon) session.getAttribute("hoaDonOnl");
         hoaDon.setMaHoaDon(generateMaHoaDon());
