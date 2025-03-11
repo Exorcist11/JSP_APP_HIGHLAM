@@ -34,9 +34,11 @@
                                   placeholder="Ghi chú"  name="ghiChu"></textarea>
                 </div>
                 <button style="margin-left: 400px; height: 45px; font-size: large;" class="btn btn-secondary">Hoàn tất đơn hàng</button>
+                
             </form>
         </div>
 
+      
 
         <div>
             <h5 class="fw-normal">Phương thức thanh toán</h5>
@@ -44,7 +46,24 @@
                 <input type="radio" value="1" checked name="trangThai">
                 <p style="margin-left: 10px; margin-top: 13px;">Thanh toán khi nhận hàng(COD)</p>
             </div>
+            <div class="d-flex">
+                <input type="radio" value="1" checked name="trangThai">
+                <p style="margin-left: 10px; margin-top: 13px;">Thanh toán trực tuyến</p>
+            </div>
         </div>
+
+        <form action="/pay" method="get">
+            <button id="vnPay" type="submit" style="margin-left: 400px; height: 45px; font-size: large;" class="btn btn-secondary">Thanh toán VNPay</button>
+            <script>
+                document.getElementById("vnPay").addEventListener("click", function(){
+                    fetch('/pay')
+                        .then(response => response.text())
+                        .then(url => {
+                            window.location.href = url; // Điều hướng đến URL trả về từ server
+                        });
+                });
+            </script>
+        </form>
     </div>
     <div class="col-6 mt-3" style="background-color: rgb(247, 247, 247);" >
         <form action="/t-shirt-luxury/ban-hang-onl/getVoucher" method="get">

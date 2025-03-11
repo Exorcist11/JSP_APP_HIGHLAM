@@ -53,7 +53,12 @@
                 <input type="radio" value="1" checked name="trangThai">
                 <p style="margin-left: 10px; margin-top: 13px;">Thanh toán khi nhận hàng(COD)</p>
             </div>
+            <div class="d-flex">
+                <input type="radio" value="1" checked name="trangThai">
+                <p style="margin-left: 10px; margin-top: 13px;">Thanh toán trực tuyến</p>
+            </div>
         </div>
+        
     </div>
     <div class="col-1"></div>
     <div class="col-7 mt-3" style="background-color: rgb(247, 247, 247);" >
