@@ -5,6 +5,7 @@ import lombok.*;
 import org.hibernate.annotations.Nationalized;
 
 import java.util.Date;
+import java.util.List;
 
 @Getter
 @Setter
@@ -41,4 +42,7 @@ public class SanPham {
 
     @Column(name = "mo_ta")
     private String moTa;
+
+    @OneToMany(mappedBy = "sanPham", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<SanPhamChiTiet> sanPhamChiTietList;
 }

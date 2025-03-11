@@ -13,19 +13,13 @@ public class sanPhamChiTietController {
     @Autowired
     sanPhamChiTietRepository sanPhamChiTietRepo;
 
+    @GetMapping("t-shirt-luxury/san-pham-chi-tiet")
+    public String SanPhamChiTiet(Model model, HttpSession session) {
 
+        Integer idSP = (Integer) session.getAttribute("idSPDetail");
+        model.addAttribute("sauSac", sanPhamChiTietRepo.findMauSacBySanPhamId(idSP));
 
-        @GetMapping("t-shirt-luxury/san-pham-chi-tiet")
-        public String SanPhamChiTiet(Model model, HttpSession session) {
-
-            Integer idSP = (Integer) session.getAttribute("idSPDetail");
-            model.addAttribute("sauSac",sanPhamChiTietRepo.findMauSacBySanPhamId(idSP));
-
-            return "SanPhamChiTiet/san-pham-chi-tiet";
-        }
-
-
-
-
+        return "SanPhamChiTiet/san-pham-chi-tiet";
+    }
 
 }

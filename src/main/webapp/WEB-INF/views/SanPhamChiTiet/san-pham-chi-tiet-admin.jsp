@@ -87,41 +87,70 @@
 
 
                     <!-- --Modal-- -->
-                    <form action="/t-shirt-luxury/admin/san-pham-chi-tiet/add" method="POST">
-                     
-                        <div class="modal fade" id="themSanPhamChiTiet" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <form action="/t-shirt-luxury/admin/san-pham-chi-tiet/add" method="post">
+                        <input type="hidden" name="id" value="${idSanPham}" />
+                        <div class="modal fade" id="themSanPhamChiTiet" tabindex="-1"
+                            aria-labelledby="exampleModalLabel" aria-hidden="true">
                             <div class="modal-dialog modal-xl">
                                 <div class="modal-content">
                                     <div class="modal-header">
                                         <h5 class="modal-title" id="exampleModalLabel">Thêm Mới Sản Phẩm Chi Tiết</h5>
-                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                            aria-label="Close"></button>
                                     </div>
                                     <div class="modal-body d-flex flex-column gap-3">
                                         <div class="row">
                                             <div class="form-group w-50 col">
                                                 <label class="fw-bold">Mã Sản Phẩm:</label>
-                                                <input type="text" name="idSanPham" class="form-control" disabled readonly value="${idSanPham}">
+                                                <input type="text" name="idSanPham" class="form-control" disabled
+                                                    readonly value="${idSanPham}">
+
                                             </div>
                                             <div class="form-group w-50 col">
                                                 <label class="fw-bold">Tên Sản Phẩm:</label>
-                                                <input type="text" class="form-control" disabled readonly value="${tenSanPham}">
+                                                <input type="text" class="form-control" disabled readonly
+                                                    value="${tenSanPham}">
                                             </div>
                                         </div>
-                    
+
                                         <div class="row">
                                             <div class="form-group col">
-                                                <label class="fw-bold">Số Lượng:</label>
-                                                <input type="number" class="form-control" min="0" placeholder="Số Lượng" name="soLuong">
+                                                <label class="fw-bold">Số Lượng <span
+                                                        class="text-danger">*</span></label>
+                                                <input type="number" class="form-control" min="0" placeholder="Số Lượng"
+                                                    name="soLuong" required>
                                             </div>
                                             <div class="form-group col">
-                                                <label class="fw-bold">Khối Lượng:</label>
-                                                <input type="number" class="form-control" placeholder="Khối Lượng" name="khoiLuongSanPham">
+                                                <label class="fw-bold">Khối Lượng <span
+                                                        class="text-danger">*</span></label>
+                                                <input type="number" class="form-control" placeholder="Khối Lượng"
+                                                    name="khoiLuongSanPham" required>
                                             </div>
                                         </div>
-                    
+
                                         <div class="row">
                                             <div class="col">
-                                                <label class="form-label fw-bold">Chọn Size Sản Phẩm:</label>
+                                                <label class="fw-bold">Giá sản phẩm <span class="text-danger">*</span>
+                                                </label>
+                                                <input type="number" class="form-control" placeholder="Giá sản phẩm"
+                                                    name="gia" required>
+                                            </div>
+
+                                            <div class="col">
+                                                <label class="fw-bold">Chọn Ảnh Sản Phẩm <span
+                                                        class="text-danger">*</span></label>
+                                                <select class="form-select" name="idAnhSanPham">
+                                                    <c:forEach var="s" items="${anhSanPham}">
+                                                        <option value="${s.id}">${s.tenAnhSanPham}</option>
+                                                    </c:forEach>
+                                                </select>
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col">
+                                                <label class="form-label fw-bold">Chọn Size Sản Phẩm <span
+                                                        class="text-danger">*</span></label>
                                                 <select class="form-select" name="idSize">
                                                     <c:forEach var="s" items="${size}">
                                                         <option value="${s.id}">${s.tenSize}</option>
@@ -145,30 +174,24 @@
                                                 </select>
                                             </div>
                                         </div>
-                    
-                                        <div class="">
-                                            <label class="fw-bold">Chọn Ảnh Sản Phẩm:</label>
-                                            <select class="form-select" name="idAnhSanPham">
-                                                <c:forEach var="s" items="${anhSanPham}">
-                                                    <option value="${s.id}">${s.tenAnhSanPham}</option>
-                                                </c:forEach>
-                                            </select>
-                                        </div>
-                    
+
+
+
                                         <div class="">
                                             <label class="fw-bold">Mô tả sản phẩm:</label>
                                             <textarea class="form-control" name="moTa" rows="3"></textarea>
                                         </div>
                                     </div>
                                     <div class="modal-footer">
-                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                                        <button type="button" class="btn btn-secondary"
+                                            data-bs-dismiss="modal">Đóng</button>
                                         <button type="submit" class="btn btn-success">Thêm Mới</button>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </form>
-                    
+
                     <!-- Modal update -->
                     <div class="modal fade" id="suaNguoiDung" tabindex="-1" aria-labelledby="exampleModalLabel"
                         aria-hidden="true">

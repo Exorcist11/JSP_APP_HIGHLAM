@@ -36,63 +36,31 @@ public class sanPhamChiTietAdminController {
     @Autowired
     SanPhamChiTietService spctService;
 
-    @ModelAttribute("sanPham")
-    public Integer getSanPham(Model model, @RequestParam(name = "id") Integer id) {
-        SanPham sanPham = sanPhamRepo.getReferenceById(id);
-        Integer sanPhamId = sanPham.getId();
-        model.addAttribute("SanPham", sanPhamId);
-        return sanPhamId;
-    }
-    // @ModelAttribute("sanPham")
-    // public String getSanPham(Model model) {
-    // SanPham sanPham = sanPhamRepo.findAll().get(0);
-    // model.addAttribute("SanPham", sanPham.getId());
-    // return "SanPhamChiTiet/san-pham-chi-tiet-admin";
-    // }
-
-    @ModelAttribute("size")
-    public String getSize(Model model) {
-        model.addAttribute("size", sizeRepo.findAll());
-        return "SanPhamChiTiet/san-pham-chi-tiet-admin";
-    }
-
-    @ModelAttribute("anhSanPham")
-    public String getAnhSanPham(Model model) {
-        model.addAttribute("anhSanPham", anhSanPhamRepo.findAll());
-        return "SanPhamChiTiet/san-pham-chi-tiet-admin";
-    }
-
-    @ModelAttribute("chatLieu")
-    public String getchatLieu(Model model) {
-        model.addAttribute("chatLieu", chatLieuRepo.findAll());
-        return "SanPhamChiTiet/san-pham-chi-tiet-admin";
-    }
-
-    @ModelAttribute("mauSac")
-    public String getMauSac(Model model) {
-        model.addAttribute("mauSac", mauSacRepo.findAll());
-        return "SanPhamChiTiet/san-pham-chi-tiet-admin";
-    }
-
     @GetMapping("")
     public String sanPhamChiTietAdmin(@RequestParam("id") Integer id, Model model, HttpSession session) {
         model.addAttribute("spct", sanPhamChiTietAdminRepo.findBySanPhamId(id));
         session.setAttribute("idSanPham", id);
         model.addAttribute("idSanPham", id);
+        model.addAttribute("mauSac", mauSacRepo.findAll());
+        model.addAttribute("chatLieu", chatLieuRepo.findAll());
+        model.addAttribute("anhSanPham", anhSanPhamRepo.findAll());
+        model.addAttribute("size", sizeRepo.findAll());
+
+        SanPham sanPham = sanPhamRepo.getReferenceById(id);
+        Integer sanPhamId = sanPham.getId();
+        model.addAttribute("SanPham", sanPhamId);
         return "SanPhamChiTiet/san-pham-chi-tiet-admin";
     }
 
     @PostMapping("/add")
-    public String sanPhamChiTietSave(HttpSession session,
-            @ModelAttribute SanPhamChiTietDTO spct, Model model) {
+    public String newSPCT(@RequestParam("id") Integer id, @ModelAttribute("spct") SanPhamChiTietDTO spct, Model model) {
         try {
-            spctService.taoMoiSanPham(spct, (Integer) session.getAttribute("idSanPham"));
+            spctService.taoMoiSanPham(spct, id);
             model.addAttribute("message", "Thêm mới sản phẩm thành công");
         } catch (Exception e) {
             model.addAttribute("error", e.getMessage());
         }
-
-        return "redirect:/t-shirt-luxury/admin/san-pham-chi-tiet?id=" + (Integer) session.getAttribute("idSanPham");
+        return "redirect:/t-shirt-luxury/admin/san-pham-chi-tiet?id=" + id;
     }
 
     @GetMapping("/delete")

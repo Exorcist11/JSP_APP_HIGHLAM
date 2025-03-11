@@ -26,11 +26,6 @@ public class chatLieuController {
     @Autowired
     ChatLieuService chatLieuService;
 
-    // @GetMapping("t-shirt-luxury/admin/chat-lieu")
-    // public String chatLieu() {
-    // return "ChatLieu/chat-lieu";
-    // }
-
     @GetMapping("")
     public String chatLieuHienThi(Model model) {
         model.addAttribute("chatLieu", chatLieuRepository.findAll());
