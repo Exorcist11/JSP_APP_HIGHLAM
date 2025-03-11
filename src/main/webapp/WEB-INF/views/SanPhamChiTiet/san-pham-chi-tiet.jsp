@@ -24,6 +24,34 @@
                     <script src="../js/sanPhamChiTiet.js"></script>
             </head>
 
+            <style>
+                .btn-group {
+                    gap: 12px;
+                }
+
+                .btn-group label {
+                    width: 40px;
+                    /* Điều chỉnh kích thước ô vuông */
+                    height: 40px;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    border: 1px solid #ccc;
+                    /* Viền xám */
+                    border-radius: 5px;
+                    /* Làm bo góc nhẹ */
+                    font-weight: bold;
+                    cursor: pointer;
+                }
+
+                .btn-group input:checked+label {
+                    background-color: #ccc;
+                    /* Màu xanh khi chọn */
+                    color: white;
+                    border-color: #000;
+                }
+            </style>
+
             <body>
                 <div class="wrapper">
                     <div class="header d-flex"
@@ -257,6 +285,34 @@
                             <h6>${itemDetail.tenSanPham}</h6>
                             <p>Còn hàng</p>
                             <hr>
+                            <h6>419,000Đ đ</h6>
+                            <div>
+                                <div class="d-flex gap-2 align-items-center">
+                                    <h6 class="mb-0 text-uppercase">Kích thước</h6>
+                                    <p href="" class="mb-0 pe-auto" data-bs-toggle="modal" data-bs-target="#bangsize"
+                                        style="color: black;text-decoration: none">Hướng dẫn
+                                        chọn size</p>
+                                </div>
+
+                                <div class="btn-group">
+                                    <input type="radio" class="btn-check" name="size" id="sizeS" autocomplete="off"
+                                        checked />
+                                    <label class="btn btn-default" for="sizeS">S</label>
+
+                                    <input type="radio" class="btn-check" name="size" id="sizeM" autocomplete="off" />
+                                    <label class="btn btn-default" for="sizeM">M</label>
+
+                                    <input type="radio" class="btn-check" name="size" id="sizeL" autocomplete="off" />
+                                    <label class="btn btn-default" for="sizeL">L</label>
+
+                                    <input type="radio" class="btn-check" name="size" id="sizeXL" autocomplete="off" />
+                                    <label class="btn btn-default" for="sizeXL">XL</label>
+
+                                    <input type="radio" class="btn-check" name="size" id="sizeXXL" autocomplete="off" />
+                                    <label class="btn btn-default" for="sizeXXL">XXL</label>
+                                </div>
+
+                            </div>
                             <!-- <h6>${giaFormatted}</h6>
             
             <div class="color">
