@@ -30,10 +30,28 @@ public class ProductDetail {
     @JoinColumn(name = "color_id")
     private Color color;
 
+    @Column(nullable = false)
     private Integer quantity;
+    
+    @Column(nullable = false)
     private String status;
+ 
+    @Column(nullable = false, updatable = false)
     private LocalDateTime createdAt;
+ 
+    @Column(nullable = false)
     private LocalDateTime updatedAt;
+
+    @PrePersist
+    protected void onCreate() {
+        this.createdAt = LocalDateTime.now();
+        this.updatedAt = LocalDateTime.now();
+    }
+
+    @PreUpdate
+    protected void onUpdate() {
+        this.updatedAt = LocalDateTime.now();
+    }
 
     @OneToMany(mappedBy = "productDetail")
     private List<ProductImage> images;

@@ -30,7 +30,7 @@
                     <jsp:include page="/WEB-INF/views/fragments/headerAdmin.jsp" />
                     <div class="row mt-3 ">
                         <jsp:include page="/WEB-INF/views/fragments/menuAdmin.jsp" />
-                        <div class="col-9" style="">
+                        <div class="col-9" >
                             <nav class="navbar navbar-expand-lg navbar-light bg-light">
                                 <div class="container-fluid">
 

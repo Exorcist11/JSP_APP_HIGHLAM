@@ -14,8 +14,13 @@ public class UserProfile {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Column(nullable = false, columnDefinition = "NVARCHAR(50)")
     private String fullName;
+
+    @Column(nullable = false, columnDefinition = "NVARCHAR(50)")
     private String address;
+
     private String phoneNumber;
 
     @OneToOne

@@ -5,7 +5,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class MauSacDTO {
-    private String tenMauSac;
-    private String moTa;
+public class ColorDTO {
+    private String name;
+    private Boolean status;
 }
