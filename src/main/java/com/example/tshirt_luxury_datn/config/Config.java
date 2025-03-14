@@ -61,6 +61,7 @@ public class Config {
   }
 
   // Util for VNPAY
+  @SuppressWarnings({ "rawtypes", "unchecked" })
   public static String hashAllFields(Map fields) {
     List fieldNames = new ArrayList<>(fields.keySet());
     Collections.sort(fieldNames);

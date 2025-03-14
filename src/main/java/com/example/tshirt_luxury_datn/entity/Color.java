@@ -10,8 +10,10 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "sizes")
-public class Size {
+@Getter
+@Setter
+@Table(name = "colors")
+public class Color {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -20,6 +22,6 @@ public class Size {
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
-    @OneToMany(mappedBy = "size")
+    @OneToMany(mappedBy = "color")
     private List<ProductDetail> productDetails;
 }

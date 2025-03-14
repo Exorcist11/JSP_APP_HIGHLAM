@@ -42,7 +42,7 @@
                                     <tr>
                                         <th scope="col">STT</th>
                                         <th scope="col">Tên Sản Phẩm</th>
-                                        <th scope="col">Ảnh Sản Phẩm</th>
+                                        <!-- <th scope="col">Ảnh Sản Phẩm</th> -->
                                         <th scope="col">Size</th>
                                         <th scope="col">Chất Liệu</th>
                                         <th scope="col">Màu Sắc</th>
@@ -59,8 +59,8 @@
                                             <tr>
                                                 <td>${i.index+1}</td>
                                                 <td>${s.sanPham.tenSanPham}</td>
-                                                <td><img style="width: 100px; height:100px"
-                                                        src="${s.anhSanPham.maAnhSanPham}" alt=""></td>
+                                                <!-- <td><img style="width: 100px; height:100px"
+                                                        src="${s.anhSanPham.maAnhSanPham}" alt=""></td> -->
                                                 <td>${s.size.tenSize}</td>
                                                 <td>${s.chatLieu.tenChatLieu}</td>
                                                 <td>${s.mauSac.tenMauSac}</td>

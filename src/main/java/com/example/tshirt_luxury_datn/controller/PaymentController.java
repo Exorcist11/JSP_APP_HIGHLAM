@@ -22,6 +22,7 @@ import com.example.tshirt_luxury_datn.config.Config;
 @RestController
 public class PaymentController {
 
+  @SuppressWarnings({ "rawtypes", "unchecked" })
   @GetMapping("/pay")
   public String getPay(Model model) throws UnsupportedEncodingException {
 

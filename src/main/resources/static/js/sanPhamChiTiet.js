@@ -173,31 +173,8 @@ $(document).ready(function () {
         enableScroll();
     });
 
-
-    const numberInput = document.getElementById('number');
-    const increaseButton = document.getElementById('increase');
-    const decreaseButton = document.getElementById('decrease');
-
-    // Tăng số lượng
-    increaseButton.addEventListener('click', () => {
-        numberInput.value = parseInt(numberInput.value) + 1;
-    });
-
-    // Giảm số lượng, đảm bảo không giảm dưới 1
-    decreaseButton.addEventListener('click', () => {
-        if (parseInt(numberInput.value) > 1) {
-            numberInput.value = parseInt(numberInput.value) - 1;
-        }
-    });
-
-    // Đảm bảo người dùng không nhập số nhỏ hơn 1
-    numberInput.addEventListener('input', () => {
-        if (numberInput.value < 1) {
-            numberInput.value = 1;
-        }
-    });
-//End CTSP//
-// End page SanPhamChiTiet//
+    //End CTSP//
+    // End page SanPhamChiTiet//
 
 });
 
