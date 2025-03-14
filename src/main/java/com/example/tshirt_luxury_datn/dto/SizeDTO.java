@@ -6,6 +6,7 @@ import lombok.Setter;
 @Getter
 @Setter
 public class SizeDTO {
-    private String tenSize;
-    private String moTa;
+    private String name;
+    private Boolean status;
+    private String description;
 }

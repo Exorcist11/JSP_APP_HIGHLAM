@@ -1,0 +1,18 @@
+.edit-btn {
+  color: #007bff; /* Màu xanh Bootstrap */
+  transition: all 0.3s ease-in-out;
+}
+.edit-btn:hover {
+  background-color: #007bff;
+  color: white;
+}
+
+/* Hiệu ứng hover cho nút Xóa */
+.delete-btn {
+  color: #dc3545; /* Màu đỏ Bootstrap */
+  transition: all 0.3s ease-in-out;
+}
+.delete-btn:hover {
+  background-color: #dc3545;
+  color: white;
+}
