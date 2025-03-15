@@ -15,7 +15,7 @@ document.addEventListener("DOMContentLoaded", function () {
   function handleAddToCart(event) {
     event.preventDefault();
 
-    let productId = document.getElementById("productId").value;
+    let productId = +document.getElementById("productId").value;
     let selectedColor = document.querySelector(
       'input[name="color"]:checked'
     )?.value;
@@ -26,7 +26,7 @@ document.addEventListener("DOMContentLoaded", function () {
     let productName = document
       .getElementById("productName")
       ?.textContent.trim();
-    let price = document.getElementById("price")?.textContent.trim();
+    let price = +document.getElementById("price")?.textContent.trim();
 
     if (!selectedColor || !selectedSize) {
       alert("Vui lòng chọn màu sắc và kích thước!");

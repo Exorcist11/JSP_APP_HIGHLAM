@@ -34,15 +34,6 @@ public class OrderItem {
     @Column(nullable = false)
     private Boolean status;
 
-    
-    @ManyToOne
-    @JoinColumn(name = "color_id")
-    private Color color;
-    
-    @ManyToOne
-    @JoinColumn(name = "size_id")
-    private Size size;
-    
 
     @Column(nullable = false, updatable = false)
     private LocalDateTime createdAt;

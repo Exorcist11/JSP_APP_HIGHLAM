@@ -37,6 +37,44 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // Cập nhật tổng tiền
   totalPriceElement.innerText = (total + shippingFee).toLocaleString() + "₫";
+
+  document.querySelector("form").addEventListener("submit", function (event) {
+    event.preventDefault();
+
+    const formData = new FormData(event.target);
+    const orderData = {
+      guestEmail: formData.get("guestEmail"),
+      recipientName: formData.get("recipientName"),
+      recipientPhone: formData.get("recipientPhone"),
+      recipientAddress: formData.get("recipientAddress"),
+      notes: formData.get("note"),
+      orderItems: [],
+    };
+
+    // Chưa xử lý được case product detail
+    orderData.orderItems = cart.map((item) => ({
+      productDetailID: 7,
+      quantity: item.quantity,
+      price: parseFloat(item.price),
+    }));
+
+    console.log("Dữ liệu gửi lên:", JSON.stringify(orderData));
+
+    fetch("/order/save", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(orderData),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        alert("Đặt hàng thành công");
+        // localStorage.removeItem("cart");
+        // window.location.href = "/";
+      })
+      .catch((err) => console.error("Lỗi khi đặt hàng: ", err));
+  });
 });
 
 document.addEventListener("click", function (event) {

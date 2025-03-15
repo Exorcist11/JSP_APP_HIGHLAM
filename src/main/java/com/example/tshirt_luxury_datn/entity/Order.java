@@ -22,7 +22,7 @@ public class Order {
     private LocalDateTime orderDate;
 
     @Column(nullable = false)
-    private Boolean status;
+    private String status;
 
     @Column(nullable = false, unique = false, length = 50)
     private String guestEmail;
@@ -40,7 +40,7 @@ public class Order {
 
     @Column(nullable = false)
     private Double totalAmount;
-    
+
     @Column(nullable = false, updatable = false)
     private LocalDateTime createdAt;
 
