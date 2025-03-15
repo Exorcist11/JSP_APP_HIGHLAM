@@ -128,51 +128,40 @@ uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
       <div class="col-4">
         <input
           type="text"
-          value="${itemDetail.id}"
+          value="${product.id}"
           hidden="hidden"
           name="idSPDetail"
           id="productId"
         />
-        <h6 id="productName">${itemDetail.tenSanPham}</h6>
+        <h6 id="productName">${product.name}</h6>
         <p>Còn hàng</p>
 
         <hr />
         <div class="d-flex flex-column gap-3">
-          <h6 id="price">419,000Đ đ</h6>
+          <h6 id="price">${product.price}</h6>
           <div>
             <div class="d-flex gap-2 align-items-center">
               <h6 class="mb-0 text-uppercase">Màu sắc</h6>
             </div>
 
             <div class="btn-group">
-              <input
-                type="radio"
-                class="btn-check"
-                name="color"
-                id="whiteC"
-                value="white"
-                autocomplete="off"
-                checked
-              />
-              <label
-                for="whiteC"
-                style="width: 30px; height: 30px; background-color: white"
-                class="btn btn-default rounded-circle"
-              ></label>
-
-              <input
-                type="radio"
-                class="btn-check"
-                name="color"
-                id="redC"
-                value="red"
-                autocomplete="off"
-              />
-              <label
-                for="redC"
-                style="width: 30px; height: 30px; background-color: red"
-                class="btn btn-default rounded-circle"
-              ></label>
+              <c:forEach items="${colors}" var="item">
+                <input
+                  type="radio"
+                  class="btn-check"
+                  name="color"
+                  id="color_${item.id}"
+                  value="${item.id}"
+                  autocomplete="off"
+                  onchange="updateSizes('${item.id}')"
+                  checked
+                />
+                <label
+                  for="color_${item.id}"
+                  style="width: 30px; height: 30px; background-color: white"
+                  class="btn btn-default rounded-circle"
+                ></label>
+              </c:forEach>
             </div>
           </div>
           <div>
@@ -190,51 +179,21 @@ uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
             </div>
 
             <div class="btn-group">
-              <input
-                type="radio"
-                class="btn-check"
-                name="size"
-                id="sizeS"
-                autocomplete="off"
-                checked
-              />
-              <label class="btn btn-default" for="sizeS">S</label>
-
-              <input
-                type="radio"
-                class="btn-check"
-                name="size"
-                id="sizeM"
-                autocomplete="off"
-              />
-              <label class="btn btn-default" for="sizeM">M</label>
-
-              <input
-                type="radio"
-                class="btn-check"
-                name="size"
-                id="sizeL"
-                autocomplete="off"
-              />
-              <label class="btn btn-default" for="sizeL">L</label>
-
-              <input
-                type="radio"
-                class="btn-check"
-                name="size"
-                id="sizeXL"
-                autocomplete="off"
-              />
-              <label class="btn btn-default" for="sizeXL">XL</label>
-
-              <input
-                type="radio"
-                class="btn-check"
-                name="size"
-                id="sizeXXL"
-                autocomplete="off"
-              />
-              <label class="btn btn-default" for="sizeXXL">XXL</label>
+              <c:forEach items="${sizes}" var="item">
+                <input
+                  type="radio"
+                  class="btn-check"
+                  name="size"
+                  id="size_${item.id}"
+                  autocomplete="off"
+                  checked
+                  value="${item.id}"
+                  onchange="updateColors('${item.id}')"
+                />
+                <label class="btn btn-default" for="size_${item.id}"
+                  >${item.name}</label
+                >
+              </c:forEach>
             </div>
           </div>
 
@@ -274,7 +233,9 @@ uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
           </button>
           <!-- <button type="submit" class="btn btn-dark">THÊM VÀO GIỎ HÀNG</button> -->
 
-          <a href="#" class="btn btn-dark" style="margin-left: 5px">MUA NGAY</a>
+          <a class="btn btn-dark" id="buyNow" style="margin-left: 5px"
+            >MUA NGAY</a
+          >
         </div>
 
         <!-- Thuộc Tính Sản Phẩm  -->
@@ -468,4 +429,5 @@ uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
   </script>
 
   <script src="../js/actionCart.js"></script>
+  <!-- <script src="../js/productDetail.js"></script> -->
 </html>

@@ -11,8 +11,8 @@
             <div class="card" style="width: 18rem; border-style:none">
                 <img src="../images/ao_phong_boxy/DEVOTUS/black.webp" class="card-img-top" alt="...">
                 <div class="card-body">
-                    <h5 class="card-title text-center" style="font-size:13px">${spNew.tenSanPham}</h5>
-                    <p class="card-text fw-bold text-center" style="font-size: 14px;">${spNew.gia}</p>
+                    <h5 class="card-title text-center" style="font-size:13px">${spNew.name}</h5>
+                    <p class="card-text fw-bold text-center" style="font-size: 14px;">${spNew.price}</p>
 
                     <div class="text-center" style="font-size:5px">
                         <a href="#" class="btn btn-outline-light">
