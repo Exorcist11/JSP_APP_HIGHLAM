@@ -69,7 +69,7 @@ contentType="text/html;charset=UTF-8" language="java" %>
                                     <i class="bi bi-search me-1"></i> Tìm Kiếm
                                 </button>
 
-                                <a href="/t-shirt-luxury/admin/timSP" style="font-size: 14px;"
+                                <a href="/admin/products" style="font-size: 14px;"
                                     class="btn btn-secondary flex-fill mx-1">
                                     <i class="bi bi-arrow-clockwise"></i> Reset
                                 </a>
@@ -126,7 +126,7 @@ contentType="text/html;charset=UTF-8" language="java" %>
                         ><i class="fa-solid fa-trash"></i
                       ></a>
                       <a
-                        href="/t-shirt-luxury/admin/san-pham-chi-tiet?id=${sp.id}"
+                        href="/admin/products/${sp.id}"
                         class="btn btn-secondary rounded-pill"
                         data-toggl
                         e="tooltip"
@@ -199,7 +199,7 @@ contentType="text/html;charset=UTF-8" language="java" %>
                 <label for="description" class="form-label">Mô tả</label>
                 <textarea class="form-control" id="description" name="description"></textarea>
             </div>
-            
+
               <p style="color: red">${errorMessageSanPham}</p>
             </div>
 

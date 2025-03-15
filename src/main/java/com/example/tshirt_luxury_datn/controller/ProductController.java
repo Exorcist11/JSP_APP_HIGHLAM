@@ -8,17 +8,32 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import com.example.tshirt_luxury_datn.dto.ProductDTO;
+import com.example.tshirt_luxury_datn.dto.ProductDetailDTO;
 import com.example.tshirt_luxury_datn.entity.Product;
+import com.example.tshirt_luxury_datn.entity.ProductDetail;
 import com.example.tshirt_luxury_datn.services.CategoryService;
+import com.example.tshirt_luxury_datn.services.ColorService;
+import com.example.tshirt_luxury_datn.services.ProductDetailService;
 import com.example.tshirt_luxury_datn.services.ProductService;
+import com.example.tshirt_luxury_datn.services.SizeService;
 
 @Controller
 @RequestMapping("/admin/products")
 public class ProductController {
   @Autowired
   private ProductService productService;
+
   @Autowired
   private CategoryService categoryService;
+
+  @Autowired
+  private ProductDetailService detailService;
+
+  @Autowired
+  private SizeService sizeService;
+
+  @Autowired
+  private ColorService colorService;
 
   @GetMapping
   public String listProduct(Model model) {
@@ -46,5 +61,31 @@ public class ProductController {
       model.addAttribute("error", e.getMessage());
     }
     return "redirect:/admin/products";
+  }
+
+  // Action cho sản phẩm chi tiết
+  @GetMapping("/{productId}")
+  public String getProductDetails(@PathVariable Long productId, Model model) {
+    model.addAttribute("colors", colorService.getAllColor());
+    model.addAttribute("sizes", sizeService.getAllSize());
+    model.addAttribute("product", productService.getProductByID(productId));
+    try {
+      List<ProductDetail> lstPD = detailService.getProductDetailByProductId(productId);
+      model.addAttribute("lstPD", lstPD);
+    } catch (Exception e) {
+      model.addAttribute("error", e.getMessage());
+    }
+    return "admin/Product/san-pham-chi-tiet-admin";
+  }
+
+  @PostMapping("/{productId}")
+  public String createProductDetail(@ModelAttribute("productDetail") ProductDetailDTO detailDTO, Model model,
+      @PathVariable Long productId) {
+    try {
+      detailService.createProductDetail(detailDTO);
+    } catch (Exception e) {
+      model.addAttribute("error", e.getMessage());
+    }
+    return "redirect:/admin/products/" + productId;
   }
 }

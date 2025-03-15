@@ -28,6 +28,10 @@ public class ProductService {
     return productRepository.searchProducts(timKiemSanPham, trangThai);
   }
 
+  public Product getProductByID(Long id) {
+    return productRepository.findById(id).orElse(null);
+  }
+
   public Product createProduct(ProductDTO productDTO) {
     try {
       Optional<Category> categoryOpt = categoryRepository.findById(productDTO.getCategoryId());

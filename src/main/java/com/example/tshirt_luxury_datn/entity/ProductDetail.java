@@ -34,7 +34,7 @@ public class ProductDetail {
     private Integer quantity;
     
     @Column(nullable = false)
-    private String status;
+    private Boolean status;
  
     @Column(nullable = false, updatable = false)
     private LocalDateTime createdAt;
