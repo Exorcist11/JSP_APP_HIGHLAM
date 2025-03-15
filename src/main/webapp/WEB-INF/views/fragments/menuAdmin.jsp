@@ -23,9 +23,7 @@
       ><i class="fa-solid fa-money-bill-transfer"></i> Quản Lý Hóa Đơn</a
     >
 
-    <a
-      href="/t-shirt-luxury/admin/san-pham"
-      class="list-group-item list-group-item-action"
+    <a href="/admin/products" class="list-group-item list-group-item-action"
       ><i class="fa-solid fa-shirt"></i> Quản Lý Sản Phẩm</a
     >
     <a
