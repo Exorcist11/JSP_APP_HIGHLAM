@@ -1,6 +1,6 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 
-<div class="col-3" style="">
+<div class="col-3">
   <div class="list-group">
     <a
       href="/t-shirt-luxury/admin"
@@ -51,7 +51,7 @@
       </button>
       <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
         <li>
-          <a class="dropdown-item" href="/t-shirt-luxury/admin/mau-sac"
+          <a class="dropdown-item" href="/admin/colors"
             ><i class="fa-solid fa-palette"></i> Màu Sắc</a
           >
         </li>
@@ -60,13 +60,13 @@
             ><i class="fa-solid fa-s"></i> Size</a
           >
         </li>
-        <li>
+        <!-- <li>
           <a class="dropdown-item" href="/t-shirt-luxury/admin/chat-lieu"
             ><i class="fa-solid fa-star"></i> Chất Liệu</a
           >
-        </li>
+        </li> -->
         <li>
-          <a class="dropdown-item" href="/t-shirt-luxury/admin/danh-muc"
+          <a class="dropdown-item" href="/admin/categories"
             ><i class="fa-solid fa-table-list"></i> Danh Mục</a
           >
         </li>

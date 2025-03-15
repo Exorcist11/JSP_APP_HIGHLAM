@@ -22,7 +22,7 @@ public class Category {
     private String name;
 
     @Column(nullable = false)
-    private String status;
+    private Boolean status;
 
     @Column(nullable = false, updatable = false)
     private LocalDateTime createdAt;

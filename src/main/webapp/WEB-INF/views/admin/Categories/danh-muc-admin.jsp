@@ -36,50 +36,51 @@ contentType="text/html;charset=UTF-8" language="java" %>
 
       <div class="row mt-3">
         <jsp:include page="/WEB-INF/views/fragments/menuAdmin.jsp" />
+
         <div class="col-9">
           <div class="row">
-            <h2 class="">Quản Lý Màu Sắc</h2>
+            <h2 class="">Quản Lý Danh Mục</h2>
 
             <div class="p-2 bd-highlight d-flex justify-content-end">
               <button
                 type="button"
                 class="btn btn-outline-success"
-                data-bs-toggle="modal"
                 style="font-size: 14px"
+                data-bs-toggle="modal"
                 data-bs-target="#themSanPham"
               >
                 <i class="fa-solid fa-circle-plus"></i> Thêm Mới
               </button>
             </div>
 
-            <table class="table table-striped">
+            <table class="table table-striped" style="font-size: 14px">
               <thead>
                 <tr>
                   <th scope="col">#</th>
-                  <th scope="col">Mã Màu Sắc</th>
-                  <th scope="col">Tên Màu Sắc</th>
+                  <!-- <th scope="col">Mã Danh Mục</th> -->
+                  <th scope="col">Tên Danh Mục</th>
 
                   <th scope="col">Trạng Thái</th>
                   <th scope="col">Hành Động</th>
                 </tr>
               </thead>
               <tbody>
-                <c:forEach items="${colors}" var="ms" varStatus="i">
+                <c:forEach items="${categories}" varStatus="i" var="danhmuc">
                   <tr>
                     <th scope="row">${i.index + 1}</th>
-                    <td>${ms.id}</td>
-                    <td>${ms.name}</td>
+                    <td>${danhmuc.name}</td>
 
                     <td>
-                      <c:if test="${ms.status == true}">
+                      <c:if test="${danhmuc.status == true}">
                         <span class="badge bg-success">Hoạt Động</span>
                       </c:if>
-                      <c:if test="${ms.status == false}">
+                      <c:if test="${danhmuc.status == false}">
                         <span class="badge bg-danger">Không Hoạt Động</span>
                       </c:if>
                     </td>
-                    <td>
+                    <td class="d-flex gap-2">
                       <a
+                        style="font-size: 14px"
                         class="btn edit-btn"
                         data-toggle="tooltip"
                         data-placement="top"
@@ -87,6 +88,7 @@ contentType="text/html;charset=UTF-8" language="java" %>
                         ><i class="fa-solid fa-pen-to-square"></i
                       ></a>
                       <a
+                        style="font-size: 14px"
                         onclick="return confirmDelete()"
                         class="btn delete-btn"
                         data-toggle="tooltip"
@@ -105,7 +107,7 @@ contentType="text/html;charset=UTF-8" language="java" %>
     </div>
 
     <!-- Modal -->
-    <form action="/admin/colors/save" method="post">
+    <form method="POST" action="/admin/categories/save">
       <div
         class="modal fade"
         id="themSanPham"
@@ -117,7 +119,7 @@ contentType="text/html;charset=UTF-8" language="java" %>
           <div class="modal-content" style="font-size: 14px">
             <div class="modal-header">
               <h5 class="modal-title" id="exampleModalLabel">
-                Thêm Mới Màu Sắc
+                Thêm Mới Danh Mục
               </h5>
               <button
                 type="button"
@@ -132,10 +134,25 @@ contentType="text/html;charset=UTF-8" language="java" %>
                   type="text"
                   class="form-control"
                   id="floatingInput"
-                  placeholder="Tên Màu Sắc"
+                  placeholder="Tên Danh Mục"
                   name="name"
+                  required
                 />
-                <label for="floatingInput">Tên Màu Sắc</label>
+                <label for="floatingInput"
+                  >Tên Danh Mục <span class="text-danger">*</span></label
+                >
+              </div>
+
+              <div class="mb-3 mt-3">
+                <label for="exampleFormControlTextarea1" class="form-label"
+                  >Mô tả</label
+                >
+                <textarea
+                  class="form-control"
+                  id="exampleFormControlTextarea1"
+                  rows="3"
+                  name="moTa"
+                ></textarea>
               </div>
             </div>
             <div class="modal-footer">
