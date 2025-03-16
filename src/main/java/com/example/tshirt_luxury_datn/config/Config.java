@@ -14,8 +14,14 @@ import java.util.Random;
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
 
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
+
 import jakarta.servlet.http.HttpServletRequest;
 
+@Configuration
 public class Config {
   public static String vnp_PayUrl = "https://sandbox.vnpayment.vn/paymentv2/vpcpay.html";
   // Cần tạo view khi thanh toán thành công
@@ -126,5 +132,10 @@ public class Config {
       sb.append(chars.charAt(rnd.nextInt(chars.length())));
     }
     return sb.toString();
+  }
+
+  @Bean
+  public PasswordEncoder passwordEncoder() {
+    return new BCryptPasswordEncoder();
   }
 }

@@ -43,32 +43,27 @@ contentType="text/html;charset=UTF-8" language="java" %>
           <p>Thương hiệu thời trang của người Việt</p>
         </div>
         <form
-          th:action="@{/t-shirt-luxury/register}"
+          th:action="@{/register}"
           method="POST"
           class="d-flex flex-column gap-2"
         >
-          <div class="form-group form-container w-75">
-            <label for="tenNguoiDung" class="form-label">Tên Người Dùng:</label>
-            <i class="ti-user"></i>
-            <input
-              type="text"
-              id="tenNguoiDung"
-              name="tenNguoiDung"
-              class="form-control"
-              required
-            />
-          </div>
+          <c:if test="${not empty errorMessage}">
+            <div class="alert alert-danger">
+              <p>${errorMessage}</p>
+            </div>
+          </c:if>
           <div class="form-group form-container w-75">
             <label for="tenDangNhap" class="form-label">Tên Đăng Nhập:</label>
             <i class="ti-id-badge"></i>
             <input
               type="text"
               id="tenDangNhap"
-              name="tenDangNhap"
+              name="username"
               class="form-control"
               required
             />
           </div>
+
           <div class="form-group form-container w-75">
             <label for="email" class="form-label">Email:</label>
             <i class="ti-email"></i>
@@ -80,17 +75,19 @@ contentType="text/html;charset=UTF-8" language="java" %>
               required
             />
           </div>
+
           <div class="form-group form-container w-75">
             <label for="matKhau" class="form-label">Mật Khẩu:</label>
             <i class="ti-lock"></i>
             <input
               type="password"
               id="matKhau"
-              name="matKhau"
+              name="password"
               class="form-control"
               required
             />
           </div>
+
           <button type="submit" class="btn btn-primary w-25">Đăng Ký</button>
         </form>
         <div class="text-or">

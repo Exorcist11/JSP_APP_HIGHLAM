@@ -42,18 +42,25 @@ contentType="text/html;charset=UTF-8" language="java" %>
         <div class="text-welcome">
           <p>Welcome back!</p>
           <p>Thương hiệu thời trang của người Việt</p>
+          <c:if test="${not empty errorMessage}">
+            <div class="alert alert-danger">
+              <p>${errorMessage}</p>
+            </div>
+          </c:if>
         </div>
         <form th:action="@{/login}" method="POST">
           <input
             type="text"
             class="tai-khoan"
-            name="tenDangNhap"
+            name="username"
             placeholder="Tên đăng nhập"
+            required
           />
           <input
+            required
             type="password"
             class="mat-khau"
-            name="matKhau"
+            name="password"
             placeholder="Mật khẩu"
           />
           <a href="#" class="forgot-password">Quên mật khẩu ?</a>
@@ -78,7 +85,7 @@ contentType="text/html;charset=UTF-8" language="java" %>
           </a>
         </div>
         <div class="change-page-register">
-          <a href="/t-shirt-luxury/register" class="link-page-register"
+          <a href="/register" class="link-page-register"
             >Đăng ký nếu bạn chưa có tài khoản.</a
           >
         </div>

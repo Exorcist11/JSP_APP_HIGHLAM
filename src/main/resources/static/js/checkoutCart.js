@@ -71,8 +71,8 @@ document.addEventListener("DOMContentLoaded", function () {
       .then((response) => response.json())
       .then((data) => {
         alert("Đặt hàng thành công");
-        // localStorage.removeItem("cart");
-        // window.location.href = "/";
+        localStorage.removeItem("cart");
+        window.location.href = "/";
       })
       .catch((err) => console.error("Lỗi khi đặt hàng: ", err));
   });

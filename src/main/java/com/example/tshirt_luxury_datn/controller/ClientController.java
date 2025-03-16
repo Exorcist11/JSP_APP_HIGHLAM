@@ -7,19 +7,30 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.example.tshirt_luxury_datn.dto.UserDTO;
 import com.example.tshirt_luxury_datn.entity.Color;
 import com.example.tshirt_luxury_datn.entity.Product;
 import com.example.tshirt_luxury_datn.entity.ProductDetail;
 import com.example.tshirt_luxury_datn.entity.Size;
+import com.example.tshirt_luxury_datn.entity.User;
 import com.example.tshirt_luxury_datn.services.ProductService;
+import com.example.tshirt_luxury_datn.services.UserService;
 import com.fasterxml.jackson.databind.ObjectMapper;
+
+import jakarta.servlet.http.HttpSession;
 
 @Controller
 public class ClientController {
   @Autowired
   private ProductService productService;
+
+  @Autowired
+  private UserService userService;
 
   @GetMapping
   public String homepage(Model model) {
@@ -56,7 +67,52 @@ public class ClientController {
   }
 
   @GetMapping("/cart/checkout")
-  public String checkoutCart(Model mode){
+  public String checkoutCart(Model model) {
     return "BanHang/ban-hang-onl";
+  }
+
+  @GetMapping("/login")
+  public String Login(Model model) {
+    return "NguoiDung/login";
+  }
+
+  @GetMapping("/register")
+  public String register(Model model) {
+    return "NguoiDung/register";
+  }
+
+  @PostMapping("/register")
+  public String saveRegister(@ModelAttribute("register") UserDTO userDTO, RedirectAttributes redirectAttributes) {
+    try {
+      userService.register(userDTO);
+      redirectAttributes.addFlashAttribute("successMessage", "Đăng ký thành công! Vui lòng đăng nhập.");
+      return "redirect:/login";
+    } catch (IllegalArgumentException e) {
+      redirectAttributes.addFlashAttribute("errorMessage", e.getMessage());
+    } catch (Exception e) {
+      redirectAttributes.addFlashAttribute("errorMessage", "Lỗi hệ thống, vui lòng thử lại sau!");
+    }
+    return "redirect:/register";
+  }
+
+  @PostMapping("/login")
+  public String actionLogin(@ModelAttribute("login") UserDTO loginDto, RedirectAttributes redirectAttributes,
+      HttpSession session) {
+    try {
+      User user = userService.login(loginDto);
+      session.setAttribute("loggedInUser", user);
+      System.out.print("Success");
+      return "redirect:/";
+    } catch (IllegalArgumentException e) {
+      redirectAttributes.addFlashAttribute("errorMessage", e.getMessage());
+      System.out.print("Success False");
+      return "redirect:/login";
+    }
+  }
+
+  @GetMapping("/logout")
+  public String logout(HttpSession session) {
+    session.invalidate();
+    return "redirect:/login";
   }
 }
