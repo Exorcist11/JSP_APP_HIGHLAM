@@ -41,7 +41,7 @@ public class ClientController {
     } else {
       System.out.println("Người dùng đăng nhập: " + loggedInUser.getUsername());
     }
-    // model.addAttribute("sanPhamList", productService.getAllProduct());
+    model.addAttribute("sanPhamList", productService.getLastestProducts());
     return "BanHang/trang-chu";
   }
 

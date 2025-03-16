@@ -17,7 +17,7 @@
                     <div class="text-center" style="font-size:5px">
                         <a href="#" class="btn btn-outline-light">
                             <i class="fa-solid fa-cart-shopping"></i>Mua Nhanh</a>
-                        <a href="/t-shirt-luxury/san-pham-chi-tiet-detail?idSPDetail=${spNew.id}" class="btn btn-outline-light">
+                        <a href="/product?id=${spNew.id}" class="btn btn-outline-light">
                             <i class="fa-solid fa-eye"></i>Xem chi tiết</a>
                     </div>
                 </div>

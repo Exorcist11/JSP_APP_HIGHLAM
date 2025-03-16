@@ -71,4 +71,8 @@ public class ProductService {
       throw new RuntimeException("Lỗi khi xóa color: " + e.getMessage());
     }
   }
+
+  public List<Product> getLastestProducts() {
+    return productRepository.findTop4ByOrderByCreatedAtDesc();
+  }
 }
