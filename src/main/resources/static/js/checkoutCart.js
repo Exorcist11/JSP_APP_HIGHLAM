@@ -50,6 +50,7 @@ document.addEventListener("DOMContentLoaded", function () {
       recipientAddress: formData.get("recipientAddress"),
       notes: formData.get("note"),
       productItems: [],
+      paymentMethod: paymentMethod == "1" ? "CASH" : "VNPAY",
     };
 
     // Chưa xử lý được case product detail
@@ -62,22 +63,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     console.log("Dữ liệu gửi lên:", JSON.stringify(orderData));
 
-    if (paymentMethod == "1") {
-      fetch("/order/save", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(orderData),
-      })
-        .then((response) => response.json())
-        .then((data) => {
-          alert("Đặt hàng thành công");
-          localStorage.removeItem("cart");
-          window.location.href = "/";
-        })
-        .catch((err) => console.error("Lỗi khi đặt hàng: ", err));
-    } else {
+    if (paymentMethod == "2") {
       fetch(`/pay/${total}`, {
         method: "GET",
       })
@@ -85,6 +71,20 @@ document.addEventListener("DOMContentLoaded", function () {
         .then((url) => (window.location.href = url))
         .catch((e) => console.error(e));
     }
+    fetch("/order/save", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(orderData),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        alert("Đặt hàng thành công");
+        localStorage.removeItem("cart");
+        window.location.href = "/";
+      })
+      .catch((err) => console.error("Lỗi khi đặt hàng: ", err));
   });
 });
 

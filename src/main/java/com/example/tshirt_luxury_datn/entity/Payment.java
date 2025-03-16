@@ -19,11 +19,22 @@ public class Payment {
     private String paymentMethod;
     private String transactionId;
     private LocalDateTime paymentDate;
-    private String status;
+    private Boolean status;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
     @OneToOne
     @JoinColumn(name = "order_id")
     private Order order;
+
+    @PrePersist
+    protected void onCreate() {
+        this.createdAt = LocalDateTime.now();
+        this.updatedAt = LocalDateTime.now();
+    }
+
+    @PreUpdate
+    protected void onUpdate() {
+        this.updatedAt = LocalDateTime.now();
+    }
 }

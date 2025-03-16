@@ -18,4 +18,6 @@ public class OrderDTO {
   private String recipientPhone;
   private List<OrderItemDTO> orderItems;
   private List<ProductDetailDTO> productItems;
+  
+  private String paymentMethod;
 }

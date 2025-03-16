@@ -25,7 +25,7 @@ import jakarta.servlet.http.HttpServletRequest;
 public class Config {
   public static String vnp_PayUrl = "https://sandbox.vnpayment.vn/paymentv2/vpcpay.html";
   // Cần tạo view khi thanh toán thành công
-  public static String vnp_ReturnUrl = "/payment";
+  public static String vnp_ReturnUrl = "http://localhost:8080/paymentResult";
   public static String vnp_TmnCode = "V9TZGVS9";
   public static String secretKey = "NAWBHJNBBLZXSDESGVSNOKXXMQSFULRU";
   public static String vnp_ApiUrl = "https://sandbox.vnpayment.vn/merchant_webapi/api/transaction";

@@ -11,9 +11,11 @@ import com.example.tshirt_luxury_datn.dto.OrderDTO;
 import com.example.tshirt_luxury_datn.dto.ProductDetailDTO;
 import com.example.tshirt_luxury_datn.entity.Order;
 import com.example.tshirt_luxury_datn.entity.OrderItem;
+import com.example.tshirt_luxury_datn.entity.Payment;
 import com.example.tshirt_luxury_datn.entity.Product;
 import com.example.tshirt_luxury_datn.entity.ProductDetail;
 import com.example.tshirt_luxury_datn.repository.OrderRepository;
+import com.example.tshirt_luxury_datn.repository.PaymentRepository;
 import com.example.tshirt_luxury_datn.repository.ProductDetailRepository;
 import com.example.tshirt_luxury_datn.repository.ProductRepository;
 
@@ -27,6 +29,9 @@ public class CheckoutService {
 
   @Autowired
   private ProductRepository productRepository;
+
+  @Autowired
+  private PaymentRepository paymentRepository;
 
   public Order createOrder(OrderDTO orderDTO) {
     try {
@@ -73,6 +78,13 @@ public class CheckoutService {
       for (OrderItem orderItem : orderItems) {
         orderItem.setOrder(savedOrder);
       }
+
+      Payment payment = new Payment();
+      payment.setOrder(savedOrder);
+      payment.setStatus(true);
+      payment.setPaymentMethod(orderDTO.getPaymentMethod());
+      payment.setPaymentDate(LocalDateTime.now());
+      paymentRepository.save(payment);
 
       savedOrder.setOrderItems(orderItems);
       return orderRepository.save(savedOrder);
