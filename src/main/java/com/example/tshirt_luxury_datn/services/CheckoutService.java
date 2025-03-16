@@ -8,12 +8,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.example.tshirt_luxury_datn.dto.OrderDTO;
-import com.example.tshirt_luxury_datn.dto.OrderItemDTO;
+import com.example.tshirt_luxury_datn.dto.ProductDetailDTO;
 import com.example.tshirt_luxury_datn.entity.Order;
 import com.example.tshirt_luxury_datn.entity.OrderItem;
+import com.example.tshirt_luxury_datn.entity.Product;
 import com.example.tshirt_luxury_datn.entity.ProductDetail;
 import com.example.tshirt_luxury_datn.repository.OrderRepository;
 import com.example.tshirt_luxury_datn.repository.ProductDetailRepository;
+import com.example.tshirt_luxury_datn.repository.ProductRepository;
 
 @Service
 public class CheckoutService {
@@ -23,11 +25,14 @@ public class CheckoutService {
   @Autowired
   private ProductDetailRepository productDetailRepository;
 
+  @Autowired
+  private ProductRepository productRepository;
+
   public Order createOrder(OrderDTO orderDTO) {
     try {
       Order order = new Order();
       order.setGuestEmail(orderDTO.getGuestEmail());
-      order.setStatus("PENDING"); 
+      order.setStatus("PENDING");
       order.setNotes(orderDTO.getNote());
       order.setRecipientAddress(orderDTO.getRecipientAddress());
       order.setRecipientName(orderDTO.getRecipientName());
@@ -40,22 +45,25 @@ public class CheckoutService {
       List<OrderItem> orderItems = new ArrayList<>();
       double totalAmount = 0;
 
-      for (OrderItemDTO itemDTO : orderDTO.getOrderItems()) {
-        ProductDetail productDetail = productDetailRepository.findById(itemDTO.getProductDetailID()).orElse(null);
-
+      for (ProductDetailDTO productDetailDTO : orderDTO.getProductItems()) {
+        ProductDetail productDetail = productDetailRepository.findByProductIdAndSizeIdAndColorId(
+            productDetailDTO.getProductID(), productDetailDTO.getSizeID(), productDetailDTO.getColorID()).orElse(null);
+        Product product = productRepository.findById(productDetailDTO.getProductID()).orElse(null);
+        System.out.println("Product ID" + productDetailDTO.getColorID() + productDetailDTO.getProductID()
+            + productDetailDTO.getSizeID());
         if (productDetail == null) {
-          throw new RuntimeException("Sản phẩm không tồn tại: " + itemDTO.getProductDetailID());
+          throw new RuntimeException("Sản phẩm không tồn tại: " + productDetailDTO.getProductID());
         }
 
         OrderItem orderItem = new OrderItem();
         orderItem.setProductDetail(productDetail);
-        orderItem.setQuantity(itemDTO.getQuantity());
-        orderItem.setPrice(itemDTO.getPrice());
+        orderItem.setQuantity(productDetailDTO.getQuantity());
+        orderItem.setPrice(product.getPrice());
         orderItem.setStatus(true);
         orderItem.setCreatedAt(LocalDateTime.now());
         orderItem.setUpdatedAt(LocalDateTime.now());
 
-        totalAmount += itemDTO.getQuantity() * itemDTO.getPrice();
+        totalAmount += productDetailDTO.getQuantity() * product.getPrice() + 35000;
         orderItems.add(orderItem);
       }
 

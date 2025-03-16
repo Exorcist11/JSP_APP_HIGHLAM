@@ -48,14 +48,15 @@ document.addEventListener("DOMContentLoaded", function () {
       recipientPhone: formData.get("recipientPhone"),
       recipientAddress: formData.get("recipientAddress"),
       notes: formData.get("note"),
-      orderItems: [],
+      productItems: [],
     };
 
     // Chưa xử lý được case product detail
-    orderData.orderItems = cart.map((item) => ({
-      productDetailID: 7,
+    orderData.productItems = cart.map((item) => ({
+      productID: item.productId,
       quantity: item.quantity,
-      price: parseFloat(item.price),
+      sizeID: item.selectedSize,
+      colorID: item.selectedColor,
     }));
 
     console.log("Dữ liệu gửi lên:", JSON.stringify(orderData));

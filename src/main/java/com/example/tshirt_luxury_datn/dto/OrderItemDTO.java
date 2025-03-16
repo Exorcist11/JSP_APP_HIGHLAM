@@ -9,4 +9,5 @@ public class OrderItemDTO {
   private Long productDetailID;
   private Integer quantity;
   private Double price;
+  
 }

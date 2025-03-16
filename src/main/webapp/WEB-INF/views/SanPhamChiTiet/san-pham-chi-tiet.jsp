@@ -126,14 +126,14 @@ uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
       </div>
 
       <div class="col-4">
-        
         <h6 id="productName">${product.name}</h6>
         <p>Còn hàng</p>
+        <input type="text" hidden id="productId" value="${product.id}" />
 
         <hr />
         <div class="d-flex flex-column gap-3">
           <h6 id="price">${product.price}</h6>
-          
+
           <div>
             <div class="d-flex gap-2 align-items-center">
               <h6 class="mb-0 text-uppercase">Màu sắc</h6>

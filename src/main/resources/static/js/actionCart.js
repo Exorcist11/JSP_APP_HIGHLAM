@@ -15,11 +15,11 @@ document.addEventListener("DOMContentLoaded", function () {
   function handleAddToCart(event) {
     event.preventDefault();
 
-    let productId = +document.getElementById("productId").value;
-    let selectedColor = document.querySelector(
+    let productId = +document.getElementById("productId")?.value;
+    let selectedColor = +document.querySelector(
       'input[name="color"]:checked'
     )?.value;
-    let selectedSize = document.querySelector(
+    let selectedSize = +document.querySelector(
       'input[name="size"]:checked'
     )?.value;
     let quantity = +document.getElementById("quantity").value || 1;
