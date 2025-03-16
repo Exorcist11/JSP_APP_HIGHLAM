@@ -9,16 +9,16 @@ document.addEventListener("DOMContentLoaded", function () {
     let total = 0;
 
     cart.forEach((product, index) => {
-      let row = document.createElement("tr");
       let productPrice = parseFloat(product.price) * product.quantity;
       total += productPrice;
 
+      let row = document.createElement("tr");
       row.innerHTML = `
         <td><img style="width: 80px; height: 100px; border-radius: 10%;" src="https://via.placeholder.com/80" alt="Ảnh sản phẩm"></td>
         <td>${product.productName} - Màu ${product.selectedColor} - Size ${
         product.selectedSize
       }</td>
-        <td class="product-price" data-index="${index}">${productPrice.toLocaleString()}₫</td>
+        <td class="product-price">${productPrice.toLocaleString()}₫</td>
         <td>
           <div class="d-flex align-items-center">
             <button type="button" class="btn btn-outline-secondary btn-sm decrement" data-index="${index}">-</button>
@@ -28,6 +28,7 @@ document.addEventListener("DOMContentLoaded", function () {
             <button type="button" class="btn btn-outline-secondary btn-sm increment" data-index="${index}">+</button>
           </div>
         </td>
+        <td><button type="button" class="btn btn-danger btn-sm remove" data-index="${index}">Xoá</button></td>
       `;
 
       cartContainer.appendChild(row);
@@ -39,6 +40,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
   renderCart();
 
+  // Xử lý tăng, giảm số lượng
   document.addEventListener("click", function (event) {
     let target = event.target;
     let index = target.getAttribute("data-index");
@@ -54,12 +56,15 @@ document.addEventListener("DOMContentLoaded", function () {
         product.quantity > 1
       ) {
         product.quantity--;
+      } else if (target.classList.contains("remove")) {
+        cart.splice(index, 1); // Xoá sản phẩm khỏi mảng
       }
 
       renderCart();
     }
   });
 
+  // Xử lý nhập số lượng trực tiếp
   document.addEventListener("input", function (event) {
     if (event.target.classList.contains("quantity")) {
       let index = parseInt(event.target.getAttribute("data-index"));
