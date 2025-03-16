@@ -27,7 +27,7 @@
                                 <li><a class="dropdown-item" href="#"><i class="fa-solid fa-gear"></i>
                                         Cài đặt</a>
                                 </li>
-                                <li><a class="dropdown-item" href="/t-shirt-luxury/login" style="color: red;"><i
+                                <li><a class="dropdown-item" href="/login" style="color: red;"><i
                                             class="fa-solid fa-right-from-bracket"></i> Đăng xuất</a>
                                 </li>
                             </ul>

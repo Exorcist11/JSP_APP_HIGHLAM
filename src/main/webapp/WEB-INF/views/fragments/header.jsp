@@ -101,9 +101,9 @@
                     </li>
                     <ul class="login-and-signin">
                         <i class="fa-regular fa-user"></i>
-                        <li class="button-login"><a href="/t-shirt-luxury/login" class="ten-danh-muc hover-change-color">ĐĂNG NHẬP</a>
+                        <li class="button-login"><a href="/login" class="ten-danh-muc hover-change-color">ĐĂNG NHẬP</a>
                         </li>
-                        <li class="button-sign-in"><a href="/t-shirt-luxury/register" class="ten-danh-muc hover-change-color">ĐĂNG KÝ</a>
+                        <li class="button-sign-in"><a href="/register" class="ten-danh-muc hover-change-color">ĐĂNG KÝ</a>
                         </li>
                     </ul>
                 </ul>
@@ -119,7 +119,7 @@
                     <i class="fa-solid fa-magnifying-glass"></i>
                     <input class="input-search" type="text" name="" id="" placeholder="Tìm kiếm">
                 </form>
-                <a href="/t-shirt-luxury/login">
+                <a href="/login">
                     <i class="fa-regular fa-user ps-5"></i>
                 </a>
                 <a href="#">

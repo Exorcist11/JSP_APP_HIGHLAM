@@ -24,7 +24,7 @@
     </div>
     <div class="logo-and-search d-flex" style="gap: 164px">
       <div class="logo-header-popup">
-        <a href="/t-shirt-luxury/trang-chu">
+        <a href="/">
           <img src="../images/logo.png" alt="" />
         </a>
       </div>
@@ -39,7 +39,7 @@
             placeholder="Tìm kiếm"
           />
         </form>
-        <a href="/t-shirt-luxury/login">
+        <a href="/login">
           <i class="fa-regular fa-user ps-5"></i>
         </a>
         <a href="#">
@@ -88,7 +88,7 @@
   </div>
   <div class="header-popup" style="box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.1)">
     <div class="logo-header-popup">
-      <a href="/t-shirt-luxury/trang-chu">
+      <a href="/">
         <img src="../images/logo.png" alt="" />
       </a>
     </div>
