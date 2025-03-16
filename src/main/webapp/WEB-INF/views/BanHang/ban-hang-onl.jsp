@@ -25,6 +25,7 @@ uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
                 class="form-control me-2"
                 placeholder="Họ và tên"
                 name="recipientName"
+                required
               />
             </div>
             <div class="mb-3">
@@ -33,6 +34,7 @@ uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
                 class="form-control me-2"
                 placeholder="Email"
                 name="guestEmail"
+                required
               />
             </div>
             <div class="mb-3">
@@ -41,6 +43,7 @@ uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
                 class="form-control me-2"
                 placeholder="Số điện thoại"
                 name="recipientPhone"
+                required
               />
             </div>
             <div class="mb-3">
@@ -57,22 +60,24 @@ uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
                 class="form-control me-2"
                 placeholder="Ghi chú"
                 name="note"
+                required
               ></textarea>
             </div>
           </div>
           <div>
             <h5 class="fw-normal">Phương thức thanh toán</h5>
             <div class="d-flex">
-              <input type="radio" value="1" checked name="trangThai" />
-              <p style="margin-left: 10px; margin-top: 13px">
+              <input type="radio" id="cod" value="1" checked name="trangThai" />
+              <label for="cod" style="margin-left: 10px; cursor: pointer">
                 Thanh toán khi nhận hàng (COD)
-              </p>
+              </label>
             </div>
+
             <div class="d-flex">
-              <input type="radio" value="2" name="trangThai" />
-              <p style="margin-left: 10px; margin-top: 13px">
+              <input type="radio" id="online" value="2" name="trangThai" />
+              <label for="online" style="margin-left: 10px; cursor: pointer">
                 Thanh toán trực tuyến
-              </p>
+              </label>
             </div>
           </div>
           <!-- <form action="/pay" method="get">

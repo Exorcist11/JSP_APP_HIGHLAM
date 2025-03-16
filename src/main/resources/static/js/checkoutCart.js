@@ -42,6 +42,7 @@ document.addEventListener("DOMContentLoaded", function () {
     event.preventDefault();
 
     const formData = new FormData(event.target);
+    const paymentMethod = formData.get("trangThai");
     const orderData = {
       guestEmail: formData.get("guestEmail"),
       recipientName: formData.get("recipientName"),
@@ -61,20 +62,29 @@ document.addEventListener("DOMContentLoaded", function () {
 
     console.log("Dữ liệu gửi lên:", JSON.stringify(orderData));
 
-    fetch("/order/save", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(orderData),
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        alert("Đặt hàng thành công");
-        localStorage.removeItem("cart");
-        window.location.href = "/";
+    if (paymentMethod == "1") {
+      fetch("/order/save", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(orderData),
       })
-      .catch((err) => console.error("Lỗi khi đặt hàng: ", err));
+        .then((response) => response.json())
+        .then((data) => {
+          alert("Đặt hàng thành công");
+          localStorage.removeItem("cart");
+          window.location.href = "/";
+        })
+        .catch((err) => console.error("Lỗi khi đặt hàng: ", err));
+    } else {
+      fetch(`/pay/${total}`, {
+        method: "GET",
+      })
+        .then((response) => response.text())
+        .then((url) => (window.location.href = url))
+        .catch((e) => console.error(e));
+    }
   });
 });
 

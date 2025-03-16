@@ -13,7 +13,7 @@
       <i class="fa-solid fa-chart-simple"></i> Số Liệu Thống Kê</a
     >
     <a
-      href="/t-shirt-luxury/admin/nguoi-dung"
+      href="/admin/user"
       class="list-group-item list-group-item-action"
       ><i class="fa-solid fa-users-gear"></i> Quản Lý Người Dùng</a
     >

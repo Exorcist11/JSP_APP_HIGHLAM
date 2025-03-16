@@ -33,7 +33,14 @@ public class ClientController {
   private UserService userService;
 
   @GetMapping
-  public String homepage(Model model) {
+  public String homepage(Model model, HttpSession session) {
+    User loggedInUser = (User) session.getAttribute("loggedInUser");
+
+    if (loggedInUser == null) {
+      System.out.println("Không có người dùng đăng nhập");
+    } else {
+      System.out.println("Người dùng đăng nhập: " + loggedInUser.getUsername());
+    }
     // model.addAttribute("sanPhamList", productService.getAllProduct());
     return "BanHang/trang-chu";
   }
@@ -72,7 +79,11 @@ public class ClientController {
   }
 
   @GetMapping("/login")
-  public String Login(Model model) {
+  public String Login(Model model, HttpSession session) {
+    User loggedInUser = (User) session.getAttribute("loggedInUser");
+    if (loggedInUser == null) {
+      return "redirect:/profile";
+    }
     return "NguoiDung/login";
   }
 
@@ -101,11 +112,9 @@ public class ClientController {
     try {
       User user = userService.login(loginDto);
       session.setAttribute("loggedInUser", user);
-      System.out.print("Success");
       return "redirect:/";
     } catch (IllegalArgumentException e) {
       redirectAttributes.addFlashAttribute("errorMessage", e.getMessage());
-      System.out.print("Success False");
       return "redirect:/login";
     }
   }
@@ -114,5 +123,10 @@ public class ClientController {
   public String logout(HttpSession session) {
     session.invalidate();
     return "redirect:/login";
+  }
+
+  @GetMapping("/profile")
+  public String getProfile() {
+    return "Profile/profile";
   }
 }

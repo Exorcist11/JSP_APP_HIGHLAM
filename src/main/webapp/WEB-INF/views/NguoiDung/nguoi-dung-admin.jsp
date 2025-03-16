@@ -79,14 +79,7 @@
                                             </div>
 
                                             <!-- Dropdown trạng thái -->
-                                            <div class="col-2">
-                                                <select class="form-select" name="idChucVu" style="font-size: 14px;">
-                                                    <option value="" hidden>Chọn chức vụ</option>
-                                                    <c:forEach items="${listChucVu}" var="cv">
-                                                        <option value="${cv.id}">${cv.tenChucVu}</option>
-                                                    </c:forEach>
-                                                </select>
-                                            </div>
+                                            
 
                                             <div class="col-5 d-flex justify-content-between">
                                                 <button style="font-size: 14px;" class="btn btn-success flex-fill mx-1"
@@ -116,37 +109,30 @@
                                 <thead>
                                     <tr>
                                         <th scope="col">#</th>
-                                        <th scope="col">Mã Người Dùng</th>
+                                        
                                         <th scope="col">Tên Người Dùng</th>
                                         <th scope="col">Email</th>
                                         <th scope="col">Chức Vụ</th>
-                                        <th scope="col">Trạng Thái</th>
-                                        <th scope="col">Mô Tả</th>
+                                       
+                                        
                                         <th scope="col">Hành Động</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <c:forEach items="${listNguoiDung}" var="nd" varStatus="i">
+                                    <c:forEach items="${listUser}" var="nd" varStatus="i">
                                         <tr>
                                             <th scope="row">${i.index + 1}</th>
-                                            <td>${nd.maNguoiDung}</td>
-                                            <td>${nd.tenNguoiDung}</td>
+                                          
+                                            <td>${nd.username}</td>
                                             <td>${nd.email}</td>
-                                            <td>${nd.chucVu.tenChucVu}</td>
-                                            <td>
-                                                <c:if test="${nd.trangThai == 1}">
-                                                    Hoạt Động
-                                                </c:if>
-                                                <c:if test="${nd.trangThai == 0}">
-                                                    Không Hoạt Động
-                                                </c:if>
-                                            </td>
-                                            <td>${nd.moTa}</td>
+                                            <td>${nd.role}</td>
+
+                                           
                                             <td>
                                                 <button class="btn btn-warning rounded-pill" data-toggle="tooltip"
                                                     data-placement="top" data-bs-toggle="modal"
                                                     data-bs-target="#suaNguoiDung" title="Chỉnh Sửa">
-                                                    <a href="/t-shirt-luxury/admin/getOne?id=${nd.id}"
+                                                    <a 
                                                         style="color:#000" class="modalSua">
                                                         <i class="fa-solid fa-pen-to-square"></i>
                                                     </a>
@@ -154,12 +140,12 @@
 
                                                 <button class="btn btn-danger rounded-pill" data-toggle="tooltip"
                                                     data-placement="top" title="Xóa">
-                                                    <a href="/t-shirt-luxury/admin/xoaNguoiDung/${nd.id}"
+                                                    <a 
                                                         onclick="return confirmDelete()" style="color:#000">
                                                         <i class="fa-solid fa-trash"></i>
                                                     </a>
                                                 </button>
-                                                <a href="/t-shirt-luxury/admin/nguoi-dung-chi-tiet"
+                                                <a href="/admin/nguoi-dung-chi-tiet"
                                                     class="btn btn-secondary rounded-pill" data-placement="top"
                                                     title="Xem Chi Tiết">
                                                     <i class="fa-solid fa-eye"></i>

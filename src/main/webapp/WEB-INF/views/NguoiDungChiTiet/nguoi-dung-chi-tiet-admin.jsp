@@ -21,7 +21,7 @@
 
                 <div class="row">
                     <div class="p-2 bd-highlight d-flex justify-content-start mt-3">
-                        <a type="button" href="/t-shirt-luxury/admin/nguoi-dung" class="btn btn-outline-secondary">
+                        <a type="button" href="/admin/user" class="btn btn-outline-secondary">
                             <i class="fa-solid fa-backward"></i> Trở lại
                         </a>
                     </div>

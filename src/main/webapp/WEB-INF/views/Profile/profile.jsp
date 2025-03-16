@@ -1,6 +1,5 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %> <%@ page
 contentType="text/html;charset=UTF-8" language="java" %>
-
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -28,24 +27,13 @@ contentType="text/html;charset=UTF-8" language="java" %>
   </head>
 
   <body>
-    <jsp:include page="/WEB-INF/views/fragments/header.jsp" />
+    <jsp:include page="/WEB-INF/views/fragments/headerProduct.jsp" />
     <!-- End Header -->
-    <div class="container">
-      <jsp:include page="/WEB-INF/views/fragments/newProduct.jsp" />
-
-      <jsp:include page="/WEB-INF/views/fragments/productForYou.jsp" />
-
-      <jsp:include page="/WEB-INF/views/fragments/lookBook.jsp" />
-
-      <jsp:include page="/WEB-INF/views/fragments/listBlog.jsp" />
+    <div class="container row">
+      <div class="col-3">1</div>
+      <div class="col-9">22</div>
     </div>
 
     <jsp:include page="/WEB-INF/views/fragments/footer.jsp" />
-
-    <script
-      src="/docs/5.3/dist/js/bootstrap.bundle.min.js"
-      integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
-      crossorigin="anonymous"
-    ></script>
   </body>
 </html>

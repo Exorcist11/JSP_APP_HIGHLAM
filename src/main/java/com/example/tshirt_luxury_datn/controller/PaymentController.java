@@ -15,6 +15,8 @@ import java.util.TimeZone;
 
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.tshirt_luxury_datn.config.Config;
@@ -23,13 +25,13 @@ import com.example.tshirt_luxury_datn.config.Config;
 public class PaymentController {
 
   @SuppressWarnings({ "rawtypes", "unchecked" })
-  @GetMapping("/pay")
-  public String getPay(Model model) throws UnsupportedEncodingException {
+  @GetMapping("/pay/{total}")
+  public String getPay(@PathVariable("total") long total, Model model) throws UnsupportedEncodingException {
 
     String vnp_Version = "2.1.0";
     String vnp_Command = "pay";
     String orderType = "other";
-    long amount = 10000 * 100;
+    long amount = total * 100;
     String bankCode = "";
 
     String vnp_TxnRef = Config.getRandomNumber(8);

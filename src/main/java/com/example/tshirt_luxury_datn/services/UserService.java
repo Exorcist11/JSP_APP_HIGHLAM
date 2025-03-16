@@ -1,5 +1,6 @@
 package com.example.tshirt_luxury_datn.services;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,5 +47,9 @@ public class UserService {
       }
     }
     throw new IllegalArgumentException("Sai tài khoản hoặc mật khẩu!");
+  }
+
+  public List<User> getListUser() {
+    return userRepository.findAll();
   }
 }
