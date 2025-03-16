@@ -4,102 +4,49 @@ document.addEventListener("DOMContentLoaded", function () {
   let totalPriceElement = document.getElementById("total-price");
   let shippingFee = 35000; // Phí vận chuyển cố định
 
-  let total = 0;
+  function renderCart() {
+    cartContainer.innerHTML = "";
+    let total = 0;
 
-  cart.forEach((product) => {
-    let row = document.createElement("tr");
-    let productPrice = parseFloat(product.price) * product.quantity;
-    total += productPrice;
+    cart.forEach((product, index) => {
+      let row = document.createElement("tr");
+      let productPrice = parseFloat(product.price) * product.quantity;
+      total += productPrice;
 
-    row.innerHTML = `
-          <td><img style="width: 80px; height: 100px; border-radius: 10%;" src="https://via.placeholder.com/80" alt="Ảnh sản phẩm"></td>
-          <td>${product.productName} - Màu ${product.selectedColor} - Size ${
-      product.selectedSize
-    }</td>
-          <td>${productPrice.toLocaleString()}₫</td>
-          <td>
-              <div class="d-flex align-items-center">
-                  <button class="btn btn-outline-secondary btn-sm decrement" data-id="${
-                    product.productId
-                  }">-</button>
-                  <input min="1" class="form-control text-center mx-2 quantity" style="width: 50px" type="text" value="${
-                    product.quantity
-                  }" />
-                  <button class="btn btn-outline-secondary btn-sm increment" data-id="${
-                    product.productId
-                  }">+</button>
-              </div>
-          </td>
+      row.innerHTML = `
+        <td><img style="width: 80px; height: 100px; border-radius: 10%;" src="https://via.placeholder.com/80" alt="Ảnh sản phẩm"></td>
+        <td>${product.productName} - Màu ${product.selectedColor} - Size ${
+        product.selectedSize
+      }</td>
+        <td class="product-price" data-index="${index}">${productPrice.toLocaleString()}₫</td>
+        <td>
+          <div class="d-flex align-items-center">
+            <button type="button" class="btn btn-outline-secondary btn-sm decrement" data-index="${index}">-</button>
+            <input min="1" class="form-control text-center mx-2 quantity" style="width: 50px" type="text" value="${
+              product.quantity
+            }" data-index="${index}"/>
+            <button type="button" class="btn btn-outline-secondary btn-sm increment" data-index="${index}">+</button>
+          </div>
+        </td>
       `;
 
-    cartContainer.appendChild(row);
-  });
+      cartContainer.appendChild(row);
+    });
 
-  // Cập nhật tổng tiền
-  totalPriceElement.innerText = (total + shippingFee).toLocaleString() + "₫";
+    totalPriceElement.innerText = (total + shippingFee).toLocaleString() + "₫";
+    localStorage.setItem("cart", JSON.stringify(cart));
+  }
 
-  document.querySelector("form").addEventListener("submit", function (event) {
-    event.preventDefault();
+  renderCart();
 
-    const formData = new FormData(event.target);
-    const paymentMethod = formData.get("trangThai");
-    const orderData = {
-      guestEmail: formData.get("guestEmail"),
-      recipientName: formData.get("recipientName"),
-      recipientPhone: formData.get("recipientPhone"),
-      recipientAddress: formData.get("recipientAddress"),
-      notes: formData.get("note"),
-      productItems: [],
-      paymentMethod: paymentMethod == "1" ? "CASH" : "VNPAY",
-    };
+  document.addEventListener("click", function (event) {
+    let target = event.target;
+    let index = target.getAttribute("data-index");
 
-    // Chưa xử lý được case product detail
-    orderData.productItems = cart.map((item) => ({
-      productID: item.productId,
-      quantity: item.quantity,
-      sizeID: item.selectedSize,
-      colorID: item.selectedColor,
-    }));
+    if (index !== null) {
+      index = parseInt(index);
+      let product = cart[index];
 
-    console.log("Dữ liệu gửi lên:", JSON.stringify(orderData));
-
-    if (paymentMethod == "2") {
-      fetch(`/pay/${total}`, {
-        method: "GET",
-      })
-        .then((response) => response.text())
-        .then((url) => (window.location.href = url))
-        .catch((e) => console.error(e));
-    }
-    fetch("/order/save", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(orderData),
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        alert("Đặt hàng thành công");
-        localStorage.removeItem("cart");
-        window.location.href = "/";
-      })
-      .catch((err) => console.error("Lỗi khi đặt hàng: ", err));
-  });
-});
-
-document.addEventListener("click", function (event) {
-  let cart = JSON.parse(localStorage.getItem("cart")) || [];
-  let target = event.target;
-
-  if (
-    target.classList.contains("increment") ||
-    target.classList.contains("decrement")
-  ) {
-    let productId = target.getAttribute("data-id");
-    let product = cart.find((p) => p.productId === productId);
-
-    if (product) {
       if (target.classList.contains("increment")) {
         product.quantity++;
       } else if (
@@ -109,9 +56,19 @@ document.addEventListener("click", function (event) {
         product.quantity--;
       }
 
-      localStorage.setItem("cart", JSON.stringify(cart));
-
-      location.reload();
+      renderCart();
     }
-  }
+  });
+
+  document.addEventListener("input", function (event) {
+    if (event.target.classList.contains("quantity")) {
+      let index = parseInt(event.target.getAttribute("data-index"));
+      let newValue = parseInt(event.target.value);
+
+      if (!isNaN(newValue) && newValue > 0) {
+        cart[index].quantity = newValue;
+        renderCart();
+      }
+    }
+  });
 });
