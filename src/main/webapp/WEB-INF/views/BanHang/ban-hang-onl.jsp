@@ -117,7 +117,7 @@ uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
           </div>
           <button
             type="submit"
-            style="height: 45px; font-size: large; width: 100%"
+            style="height: 45px; font-size: large"
             class="btn btn-secondary"
           >
             Hoàn tất đơn hàng
@@ -125,7 +125,6 @@ uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
         </div>
       </div>
     </form>
-    <jsp:include page="/WEB-INF/views/fragments/footer.jsp" />
     <script src="../js/checkoutCart.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
   </body>
