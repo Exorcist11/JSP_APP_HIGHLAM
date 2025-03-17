@@ -91,8 +91,9 @@ contentType="text/html;charset=UTF-8" language="java" %>
               <thead>
                 <tr>
                   <th scope="col">STT</th>
-                  <th scope="col">Mã Sản Phẩm</th>
                   <th scope="col">Tên Sản Phẩm</th>
+                  <th scope="col">Giá</th>
+                 
                   <!-- <th scope="col">Danh Mục</th> -->
                   <th scope="col">Trạng Thái</th>
                   <th scope="col">Hành Động</th>

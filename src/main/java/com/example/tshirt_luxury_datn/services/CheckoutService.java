@@ -14,10 +14,13 @@ import com.example.tshirt_luxury_datn.entity.OrderItem;
 import com.example.tshirt_luxury_datn.entity.Payment;
 import com.example.tshirt_luxury_datn.entity.Product;
 import com.example.tshirt_luxury_datn.entity.ProductDetail;
+import com.example.tshirt_luxury_datn.entity.User;
 import com.example.tshirt_luxury_datn.repository.OrderRepository;
 import com.example.tshirt_luxury_datn.repository.PaymentRepository;
 import com.example.tshirt_luxury_datn.repository.ProductDetailRepository;
 import com.example.tshirt_luxury_datn.repository.ProductRepository;
+
+import jakarta.servlet.http.HttpSession;
 
 @Service
 public class CheckoutService {
@@ -33,8 +36,10 @@ public class CheckoutService {
   @Autowired
   private PaymentRepository paymentRepository;
 
-  public Order createOrder(OrderDTO orderDTO) {
+  public Order createOrder(OrderDTO orderDTO, HttpSession session) {
     try {
+      User loggedInUser = (User) session.getAttribute("loggedInUser");
+
       Order order = new Order();
       order.setGuestEmail(orderDTO.getGuestEmail());
       order.setStatus("PENDING");
@@ -42,6 +47,7 @@ public class CheckoutService {
       order.setRecipientAddress(orderDTO.getRecipientAddress());
       order.setRecipientName(orderDTO.getRecipientName());
       order.setRecipientPhone(orderDTO.getRecipientPhone());
+      order.setUser(loggedInUser);
       order.setOrderDate(LocalDateTime.now());
 
       order.setCreatedAt(LocalDateTime.now());

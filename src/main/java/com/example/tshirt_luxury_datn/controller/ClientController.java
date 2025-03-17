@@ -34,13 +34,7 @@ public class ClientController {
 
   @GetMapping
   public String homepage(Model model, HttpSession session) {
-    User loggedInUser = (User) session.getAttribute("loggedInUser");
 
-    if (loggedInUser == null) {
-      System.out.println("Không có người dùng đăng nhập");
-    } else {
-      System.out.println("Người dùng đăng nhập: " + loggedInUser.getUsername());
-    }
     model.addAttribute("sanPhamList", productService.getLastestProducts());
     return "BanHang/trang-chu";
   }
@@ -81,9 +75,11 @@ public class ClientController {
   @GetMapping("/login")
   public String Login(Model model, HttpSession session) {
     User loggedInUser = (User) session.getAttribute("loggedInUser");
-    if (loggedInUser == null) {
+
+    if (loggedInUser != null) {
       return "redirect:/profile";
     }
+
     return "NguoiDung/login";
   }
 

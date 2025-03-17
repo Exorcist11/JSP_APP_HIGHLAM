@@ -13,15 +13,17 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.example.tshirt_luxury_datn.dto.OrderDTO;
 import com.example.tshirt_luxury_datn.services.CheckoutService;
 
+import jakarta.servlet.http.HttpSession;
+
 @Controller
 public class CheckoutController {
   @Autowired
   private CheckoutService checkoutService;
 
   @PostMapping("/order/save")
-  public String saveOrder(@RequestBody OrderDTO orderDTO, Model model) {
+  public String saveOrder(@RequestBody OrderDTO orderDTO, Model model, HttpSession session) {
     try {
-      checkoutService.createOrder(orderDTO);
+      checkoutService.createOrder(orderDTO, session);
     } catch (Exception e) {
       System.out.println(e.getMessage());
     }
