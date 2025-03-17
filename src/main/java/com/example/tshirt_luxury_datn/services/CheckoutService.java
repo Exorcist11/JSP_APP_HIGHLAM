@@ -59,10 +59,13 @@ public class CheckoutService {
       for (ProductDetailDTO productDetailDTO : orderDTO.getProductItems()) {
         ProductDetail productDetail = productDetailRepository.findByProductIdAndSizeIdAndColorId(
             productDetailDTO.getProductID(), productDetailDTO.getSizeID(), productDetailDTO.getColorID()).orElse(null);
+
         Product product = productRepository.findById(productDetailDTO.getProductID()).orElse(null);
+        
         System.out.println("Product ID" + productDetailDTO.getColorID() + productDetailDTO.getProductID()
             + productDetailDTO.getSizeID());
-        if (productDetail == null) {
+        
+            if (productDetail == null) {
           throw new RuntimeException("Sản phẩm không tồn tại: " + productDetailDTO.getProductID());
         }
 

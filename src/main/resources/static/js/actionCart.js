@@ -9,8 +9,17 @@ document.getElementById("increase").addEventListener("click", function () {
   qty.value = parseInt(qty.value) + 1;
 });
 
-document.addEventListener("DOMContentLoaded", function () {
-  let isLoggedIn = false;
+document.addEventListener("DOMContentLoaded", async function () {
+  let isLoggedIn = await fetch("/getCurrent")
+    .then(response => response.json())
+    .then(data => {
+
+      return !!data; // Chuyển về boolean
+    })
+    .catch(err => {
+      return false;
+    });
+
 
   function handleAddToCart(event) {
     event.preventDefault();
@@ -33,8 +42,39 @@ document.addEventListener("DOMContentLoaded", function () {
       return;
     }
 
+    const cartItems = {
+      quantity: quantity,
+      sizeID: selectedSize,
+      colorID: selectedColor,
+      productID: productId
+    }
+    console.log("data send: ", cartItems)
+
     if (isLoggedIn) {
-      console.log("Người dùng đã đăng nhập");
+      syncLocalStorageToServer();
+
+      fetch("/saveCart", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(cartItems),
+      })
+        .then(response => {
+          if (!response.ok) {
+            throw new Error("Lỗi từ server!");
+          }
+          return response.text(); // Trả về text (String)
+        })
+        .then(data => {
+          alert("Thêm sản phẩm thành công!"); // Hiển thị thông báo từ server
+          localStorage.removeItem("cart");
+        })
+        .catch(err => {
+          alert("Lỗi khi thêm sản phẩm: " + err.message); // Thông báo nếu có lỗi
+          console.error("Lỗi khi đặt hàng: ", err);
+        });
+
     } else {
       let cart = JSON.parse(localStorage.getItem("cart")) || [];
 
@@ -63,12 +103,6 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   }
 
-  fetch("/t-shirt-luxury/status")
-    .then((response) => response.json())
-    .then((data) => {
-      isLoggedIn = data.isLoggedIn;
-    });
-
   document
     .getElementById("addToCartBtn")
     .addEventListener("click", handleAddToCart);
@@ -78,3 +112,33 @@ document.addEventListener("DOMContentLoaded", function () {
     window.location.href = "/cart/checkout";
   });
 });
+
+// Hàm đồng bộ dữ liệu từ LocalStorage lên Server
+function syncLocalStorageToServer() {
+  let localCart = JSON.parse(localStorage.getItem("cart")) || [];
+
+  if (localCart.length > 0) {
+    console.log("Đang đồng bộ giỏ hàng...");
+
+    fetch("/saveCartBulk", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(localCart),
+    })
+      .then(response => {
+        if (!response.ok) {
+          throw new Error("Lỗi từ server!");
+        }
+        return response.text();
+      })
+      .then(data => {
+        console.log(data);
+        localStorage.removeItem("cart"); // Xóa giỏ hàng cục bộ sau khi đồng bộ
+      })
+      .catch(err => {
+        console.error("Lỗi khi đồng bộ giỏ hàng:", err);
+      });
+  }
+}

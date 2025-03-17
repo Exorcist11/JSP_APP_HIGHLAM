@@ -83,7 +83,7 @@ document.addEventListener("DOMContentLoaded", function () {
       recipientName: formData.get("recipientName"),
       recipientPhone: formData.get("recipientPhone"),
       recipientAddress: formData.get("recipientAddress"),
-      notes: formData.get("note"),
+      note: formData.get("note"),
       productItems: cart.map((item) => ({
         productID: item.productId,
         quantity: item.quantity,

@@ -125,4 +125,5 @@ public class ClientController {
   public String getProfile() {
     return "Profile/profile";
   }
+
 }
