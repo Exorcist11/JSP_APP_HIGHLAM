@@ -1,5 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib
+uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
 <div class="text-center mt-5" style="padding-left:2rem">
     <H1 class="text-center" style="font-size: 30px;">SẢN PHẨM MỚI</H1>
@@ -12,7 +14,11 @@
                 <img src="../images/ao_phong_boxy/DEVOTUS/black.webp" class="card-img-top" alt="...">
                 <div class="card-body">
                     <h5 class="card-title text-center" style="font-size:13px">${spNew.name}</h5>
-                    <p class="card-text fw-bold text-center" style="font-size: 14px;">${spNew.price}</p>
+                    <p class="card-text fw-bold text-center" style="font-size: 14px;"><fmt:formatNumber
+                        value="${spNew.price}"
+                        groupingUsed="true"
+                        maxFractionDigits="0"
+                      /> VND</p>
 
                     <div class="text-center" style="font-size:5px">
                         <a href="#" class="btn btn-outline-light">

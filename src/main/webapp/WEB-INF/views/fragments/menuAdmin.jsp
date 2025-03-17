@@ -12,30 +12,26 @@
     <a href="#" class="list-group-item list-group-item-action">
       <i class="fa-solid fa-chart-simple"></i> Số Liệu Thống Kê</a
     >
-    <a
-      href="/admin/user"
-      class="list-group-item list-group-item-action"
+    <a href="/admin/user" class="list-group-item list-group-item-action"
       ><i class="fa-solid fa-users-gear"></i> Quản Lý Người Dùng</a
     >
-    <a
-      href="/t-shirt-luxury/admin/hoa-don"
-      class="list-group-item list-group-item-action"
-      ><i class="fa-solid fa-money-bill-transfer"></i> Quản Lý Hóa Đơn</a
+    <a href="/admin/order" class="list-group-item list-group-item-action"
+      ><i class="fa-solid fa-money-bill-transfer"></i> Quản Lý Đơn Hàng</a
     >
 
     <a href="/admin/products" class="list-group-item list-group-item-action"
       ><i class="fa-solid fa-shirt"></i> Quản Lý Sản Phẩm</a
     >
-    <a
+    <!-- <a
       href="/t-shirt-luxury/admin/voucher"
       class="list-group-item list-group-item-action"
       ><i class="fa-solid fa-ticket"></i> Quản Lý Voucher</a
-    >
-    <a
+    > -->
+    <!-- <a
       href="/t-shirt-luxury/admin/giam-gia"
       class="list-group-item list-group-item-action"
       ><i class="fa-brands fa-salesforce"></i> Quản Lý Giảm Giá</a
-    >
+    > -->
 
     <div class="dropdown">
       <button

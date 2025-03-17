@@ -131,7 +131,14 @@ uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
         <hr />
         <div class="d-flex flex-column gap-3">
-          <h6 id="price">${product.price}</h6>
+          <h6 id="price">
+            <fmt:formatNumber
+              value="${product.price}"
+              groupingUsed="true"
+              maxFractionDigits="0"
+            />
+            VND
+          </h6>
 
           <div>
             <div class="d-flex gap-2 align-items-center">
