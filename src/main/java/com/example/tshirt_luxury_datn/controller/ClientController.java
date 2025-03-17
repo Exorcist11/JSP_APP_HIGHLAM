@@ -126,4 +126,10 @@ public class ClientController {
     return "Profile/profile";
   }
 
+  @GetMapping("/ao-nam")
+  public String viewAo(Model model) {
+    model.addAttribute("listProduct", productService.getAllProduct());
+    return "DanhMuc/ao-nam";
+  }
+
 }

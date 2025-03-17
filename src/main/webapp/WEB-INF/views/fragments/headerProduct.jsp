@@ -80,13 +80,16 @@
         </li>
       </ul>
       <ul class="img-type-tshirt-popup">
-        <img src="./images/pink.webp" alt="" />
-        <img src="./images/brow.webp" alt="" />
-        <img src="./images/black.webp" alt="" />
+        <img src="../images/ao_phong_unisex/LABUBU/pink.webp" alt="" />
+        <img src="../images/ao_phong_oversize/DREW/brow.webp" alt="" />
+        <img src="../images/ao_phong_polo/LazyCityCycle/black.webp" alt="" />
       </ul>
     </div>
   </div>
-  <div class="header-popup" style="box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.1)">
+  <div
+    class="header-popup"
+    style="box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.1); justify-content: center"
+  >
     <div class="logo-header-popup">
       <a href="/">
         <img src="../images/logo.png" alt="" />
@@ -94,7 +97,7 @@
     </div>
     <ul class="menu-popup">
       <li class="item-danh-muc">
-        <a href="/t-shirt-luxury/ao-nam" class="name-danh-muc-popup">Áo Nam </a>
+        <a href="/ao-nam" class="name-danh-muc-popup">Áo Nam </a>
       </li>
       <li class="item-danh-muc">
         <a href="#" class="name-danh-muc-popup">Quần Nam</a>
@@ -153,9 +156,9 @@
         </li>
       </ul>
       <ul class="img-type-tshirt-popup">
-        <img src="./images/pink.webp" alt="" />
-        <img src="./images/brow.webp" alt="" />
-        <img src="./images/black.webp" alt="" />
+        <img src="../images/pink.webp" alt="" />
+        <img src="../images/brow.webp" alt="" />
+        <img src="../images/black.webp" alt="" />
       </ul>
     </div>
   </div>
@@ -174,9 +177,7 @@
         class="item-danh-muc-ctsp"
         style="border-right: 1px solid #000; padding: 0 10px"
       >
-        <a href="/t-shirt-luxury/ao-nam" class="ten-danh-muc hover-change-color"
-          >Áo Nam
-        </a>
+        <a href="/ao-nam" class="ten-danh-muc hover-change-color">Áo Nam </a>
       </li>
       <li class="item-danh-muc-ctsp">
         <a

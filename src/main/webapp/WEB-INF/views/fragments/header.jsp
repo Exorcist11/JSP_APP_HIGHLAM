@@ -16,9 +16,7 @@
         </div>
         <ul class="menu-popup">
           <li class="item-danh-muc">
-            <a href="/t-shirt-luxury/ao-nam" class="name-danh-muc-popup"
-              >Áo Nam
-            </a>
+            <a href="/ao-nam" class="name-danh-muc-popup">Áo Nam </a>
           </li>
           <li class="item-danh-muc">
             <a href="#" class="name-danh-muc-popup">Quần Nam</a>
@@ -90,9 +88,7 @@
       <div class="danh-muc">
         <ul>
           <li class="item-danh-muc">
-            <a
-              href="/t-shirt-luxury/ao-nam"
-              class="ten-danh-muc hover-change-color"
+            <a href="/ao-nam" class="ten-danh-muc hover-change-color"
               >Áo Nam
             </a>
           </li>

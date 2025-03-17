@@ -1,5 +1,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %> <%@ page
-contentType="text/html;charset=UTF-8" language="java" %>
+contentType="text/html;charset=UTF-8" language="java" %> <%@ taglib
+uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -40,51 +41,80 @@ contentType="text/html;charset=UTF-8" language="java" %>
             <h2 class="">Quản Lý Sản Phẩm</h2>
 
             <div class="p-3 bg-light rounded border mt-3">
-                <nav class="navbar navbar-expand-lg navbar-light bg-light">
-                    <div class="w-100">
-                        <form action="/admin/products/search" method="GET" class="row g-1">
-                            <!-- Ô tìm kiếm -->
-                            <div class="col-5">
-                                <input name="timKiemSanPham" class="form-control" type="search"
-                                    placeholder="Tìm sản phẩm" aria-label="Search"
-                                    style="font-size: 14px;" value="${timKiemSanPham}">
-
-                            </div>
-
-                            <!-- Dropdown trạng thái -->
-                            <div class="col-2">
-                                <select class="form-select" name="trangThai" id="trangThai"
-                                    style="font-size: 14px;">
-                                    <option value="">Trạng Thái</option>
-                                    <option value="1" ${sanPham.trangThai==1 ? 'selected' : '' }>Còn
-                                        Hàng</option>
-                                    <option value="0" ${sanPham.trangThai==0 ? 'selected' : '' }>Hết
-                                        Hàng</option>
-                                </select>
-                            </div>
-
-                            <div class="col-5 d-flex justify-content-between">
-                                <button style="font-size: 14px;" class="btn btn-success flex-fill mx-1"
-                                    type="submit">
-                                    <i class="bi bi-search me-1"></i> Tìm Kiếm
-                                </button>
-
-                                <a href="/admin/products" style="font-size: 14px;"
-                                    class="btn btn-secondary flex-fill mx-1">
-                                    <i class="bi bi-arrow-clockwise"></i> Reset
-                                </a>
-
-                                <button type="button" class="btn btn-outline-primary flex-fill mx-1"
-                                    style="font-size: 14px;" data-bs-toggle="modal"
-                                    data-bs-target="#themSanPham">
-                                    <i class="fa-solid fa-circle-plus"></i> Thêm Mới
-                                </button>
-                            </div>
-
-                        </form>
-
+              <nav class="navbar navbar-expand-lg navbar-light bg-light">
+                <div class="w-100">
+                  <form
+                    action="/admin/products/search"
+                    method="GET"
+                    class="row g-1"
+                  >
+                    <!-- Ô tìm kiếm -->
+                    <div class="col-5">
+                      <input
+                        name="timKiemSanPham"
+                        class="form-control"
+                        type="search"
+                        placeholder="Tìm sản phẩm"
+                        aria-label="Search"
+                        style="font-size: 14px"
+                        value="${timKiemSanPham}"
+                      />
                     </div>
-                </nav>
+
+                    <!-- Dropdown trạng thái -->
+                    <div class="col-2">
+                      <select
+                        class="form-select"
+                        name="trangThai"
+                        id="trangThai"
+                        style="font-size: 14px"
+                      >
+                        <option value="">Trạng Thái</option>
+                        <option
+                          value="1"
+                          th:selected="${sanPham.trangThai == 1}"
+                        >
+                          Còn Hàng
+                        </option>
+                        <option
+                          value="0"
+                          th:selected="${sanPham.trangThai == 0}"
+                        >
+                          Hết Hàng
+                        </option>
+                      </select>
+                    </div>
+
+                    <div class="col-5 d-flex justify-content-between">
+                      <button
+                        style="font-size: 14px"
+                        class="btn btn-success flex-fill mx-1"
+                        type="submit"
+                      >
+                        <i class="bi bi-search me-1"></i> Tìm Kiếm
+                      </button>
+
+                      <a
+                        href="/admin/products"
+                        style="font-size: 14px"
+                        class="btn btn-secondary flex-fill mx-1"
+                      >
+                        <i class="bi bi-arrow-clockwise"></i> Reset
+                      </a>
+
+                      <button
+                        type="button"
+                        class="btn btn-outline-primary flex-fill mx-1"
+                        style="font-size: 14px"
+                        data-bs-toggle="modal"
+                        data-bs-target="#themSanPham"
+                      >
+                        <i class="fa-solid fa-circle-plus"></i> Thêm Mới
+                      </button>
+                    </div>
+                  </form>
+                </div>
+              </nav>
             </div>
 
             <table class="table table-striped">
@@ -93,7 +123,7 @@ contentType="text/html;charset=UTF-8" language="java" %>
                   <th scope="col">STT</th>
                   <th scope="col">Tên Sản Phẩm</th>
                   <th scope="col">Giá</th>
-                 
+
                   <!-- <th scope="col">Danh Mục</th> -->
                   <th scope="col">Trạng Thái</th>
                   <th scope="col">Hành Động</th>
@@ -104,7 +134,14 @@ contentType="text/html;charset=UTF-8" language="java" %>
                   <tr>
                     <td>${i.index+1}</td>
                     <td>${sp.name}</td>
-                    <td>${sp.price}</td>
+                    <td>
+                      <fmt:formatNumber
+                        value="${sp.price}"
+                        groupingUsed="true"
+                        maxFractionDigits="0"
+                      />
+                      VND
+                    </td>
 
                     <td>
                       <c:if test="${sp.status == true}">
@@ -171,35 +208,55 @@ contentType="text/html;charset=UTF-8" language="java" %>
             <div class="modal-body">
               <!-- Tên Sản Phẩm -->
               <div class="form-floating mb-3">
-                <input type="text" class="form-control" id="name" name="name" required>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="name"
+                  name="name"
+                  required
+                />
                 <label for="floatingInputTenSanPham"
                   >Tên Sản Phẩm <span class="text-danger">*</span></label
                 >
               </div>
 
-               <!-- Giá -->
+              <!-- Giá -->
               <div class="mb-3">
                 <label for="price" class="form-label">Giá</label>
-                <input type="number" class="form-control" id="price" name="price" required>
-            </div>
+                <input
+                  type="number"
+                  class="form-control"
+                  id="price"
+                  name="price"
+                  required
+                />
+              </div>
 
               <!-- Danh mục sản phẩm -->
               <div class="mb-3">
                 <label for="categoryId" class="form-label">Danh mục</label>
-                <select class="form-select" id="categoryId" name="categoryId" required>
-                    <option value="">Chọn danh mục</option>
-                    <c:forEach var="category" items="${categories}">
-                        <option value="${category.id}">${category.name}</option>
-                    </c:forEach>
+                <select
+                  class="form-select"
+                  id="categoryId"
+                  name="categoryId"
+                  required
+                >
+                  <option value="">Chọn danh mục</option>
+                  <c:forEach var="category" items="${categories}">
+                    <option value="${category.id}">${category.name}</option>
+                  </c:forEach>
                 </select>
-            </div>
+              </div>
 
-              
               <!-- Mô Tả Sản Phẩm -->
               <div class="mb-3">
                 <label for="description" class="form-label">Mô tả</label>
-                <textarea class="form-control" id="description" name="description"></textarea>
-            </div>
+                <textarea
+                  class="form-control"
+                  id="description"
+                  name="description"
+                ></textarea>
+              </div>
 
               <p style="color: red">${errorMessageSanPham}</p>
             </div>

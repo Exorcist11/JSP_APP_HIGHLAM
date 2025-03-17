@@ -123,9 +123,7 @@ uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
           </div>
           <ul class="menu-popup">
             <li class="item-danh-muc">
-              <a href="/t-shirt-luxury/ao-nam" class="name-danh-muc-popup"
-                >Áo Nam
-              </a>
+              <a href="/ao-nam" class="name-danh-muc-popup">Áo Nam </a>
             </li>
             <li class="item-danh-muc">
               <a href="#" class="name-danh-muc-popup">Quần Nam</a>
@@ -205,9 +203,7 @@ uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
               class="item-danh-muc-ctsp"
               style="border-right: 1px solid #000; padding: 0 10px"
             >
-              <a
-                href="/t-shirt-luxury/ao-nam"
-                class="ten-danh-muc hover-change-color"
+              <a href="/ao-nam" class="ten-danh-muc hover-change-color"
                 >Áo Nam
               </a>
             </li>
@@ -260,16 +256,12 @@ uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
             <ul class="login-and-signin">
               <i class="fa-regular fa-user pe-3"></i>
               <li class="button-login pe-3">
-                <a
-                  href="/login"
-                  class="ten-danh-muc hover-change-color"
+                <a href="/login" class="ten-danh-muc hover-change-color"
                   >ĐĂNG NHẬP</a
                 >
               </li>
               <li class="button-sign-in">
-                <a
-                  href="/register"
-                  class="ten-danh-muc hover-change-color"
+                <a href="/register" class="ten-danh-muc hover-change-color"
                   >ĐĂNG KÝ</a
                 >
               </li>
