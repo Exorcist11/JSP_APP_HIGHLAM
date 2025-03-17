@@ -67,7 +67,7 @@ contentType="text/html;charset=UTF-8" language="java" %>
                 <c:forEach items="${colors}" var="ms" varStatus="i">
                   <tr>
                     <th scope="row">${i.index + 1}</th>
-                    <td>${ms.id}</td>
+                    <td>${ms.hexColor}</td>
                     <td>${ms.name}</td>
 
                     <td>
@@ -132,8 +132,21 @@ contentType="text/html;charset=UTF-8" language="java" %>
                   type="text"
                   class="form-control"
                   id="floatingInput"
+                  placeholder="Màu Sắc"
+                  name="hexColor"
+                  required
+                />
+                <label for="floatingInput">Màu Sắc</label>
+              </div>
+
+              <div class="form-floating mb-3">
+                <input
+                  type="text"
+                  class="form-control"
+                  id="floatingInput"
                   placeholder="Tên Màu Sắc"
                   name="name"
+                  required
                 />
                 <label for="floatingInput">Tên Màu Sắc</label>
               </div>

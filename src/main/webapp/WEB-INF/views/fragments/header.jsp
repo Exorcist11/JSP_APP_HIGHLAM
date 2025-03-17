@@ -8,7 +8,7 @@
       alt="T-shirt Luxury"
     />
     <div class="side-bar">
-      <div class="header-popup">
+      <div class="header-popup" style="justify-content: center">
         <div class="logo-header-popup">
           <a href="#">
             <img src="../images/logo.png" alt="" />

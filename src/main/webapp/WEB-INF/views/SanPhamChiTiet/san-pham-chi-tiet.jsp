@@ -50,12 +50,12 @@ uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
       border-radius: 5px;
       font-weight: bold;
       cursor: pointer;
+      color: black;
     }
 
     .btn-group input:checked + label {
-      background-color: #ccc;
       /* Màu xanh khi chọn */
-      color: white;
+
       border: 2px solid black;
     }
   </style>
@@ -152,12 +152,13 @@ uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
                 />
                 <label
                   for="color_${item.id}"
-                  style="width: 30px; height: 30px; background-color: white"
+                  style="width: 30px; height: 30px; background-color: ${item.hexColor};"
                   class="btn btn-default rounded-circle"
                 ></label>
               </c:forEach>
             </div>
           </div>
+
           <div>
             <div class="d-flex gap-2 align-items-center">
               <h6 class="mb-0 text-uppercase">Kích thước</h6>

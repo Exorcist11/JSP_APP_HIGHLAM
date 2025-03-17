@@ -23,6 +23,7 @@ public class ColorService {
             Color color = new Color();
             color.setName(colorDTO.getName());
             color.setStatus(true);
+            color.setHexColor(colorDTO.getHexColor());
             return colorRepository.save(color);
         } catch (Exception e) {
             throw new RuntimeException("Lỗi khi thêm color: " + e.getMessage());
@@ -36,6 +37,7 @@ public class ColorService {
                 Color color = optionalColor.get();
                 color.setName(colorDTO.getName());
                 color.setStatus(colorDTO.getStatus());
+                color.setHexColor(colorDTO.getHexColor());
                 colorRepository.save(color);
             }
         } catch (Exception e) {

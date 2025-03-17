@@ -19,11 +19,37 @@ document.addEventListener("DOMContentLoaded", function () {
         <td>${product.productName} - Màu ${product.selectedColor} - Size ${product.selectedSize}</td>
         <td>${productPrice.toLocaleString()}₫</td>
         <td>
-            <div class="d-flex align-items-center">
-                <button class="btn btn-outline-secondary btn-sm decrement" data-index="${index}">-</button>
-                <input min="1" class="form-control text-center mx-2 quantity" style="width: 50px" type="text" value="${product.quantity}" data-index="${index}" />
-                <button class="btn btn-outline-secondary btn-sm increment" data-index="${index}">+</button>
-                <button class="btn btn-outline-danger btn-sm remove" data-index="${index}">X</button>
+            <div class="d-flex align-items-center gap-2">
+
+                <div class="input-group" style="width: 120px">
+                  <button
+                    class="btn btn-outline-secondary decrement"
+                    type="button"
+                    id="decrease"
+                    data-index="${index}"
+                  >
+                    -
+                  </button>
+                  <input
+                    type="text"
+                    class="form-control text-center"
+                    value="${product.quantity}" 
+                    data-index="${index}"
+                    id="quantity"
+                    min="1"
+                    readonly
+                  />
+                  <button
+                    class="btn btn-outline-secondary increment"
+                    type="button"
+                    id="increase"
+                    data-index="${index}"
+                  >
+                    +
+                  </button>
+                </div>
+               
+                <button class="btn btn-outline-danger  remove" data-index="${index}">Xóa</button>
             </div>
         </td>
       `;
@@ -73,7 +99,7 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   });
 
-  document.querySelector("form").addEventListener("submit", function (event) {
+  document.querySelector("form").addEventListener("submit", async function (event) {
     event.preventDefault();
 
     const formData = new FormData(event.target);
@@ -96,14 +122,14 @@ document.addEventListener("DOMContentLoaded", function () {
     console.log("Dữ liệu gửi lên:", JSON.stringify(orderData));
 
     if (paymentMethod == "2") {
-      fetch(`/pay/${total}`, {
+      await fetch(`/pay/${total}`, {
         method: "GET",
       })
         .then((response) => response.text())
         .then((url) => (window.location.href = url))
         .catch((e) => console.error(e));
     }
-    fetch("/order/save", {
+    await fetch("/order/save", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

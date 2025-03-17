@@ -8,4 +8,5 @@ import lombok.Setter;
 public class ColorDTO {
     private String name;
     private Boolean status;
+    private String hexColor;
 }
