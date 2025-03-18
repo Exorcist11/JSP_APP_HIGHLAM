@@ -14,6 +14,11 @@ public class SecurityConfig {
             .requestMatchers("/**").permitAll() // Cho phép truy cập tất cả các trang
         )
         .csrf(csrf -> csrf.disable()) // Tắt CSRF để tránh lỗi khi gửi form
+        .logout(logout -> logout
+            .logoutUrl("/logout")
+            .logoutSuccessUrl("/")
+            .invalidateHttpSession(true)
+            .deleteCookies("JSESSIONID"))
         .formLogin(form -> form.disable()) // Tắt trang login mặc định
         .httpBasic(basic -> basic.disable()); // Tắt xác thực Basic
 

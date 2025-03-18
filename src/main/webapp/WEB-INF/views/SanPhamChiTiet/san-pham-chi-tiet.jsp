@@ -136,6 +136,7 @@ uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
               value="${product.price}"
               groupingUsed="true"
               maxFractionDigits="0"
+
             />
             VND
           </h6>

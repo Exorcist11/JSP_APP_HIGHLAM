@@ -12,9 +12,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.example.tshirt_luxury_datn.dto.CartItemDTO;
+import com.example.tshirt_luxury_datn.dto.CartItemResponse;
 import com.example.tshirt_luxury_datn.entity.User;
 import com.example.tshirt_luxury_datn.services.CartService;
-
 import jakarta.servlet.http.HttpSession;
 
 @Controller
@@ -52,7 +52,11 @@ public class CartController {
         if (loggedInUser == null) {
             return "redirect:/login";
         }
-        model.addAttribute("cart", cartService.getCartbyClientId(loggedInUser));
+
+        List<CartItemResponse> cartItems = cartService.getCartbyClientId(loggedInUser);
+
+        model.addAttribute("cartItems", cartItems);
         return "BanHang/cart";
     }
+
 }

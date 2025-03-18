@@ -35,7 +35,8 @@ document.addEventListener("DOMContentLoaded", async function () {
     let productName = document
       .getElementById("productName")
       ?.textContent.trim();
-    let price = +document.getElementById("price")?.textContent.trim();
+    let priceText = document.getElementById("price")?.textContent.trim();
+    let price = parseInt(priceText.replace(/\D/g, ""), 10);
 
     if (!selectedColor || !selectedSize) {
       alert("Vui lòng chọn màu sắc và kích thước!");

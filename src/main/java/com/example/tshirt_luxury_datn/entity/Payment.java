@@ -1,6 +1,10 @@
 package com.example.tshirt_luxury_datn.entity;
 
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
+
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import jakarta.persistence.*;
 import lombok.*;
@@ -20,21 +24,16 @@ public class Payment {
     private String transactionId;
     private LocalDateTime paymentDate;
     private Boolean status;
-    private LocalDateTime createdAt;
-    private LocalDateTime updatedAt;
 
     @OneToOne
     @JoinColumn(name = "order_id")
     private Order order;
 
-    @PrePersist
-    protected void onCreate() {
-        this.createdAt = LocalDateTime.now();
-        this.updatedAt = LocalDateTime.now();
-    }
+    @CreationTimestamp
+    @Column(nullable = false, updatable = false)
+    private Timestamp createdAt;
 
-    @PreUpdate
-    protected void onUpdate() {
-        this.updatedAt = LocalDateTime.now();
-    }
+    @UpdateTimestamp
+    @Column(nullable = false)
+    private Timestamp updatedAt;
 }

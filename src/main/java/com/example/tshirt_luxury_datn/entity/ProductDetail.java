@@ -3,8 +3,11 @@ package com.example.tshirt_luxury_datn.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.time.LocalDateTime;
+import java.sql.Timestamp;
 import java.util.List;
+
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 @Entity
 @Data
@@ -32,26 +35,17 @@ public class ProductDetail {
 
     @Column(nullable = false)
     private Integer quantity;
-    
+
     @Column(nullable = false)
     private Boolean status;
- 
+
+    @CreationTimestamp
     @Column(nullable = false, updatable = false)
-    private LocalDateTime createdAt;
- 
+    private Timestamp createdAt;
+
+    @UpdateTimestamp
     @Column(nullable = false)
-    private LocalDateTime updatedAt;
-
-    @PrePersist
-    protected void onCreate() {
-        this.createdAt = LocalDateTime.now();
-        this.updatedAt = LocalDateTime.now();
-    }
-
-    @PreUpdate
-    protected void onUpdate() {
-        this.updatedAt = LocalDateTime.now();
-    }
+    private Timestamp updatedAt;
 
     @OneToMany(mappedBy = "productDetail")
     private List<ProductImage> images;

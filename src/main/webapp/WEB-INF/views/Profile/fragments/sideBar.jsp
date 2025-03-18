@@ -21,7 +21,7 @@
     </li>
     <li>
       <a
-        href="#submenu1"
+        href="/history"
         data-bs-toggle="collapse"
         class="nav-link px-0 align-middle text-white"
       >

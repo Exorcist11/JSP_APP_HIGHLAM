@@ -1,5 +1,6 @@
 package com.example.tshirt_luxury_datn.controller;
 
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -15,10 +16,12 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.example.tshirt_luxury_datn.dto.UserDTO;
 import com.example.tshirt_luxury_datn.dto.UserProfileDTP;
 import com.example.tshirt_luxury_datn.entity.Color;
+import com.example.tshirt_luxury_datn.entity.Order;
 import com.example.tshirt_luxury_datn.entity.Product;
 import com.example.tshirt_luxury_datn.entity.ProductDetail;
 import com.example.tshirt_luxury_datn.entity.Size;
 import com.example.tshirt_luxury_datn.entity.User;
+import com.example.tshirt_luxury_datn.services.OrderService;
 import com.example.tshirt_luxury_datn.services.ProductService;
 import com.example.tshirt_luxury_datn.services.UserService;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -32,6 +35,9 @@ public class ClientController {
 
   @Autowired
   private UserService userService;
+
+  @Autowired
+  private OrderService orderService;
 
   @GetMapping
   public String homepage(Model model, HttpSession session) {
@@ -69,7 +75,8 @@ public class ClientController {
   }
 
   @GetMapping("/cart/checkout")
-  public String checkoutCart(Model model) {
+  public String checkoutCart(Model model, HttpSession session) {
+
     return "BanHang/ban-hang-onl";
   }
 
@@ -119,7 +126,7 @@ public class ClientController {
   @GetMapping("/logout")
   public String logout(HttpSession session) {
     session.invalidate();
-    return "redirect:/login";
+    return "redirect:/trang-chu";
   }
 
   @GetMapping("/profile")
@@ -147,6 +154,17 @@ public class ClientController {
   public String viewAo(Model model) {
     model.addAttribute("listProduct", productService.getAllProduct());
     return "DanhMuc/ao-nam";
+  }
+
+  @GetMapping("/history")
+  public String getHistory(HttpSession session) {
+    User loggedInUser = (User) session.getAttribute("loggedInUser");
+    if (loggedInUser == null) {
+      return "redirect:/login";
+    }
+    List<Order> orders = orderService.getOrderByUser(loggedInUser.getId());
+    session.setAttribute("orders", orders);
+    return "Profile/history";
   }
 
 }

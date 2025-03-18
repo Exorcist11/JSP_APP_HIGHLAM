@@ -1,6 +1,5 @@
 package com.example.tshirt_luxury_datn.services;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -48,10 +47,6 @@ public class CheckoutService {
       order.setRecipientName(orderDTO.getRecipientName());
       order.setRecipientPhone(orderDTO.getRecipientPhone());
       order.setUser(loggedInUser);
-      order.setOrderDate(LocalDateTime.now());
-
-      order.setCreatedAt(LocalDateTime.now());
-      order.setUpdatedAt(LocalDateTime.now());
 
       List<OrderItem> orderItems = new ArrayList<>();
       double totalAmount = 0;
@@ -74,8 +69,7 @@ public class CheckoutService {
         orderItem.setQuantity(productDetailDTO.getQuantity());
         orderItem.setPrice(product.getPrice());
         orderItem.setStatus(true);
-        orderItem.setCreatedAt(LocalDateTime.now());
-        orderItem.setUpdatedAt(LocalDateTime.now());
+    
 
         totalAmount += productDetailDTO.getQuantity() * product.getPrice() + 35000;
         orderItems.add(orderItem);
@@ -92,7 +86,6 @@ public class CheckoutService {
       payment.setOrder(savedOrder);
       payment.setStatus(true);
       payment.setPaymentMethod(orderDTO.getPaymentMethod());
-      payment.setPaymentDate(LocalDateTime.now());
       paymentRepository.save(payment);
 
       savedOrder.setOrderItems(orderItems);

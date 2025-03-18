@@ -75,16 +75,18 @@ public class CartService {
     public List<CartItemResponse> getCartbyClientId(User user) {
         try {
             Cart cart = cartRepository.findByUser(user).orElse(null);
-        return cart.getCartItems().stream()
-                .map(cartItem -> new CartItemResponse(
-                        cartItem.getProductDetail().getProduct().getName(),
-                        cartItem.getProductDetail().getProduct().getPrice(),
-                        cartItem.getProductDetail().getProduct().getPrice() * cartItem.getQuantity(),
-                        cartItem.getProductDetail().getSize().getName(),
-                        cartItem.getProductDetail().getColor().getName(),
-                        cartItem.getQuantity()
-                ))
-                .collect(Collectors.toList());
+            List<CartItemResponse> cartItems = cart.getCartItems().stream()
+                    .map(cartItem -> new CartItemResponse(
+                            cartItem.getProductDetail().getProduct().getName(),
+                            cartItem.getProductDetail().getProduct().getPrice(),
+                            cartItem.getProductDetail().getProduct().getPrice() * cartItem.getQuantity(),
+                            cartItem.getProductDetail().getSize().getName(),
+                            cartItem.getProductDetail().getColor().getName(),
+                            cartItem.getQuantity()))
+                    .collect(Collectors.toList());
+
+            cartItems.forEach(System.out::println);
+            return cartItems;
         } catch (Exception e) {
             throw new RuntimeException("Lỗi khi view cart: " + e.getMessage());
         }
