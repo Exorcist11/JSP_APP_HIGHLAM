@@ -36,14 +36,14 @@
               placeholder="Tìm kiếm"
             />
           </form>
-          <a href="#">
+          <a href="/login">
             <i class="fa-regular fa-user ps-5"></i>
           </a>
           <a href="#">
             <i class="fa-regular fa-heart ps-5"></i>
           </a>
           <a
-            href="#"
+            href="/cart"
             data-bs-toggle="offcanvas"
             data-bs-target="#cartDrawer"
             aria-controls="cartDrawer"
@@ -166,7 +166,7 @@
           <i class="fa-regular fa-heart ps-5"></i>
         </a>
         <a
-          href="#"
+          href="/cart"
           data-bs-toggle="offcanvas"
           data-bs-target="#cartDrawer"
           aria-controls="cartDrawer"

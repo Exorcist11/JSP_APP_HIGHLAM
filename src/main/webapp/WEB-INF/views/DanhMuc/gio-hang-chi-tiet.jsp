@@ -72,7 +72,7 @@ uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
               </a>
               <!--mở Drawer giỏ hàng -->
               <a
-                href="#"
+                href="/cart"
                 data-bs-toggle="offcanvas"
                 data-bs-target="#cartDrawer"
                 aria-controls="cartDrawer"
@@ -150,7 +150,7 @@ uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
               <i class="fa-regular fa-heart ps-5"></i>
             </a>
             <a
-              href="#"
+              href="/cart"
               data-bs-toggle="offcanvas"
               data-bs-target="#cartDrawer"
               aria-controls="cartDrawer"

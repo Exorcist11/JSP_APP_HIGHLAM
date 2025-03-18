@@ -1,11 +1,14 @@
 package com.example.tshirt_luxury_datn.services;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.example.tshirt_luxury_datn.dto.CartItemDTO;
+import com.example.tshirt_luxury_datn.dto.CartItemResponse;
 import com.example.tshirt_luxury_datn.entity.Cart;
 import com.example.tshirt_luxury_datn.entity.CartItem;
 import com.example.tshirt_luxury_datn.entity.ProductDetail;
@@ -66,6 +69,24 @@ public class CartService {
 
         } catch (Exception e) {
             throw new RuntimeException("Lỗi khi tạo cart: " + e.getMessage());
+        }
+    }
+
+    public List<CartItemResponse> getCartbyClientId(User user) {
+        try {
+            Cart cart = cartRepository.findByUser(user).orElse(null);
+        return cart.getCartItems().stream()
+                .map(cartItem -> new CartItemResponse(
+                        cartItem.getProductDetail().getProduct().getName(),
+                        cartItem.getProductDetail().getProduct().getPrice(),
+                        cartItem.getProductDetail().getProduct().getPrice() * cartItem.getQuantity(),
+                        cartItem.getProductDetail().getSize().getName(),
+                        cartItem.getProductDetail().getColor().getName(),
+                        cartItem.getQuantity()
+                ))
+                .collect(Collectors.toList());
+        } catch (Exception e) {
+            throw new RuntimeException("Lỗi khi view cart: " + e.getMessage());
         }
     }
 }

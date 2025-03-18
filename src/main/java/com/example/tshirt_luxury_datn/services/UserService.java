@@ -8,7 +8,10 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.example.tshirt_luxury_datn.dto.UserDTO;
+import com.example.tshirt_luxury_datn.dto.UserProfileDTP;
 import com.example.tshirt_luxury_datn.entity.User;
+import com.example.tshirt_luxury_datn.entity.UserProfile;
+import com.example.tshirt_luxury_datn.repository.UserProfileRepository;
 import com.example.tshirt_luxury_datn.repository.UserRepository;
 
 @Service
@@ -18,6 +21,9 @@ public class UserService {
 
   @Autowired
   private PasswordEncoder passwordEncoder;
+
+  @Autowired
+  private UserProfileRepository userProfileRepository;
 
   public User register(UserDTO userDTO) {
 
@@ -51,5 +57,31 @@ public class UserService {
 
   public List<User> getListUser() {
     return userRepository.findAll();
+  }
+
+  public UserProfile getProfile(Long id) {
+    Optional<UserProfile> profile = userProfileRepository.findById(id);
+    if (profile.isPresent()) {
+      return profile.get();
+    }
+    return null;
+  }
+
+  public UserProfile updateProfile(Long id, UserProfileDTP userProfileDTP) {
+    try {
+      Optional<User> user = userRepository.findById(id);
+      if (!user.isPresent()) {
+        throw new IllegalArgumentException("User không tồn tạo!");
+      }
+      UserProfile userProfile = new UserProfile();
+      userProfile.setUser(user.get());
+      userProfile.setAddress(userProfileDTP.getAddress());
+      userProfile.setFullName(userProfileDTP.getFullName());
+      userProfile.setPhoneNumber(userProfileDTP.getPhoneNumber());
+
+      return userProfileRepository.save(userProfile);
+    } catch (Exception e) {
+      throw new RuntimeException("Lỗi khi tạo mới profile:  " + e.getMessage());
+    }
   }
 }

@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.example.tshirt_luxury_datn.dto.UserDTO;
+import com.example.tshirt_luxury_datn.dto.UserProfileDTP;
 import com.example.tshirt_luxury_datn.entity.Color;
 import com.example.tshirt_luxury_datn.entity.Product;
 import com.example.tshirt_luxury_datn.entity.ProductDetail;
@@ -122,8 +123,24 @@ public class ClientController {
   }
 
   @GetMapping("/profile")
-  public String getProfile() {
+  public String getProfile(HttpSession session, Model model) {
+    User loggedInUser = (User) session.getAttribute("loggedInUser");
+    if (loggedInUser == null) {
+      return "redirect:/login";
+    }
+    model.addAttribute("profile", userService.getProfile(loggedInUser.getId()));
     return "Profile/profile";
+  }
+
+  @PostMapping("/updateProfile")
+  public String saveProfile(HttpSession session, UserProfileDTP userProfileDTP) {
+    try {
+      User loggedInUser = (User) session.getAttribute("loggedInUser");
+      userService.updateProfile(loggedInUser.getId(), userProfileDTP);
+    } catch (Exception e) {
+      System.out.print(e.getMessage());
+    }
+    return "redirect:/profile";
   }
 
   @GetMapping("/ao-nam")
