@@ -81,7 +81,7 @@ uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
             </p>
           </c:if>
           <div class="text-center mt-3">
-            <a href="/shop" class="btn btn-secondary">🛍 Tiếp tục mua sắm</a>
+            <a href="/" class="btn btn-secondary">🛍 Tiếp tục mua sắm</a>
             <a href="/cart/checkout" class="btn btn-success">💳 Thanh toán</a>
           </div>
         </div>

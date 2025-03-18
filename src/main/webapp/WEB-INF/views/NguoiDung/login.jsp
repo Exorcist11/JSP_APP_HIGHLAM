@@ -49,20 +49,30 @@ contentType="text/html;charset=UTF-8" language="java" %>
           </c:if>
         </div>
         <form th:action="@{/login}" method="POST">
-          <input
-            type="text"
-            class="tai-khoan"
-            name="username"
-            placeholder="Tên đăng nhập"
-            required
-          />
-          <input
-            required
-            type="password"
-            class="mat-khau"
-            name="password"
-            placeholder="Mật khẩu"
-          />
+          <div class="form-group form-container w-75">
+            <label for="tenDangNhap" class="form-label">Tên Đăng Nhập:</label>
+            <i class="ti-id-badge"></i>
+            <input
+              type="text"
+              id="tenDangNhap"
+              name="username"
+              class="form-control"
+              required
+            />
+          </div>
+
+          <div class="form-group form-container w-75 mt-3">
+            <label for="password" class="form-label">Mật Khẩu:</label>
+            <i class="ti-id-badge"></i>
+            <input
+              type="password"
+              id="password"
+              name="password"
+              class="form-control"
+              required
+            />
+          </div>
+
           <a href="#" class="forgot-password">Quên mật khẩu ?</a>
           <button type="submit" class="button-dang-nhap">Đăng nhập</button>
         </form>

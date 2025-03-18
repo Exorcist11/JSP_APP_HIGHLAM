@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.example.tshirt_luxury_datn.dto.CartItemResponse;
 import com.example.tshirt_luxury_datn.dto.UserDTO;
 import com.example.tshirt_luxury_datn.dto.UserProfileDTP;
 import com.example.tshirt_luxury_datn.entity.Color;
@@ -21,6 +22,7 @@ import com.example.tshirt_luxury_datn.entity.Product;
 import com.example.tshirt_luxury_datn.entity.ProductDetail;
 import com.example.tshirt_luxury_datn.entity.Size;
 import com.example.tshirt_luxury_datn.entity.User;
+import com.example.tshirt_luxury_datn.services.CartService;
 import com.example.tshirt_luxury_datn.services.OrderService;
 import com.example.tshirt_luxury_datn.services.ProductService;
 import com.example.tshirt_luxury_datn.services.UserService;
@@ -38,6 +40,9 @@ public class ClientController {
 
   @Autowired
   private OrderService orderService;
+
+  @Autowired
+  private CartService cartService;
 
   @GetMapping
   public String homepage(Model model, HttpSession session) {
@@ -76,6 +81,12 @@ public class ClientController {
 
   @GetMapping("/cart/checkout")
   public String checkoutCart(Model model, HttpSession session) {
+    User loggedInUser = (User) session.getAttribute("loggedInUser");
+    if (loggedInUser != null) {
+      List<CartItemResponse> cartItems = cartService.getCartbyClientId(loggedInUser.getId());
+
+      model.addAttribute("cartItems", cartItems);
+    }
 
     return "BanHang/ban-hang-onl";
   }

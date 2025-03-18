@@ -1,5 +1,6 @@
 package com.example.tshirt_luxury_datn.services;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -72,9 +73,14 @@ public class CartService {
         }
     }
 
-    public List<CartItemResponse> getCartbyClientId(User user) {
+    public List<CartItemResponse> getCartbyClientId(Long userID) {
         try {
+            User user = userRepository.findById(userID).orElse(null);
             Cart cart = cartRepository.findByUser(user).orElse(null);
+            if (cart == null) {
+                return new ArrayList<>();
+            }
+
             List<CartItemResponse> cartItems = cart.getCartItems().stream()
                     .map(cartItem -> new CartItemResponse(
                             cartItem.getProductDetail().getProduct().getName(),
@@ -82,13 +88,26 @@ public class CartService {
                             cartItem.getProductDetail().getProduct().getPrice() * cartItem.getQuantity(),
                             cartItem.getProductDetail().getSize().getName(),
                             cartItem.getProductDetail().getColor().getName(),
-                            cartItem.getQuantity()))
+                            cartItem.getQuantity(),
+                            cartItem.getProductDetail().getProduct().getId(),
+                            cartItem.getProductDetail().getSize().getId(),
+                            cartItem.getProductDetail().getColor().getId()))
                     .collect(Collectors.toList());
 
-            cartItems.forEach(System.out::println);
             return cartItems;
         } catch (Exception e) {
             throw new RuntimeException("Lỗi khi view cart: " + e.getMessage());
+        }
+    }
+
+    public void deleteCart(User user) {
+        try {
+            Optional<Cart> cartU = cartRepository.findByUser(user);
+            if (cartU.isPresent()) {
+                cartRepository.delete(cartU.get());
+            }
+        } catch (Exception e) {
+            throw new RuntimeException("Lỗi khi xóa size: " + e.getMessage());
         }
     }
 }

@@ -89,6 +89,29 @@ uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
           <table class="table">
             <tbody id="cart-items"></tbody>
           </table>
+
+          <c:if test="${not empty cartItems}">
+            <table class="table table-bordered text-center mt-3">
+              <thead class="table-light">
+                <tr>
+                  <th>Tên sản phẩm</th>
+                  <th>Size</th>
+                  <th>Màu sắc</th>
+                  <th>Số lượng</th>
+                </tr>
+              </thead>
+              <tbody>
+                <c:forEach var="item" items="${cartItems}">
+                  <tr>
+                    <td>${item.productName}</td>
+                    <td>${item.size}</td>
+                    <td>${item.color}</td>
+                    <td>${item.quantity}</td>
+                  </tr>
+                </c:forEach>
+              </tbody>
+            </table>
+          </c:if>
           <hr />
           <h6 class="fw-normal">Phí vận chuyển: 35,000₫</h6>
           <hr />

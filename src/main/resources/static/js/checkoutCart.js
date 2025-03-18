@@ -1,9 +1,25 @@
-document.addEventListener("DOMContentLoaded", function () {
+document.addEventListener("DOMContentLoaded", async function () {
   let cart = JSON.parse(localStorage.getItem("cart")) || [];
   let cartContainer = document.getElementById("cart-items");
   let totalPriceElement = document.getElementById("total-price");
   let shippingFee = 35000; // Phí vận chuyển cố định
   let total = 0;
+
+  const cartUser = await fetch("/getCart", {
+    method: "GET", headers: {
+      'Content-Type': 'application/json'
+    },
+    credentials: 'include'
+  })
+    .then((response) => response.json())
+    .then((data) => { return data })
+    .catch((e) => console.error(e));
+
+  const totalServer = cartUser.reduce((sum, item) => sum + item.total, 0)
+  console.log(totalServer)
+
+
+
 
   function renderCart() {
     cartContainer.innerHTML = ""; // Xóa nội dung cũ
@@ -104,25 +120,36 @@ document.addEventListener("DOMContentLoaded", function () {
 
     const formData = new FormData(event.target);
     const paymentMethod = formData.get("trangThai");
+
+    const cartLocal = cart?.map((item) => ({
+      productID: item.productId,
+      quantity: item.quantity,
+      sizeID: item.selectedSize,
+      colorID: item.selectedColor,
+    }))
+
+    const cartSever = cartUser?.map((item) => ({
+      productID: item.productID,
+      quantity: item.quantity,
+      sizeID: item.sizeID,
+      colorID: item.colorID,
+    }))
+
     const orderData = {
       guestEmail: formData.get("guestEmail"),
       recipientName: formData.get("recipientName"),
       recipientPhone: formData.get("recipientPhone"),
       recipientAddress: formData.get("recipientAddress"),
       note: formData.get("note"),
-      productItems: cart.map((item) => ({
-        productID: item.productId,
-        quantity: item.quantity,
-        sizeID: item.selectedSize,
-        colorID: item.selectedColor,
-      })),
+
+      productItems: cartSever ? cartSever : cartLocal,
       paymentMethod: paymentMethod == "1" ? "CASH" : "VNPAY",
     };
 
     console.log("Dữ liệu gửi lên:", JSON.stringify(orderData));
 
     if (paymentMethod == "2") {
-      await fetch(`/pay/${total}`, {
+      await fetch(`/pay/${cartUser ? totalServer : total}`, {
         method: "GET",
       })
         .then((response) => response.text())
@@ -140,6 +167,9 @@ document.addEventListener("DOMContentLoaded", function () {
       .then((data) => {
         alert("Đặt hàng thành công");
         localStorage.removeItem("cart");
+        if (cartUser) {
+          fetch("/deleteCart", { method: "DELETE", credentials: "include" })
+        }
         window.location.href = "/";
       })
       .catch((err) => console.error("Lỗi khi đặt hàng: ", err));
