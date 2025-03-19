@@ -2,13 +2,17 @@ document.addEventListener("DOMContentLoaded", function () {
   renderCart();
 });
 
-// Hàm hiển thị giỏ hàng từ localStorage
-function renderCart() {
+// Hàm hiển thị giỏ hàng từ API hoặc localStorage
+async function renderCart() {
   const cartContainer = document.getElementById("cartItems");
   const totalPriceElement = document.getElementById("totalPrice");
 
-  // Lấy danh sách sản phẩm từ localStorage
-  let cartItems = JSON.parse(localStorage.getItem("cart")) || [];
+  let cartItems = await fetchCartFromAPI();
+
+  // Nếu API không có dữ liệu, lấy từ localStorage
+  if (!cartItems || cartItems.length === 0) {
+    cartItems = JSON.parse(localStorage.getItem("cart")) || [];
+  }
 
   // Nếu giỏ hàng trống
   if (cartItems.length === 0) {
@@ -26,14 +30,11 @@ function renderCart() {
     const cartItemHTML = `
       <div class="cart-item d-flex justify-content-between align-items-center">
           <div class="cart-item-image">
-              <img width="100px" height="100px" src="../images/ao_phong_boxy/DEVOTUS/black.webp" alt="${
-                item.productName
-              }" class="img-fluid">
+              <img width="100px" height="100px" src="../images/ao_phong_boxy/DEVOTUS/black.webp" alt="${item.productName
+      }" class="img-fluid">
           </div>
           <div class="cart-item-info">
-              <p>${item.productName} - ${item.selectedColor} - ${
-      item.selectedSize
-    }</p>
+              <p>${item.productName} - ${item.color} - ${item.size}</p>
               <p>${item.price.toLocaleString()} đ x ${item.quantity}</p>
           </div>
           <button class="btn btn-danger btn-sm" onclick="removeFromCart(${index})">Xóa</button>
@@ -47,7 +48,20 @@ function renderCart() {
   totalPriceElement.textContent = totalPrice.toLocaleString() + " đ";
 }
 
-// Hàm xóa sản phẩm khỏi giỏ hàng mà không cần reload trang
+// Hàm gọi API lấy giỏ hàng từ server
+async function fetchCartFromAPI() {
+  try {
+    const response = await fetch("/api/cart");
+    if (!response.ok) throw new Error("Không thể lấy dữ liệu từ API");
+
+    return await response.json();
+  } catch (error) {
+    console.warn("Lỗi khi lấy giỏ hàng từ API:", error);
+    return null;
+  }
+}
+
+// Hàm xóa sản phẩm khỏi giỏ hàng
 function removeFromCart(index) {
   let cartItems = JSON.parse(localStorage.getItem("cart")) || [];
 

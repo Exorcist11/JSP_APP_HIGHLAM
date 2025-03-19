@@ -2,6 +2,7 @@ package com.example.tshirt_luxury_datn.services;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -37,7 +38,7 @@ public class CheckoutService {
 
   public Order createOrder(OrderDTO orderDTO, HttpSession session) {
     try {
-      User loggedInUser = (User) session.getAttribute("loggedInUser");
+      Optional<User> loggedInUserOpt = Optional.ofNullable((User) session.getAttribute("loggedInUser"));
 
       Order order = new Order();
       order.setGuestEmail(orderDTO.getGuestEmail());
@@ -46,7 +47,7 @@ public class CheckoutService {
       order.setRecipientAddress(orderDTO.getRecipientAddress());
       order.setRecipientName(orderDTO.getRecipientName());
       order.setRecipientPhone(orderDTO.getRecipientPhone());
-      order.setUser(loggedInUser);
+      order.setUser(loggedInUserOpt.orElse(null));
 
       List<OrderItem> orderItems = new ArrayList<>();
       double totalAmount = 0;
@@ -56,12 +57,13 @@ public class CheckoutService {
             productDetailDTO.getProductID(), productDetailDTO.getSizeID(), productDetailDTO.getColorID()).orElse(null);
 
         Product product = productRepository.findById(productDetailDTO.getProductID()).orElse(null);
-        
-        System.out.println("Product ID" + productDetailDTO.getColorID() + productDetailDTO.getProductID()
-            + productDetailDTO.getSizeID());
-        
-            if (productDetail == null) {
+
+        if (productDetail == null) {
           throw new RuntimeException("Sản phẩm không tồn tại: " + productDetailDTO.getProductID());
+        }
+
+        if (productDetail.getQuantity() < productDetailDTO.getQuantity()) {
+          throw new RuntimeException("Số lượng không đủ cho sản phẩm: " + productDetailDTO.getProductID());
         }
 
         OrderItem orderItem = new OrderItem();
@@ -69,10 +71,11 @@ public class CheckoutService {
         orderItem.setQuantity(productDetailDTO.getQuantity());
         orderItem.setPrice(product.getPrice());
         orderItem.setStatus(true);
-    
 
         totalAmount += productDetailDTO.getQuantity() * product.getPrice() + 35000;
         orderItems.add(orderItem);
+
+        productDetail.setQuantity(productDetail.getQuantity() - productDetailDTO.getQuantity());
       }
 
       order.setTotalAmount(totalAmount);
@@ -81,6 +84,10 @@ public class CheckoutService {
       for (OrderItem orderItem : orderItems) {
         orderItem.setOrder(savedOrder);
       }
+
+      productDetailRepository.saveAll(orderItems.stream()
+          .map(OrderItem::getProductDetail)
+          .toList());
 
       Payment payment = new Payment();
       payment.setOrder(savedOrder);

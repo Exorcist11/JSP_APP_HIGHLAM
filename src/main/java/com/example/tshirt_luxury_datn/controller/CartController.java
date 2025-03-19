@@ -96,4 +96,13 @@ public class CartController {
         return "BanHang/cart";
     }
 
+    @GetMapping("/api/cart")
+    @ResponseBody
+    public ResponseEntity<?> getCartApi(HttpSession session) {
+        User loggedInUser = (User) session.getAttribute("loggedInUser");
+    
+        List<CartItemResponse> cartItems = cartService.getCartbyClientId(loggedInUser.getId());
+        return ResponseEntity.ok(cartItems);
+    }
+
 }

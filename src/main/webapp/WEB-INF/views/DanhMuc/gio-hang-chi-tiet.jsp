@@ -303,7 +303,7 @@ uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
                   </p>
 
                   <a
-                    href="/t-shirt-luxury/gio-hang-chi-tiet/delete?id=${ghct.id}"
+                    href="/cart/delete?id=${ghct.id}"
                     class="btn btn-outline-secondary btn-sm"
                     onclick="return confirmDelete()"
                     >Xóa</a
@@ -311,7 +311,7 @@ uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
                 </div>
                 <div class="ms-auto d-flex align-items-center">
                   <a
-                    href="/t-shirt-luxury/gio-hang-chi-tiet/subtract?id=${ghct.id}"
+                    href="/cart/subtract?id=${ghct.id}"
                     class="btn btn-outline-secondary btn-sm"
                     id="decrement"
                     >-</a
@@ -325,7 +325,7 @@ uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
                     id="quantity"
                   />
                   <a
-                    href="/t-shirt-luxury/gio-hang-chi-tiet/plus?id=${ghct.id}"
+                    href="/cart/plus?id=${ghct.id}"
                     class="btn btn-outline-secondary btn-sm"
                     id="increment"
                     >+</a

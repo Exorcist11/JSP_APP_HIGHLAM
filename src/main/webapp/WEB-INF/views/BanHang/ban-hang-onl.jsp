@@ -86,9 +86,7 @@ uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
         </div>
 
         <div class="col-6 mt-3" style="background-color: rgb(247, 247, 247)">
-          <table class="table">
-            <tbody id="cart-items"></tbody>
-          </table>
+          <div id="tableCart"></div>
 
           <c:if test="${not empty cartItems}">
             <table class="table table-bordered text-center mt-3">

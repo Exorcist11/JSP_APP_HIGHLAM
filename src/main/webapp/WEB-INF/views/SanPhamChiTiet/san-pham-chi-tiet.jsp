@@ -136,7 +136,6 @@ uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
               value="${product.price}"
               groupingUsed="true"
               maxFractionDigits="0"
-
             />
             VND
           </h6>
@@ -155,9 +154,10 @@ uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
                   id="color_${item.id}"
                   value="${item.id}"
                   autocomplete="off"
-                  onchange="updateSizes('${item.id}')"
+                  data-name="${item.name}"
                   checked
                 />
+
                 <label
                   for="color_${item.id}"
                   style="width: 30px; height: 30px; background-color: ${item.hexColor};"
@@ -191,7 +191,7 @@ uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
                   autocomplete="off"
                   checked
                   value="${item.id}"
-                  onchange="updateColors('${item.id}')"
+                  data-name="${item.name}"
                 />
                 <label class="btn btn-default" for="size_${item.id}"
                   >${item.name}</label

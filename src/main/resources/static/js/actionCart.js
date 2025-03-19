@@ -25,12 +25,17 @@ document.addEventListener("DOMContentLoaded", async function () {
     event.preventDefault();
 
     let productId = +document.getElementById("productId")?.value;
-    let selectedColor = +document.querySelector(
-      'input[name="color"]:checked'
-    )?.value;
-    let selectedSize = +document.querySelector(
+    let selectedColorInput = document.querySelector('input[name="color"]:checked');
+    let selectedColorName = selectedColorInput?.getAttribute("data-name") || "Không xác định";
+    let selectedColor = +selectedColorInput?.value;
+
+
+    let selectedSizeInput = document.querySelector(
       'input[name="size"]:checked'
-    )?.value;
+    );
+    let selectedSizeName = selectedSizeInput?.getAttribute("data-name") || "Không xác định";
+    let selectedSize = +selectedSizeInput?.value;
+    
     let quantity = +document.getElementById("quantity").value || 1;
     let productName = document
       .getElementById("productName")
@@ -96,6 +101,8 @@ document.addEventListener("DOMContentLoaded", async function () {
           selectedColor,
           selectedSize,
           quantity,
+          color: selectedColorName,
+          size: selectedSizeName
         });
       }
 

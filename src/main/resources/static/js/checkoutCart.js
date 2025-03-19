@@ -1,9 +1,57 @@
 document.addEventListener("DOMContentLoaded", async function () {
   let cart = JSON.parse(localStorage.getItem("cart")) || [];
-  let cartContainer = document.getElementById("cart-items");
+  let cartContainer = document.getElementById("tableCart");
   let totalPriceElement = document.getElementById("total-price");
   let shippingFee = 35000; // Phí vận chuyển cố định
   let total = 0;
+
+  function renderCart() {
+    cartContainer.innerHTML = "";
+
+    let table = document.createElement("table");
+    table.classList.add("table", "table-bordered", "text-center", "mt-3");
+
+    let thead = document.createElement("thead");
+    thead.classList.add("table-light");
+    thead.innerHTML = `
+        <tr>
+            <th>Tên sản phẩm</th>
+            <th>Size</th>
+            <th>Màu sắc</th>
+            <th>Số lượng</th>
+            <th>Giá</th>
+        </tr>
+    `;
+
+    let tbody = document.createElement("tbody");
+    tbody.id = "tableBody";
+
+    cart.forEach((product, index) => {
+      let row = document.createElement("tr");
+      let productPrice = parseFloat(product.price) * product.quantity;
+      total += productPrice;
+
+      row.innerHTML = `
+            <td>${product.productName}</td>
+            <td>${product.selectedSize}</td>
+            <td>${product.selectedColor}</td>
+            <td>${product.quantity}</td>
+            <td>${productPrice.toLocaleString()}₫</td>
+        `;
+
+      tbody.appendChild(row);
+    });
+
+    table.appendChild(thead);
+    table.appendChild(tbody);
+
+
+    cartContainer.appendChild(table);
+
+    if (totalPriceElement) {
+      totalPriceElement.innerText = (total + shippingFee).toLocaleString() + "₫";
+    }
+  }
 
   const cartUser = await fetch("/getCart", {
     method: "GET", headers: {
@@ -15,69 +63,9 @@ document.addEventListener("DOMContentLoaded", async function () {
     .then((data) => { return data })
     .catch((e) => console.error(e));
 
+  !cartUser && renderCart(); // Hiển thị giỏ hàng ban đầu
+
   const totalServer = cartUser.reduce((sum, item) => sum + item.total, 0)
-  console.log(totalServer)
-
-
-
-
-  function renderCart() {
-    cartContainer.innerHTML = ""; // Xóa nội dung cũ
-
-
-    cart.forEach((product, index) => {
-      let row = document.createElement("tr");
-      let productPrice = parseFloat(product.price) * product.quantity;
-      total += productPrice;
-
-      row.innerHTML = `
-        <td><img style="width: 80px; height: 100px; border-radius: 10%;" src="https://via.placeholder.com/80" alt="Ảnh sản phẩm"></td>
-        <td>${product.productName} - Màu ${product.selectedColor} - Size ${product.selectedSize}</td>
-        <td>${productPrice.toLocaleString()}₫</td>
-        <td>
-            <div class="d-flex align-items-center gap-2">
-
-                <div class="input-group" style="width: 120px">
-                  <button
-                    class="btn btn-outline-secondary decrement"
-                    type="button"
-                    id="decrease"
-                    data-index="${index}"
-                  >
-                    -
-                  </button>
-                  <input
-                    type="text"
-                    class="form-control text-center"
-                    value="${product.quantity}" 
-                    data-index="${index}"
-                    id="quantity"
-                    min="1"
-                    readonly
-                  />
-                  <button
-                    class="btn btn-outline-secondary increment"
-                    type="button"
-                    id="increase"
-                    data-index="${index}"
-                  >
-                    +
-                  </button>
-                </div>
-               
-                <button class="btn btn-outline-danger  remove" data-index="${index}">Xóa</button>
-            </div>
-        </td>
-      `;
-
-      cartContainer.appendChild(row);
-    });
-
-    // Cập nhật tổng tiền
-    totalPriceElement.innerText = (total + shippingFee).toLocaleString() + "₫";
-  }
-
-  renderCart(); // Hiển thị giỏ hàng ban đầu
 
   document.addEventListener("click", function (event) {
     let target = event.target;
@@ -95,7 +83,7 @@ document.addEventListener("DOMContentLoaded", async function () {
       }
 
       localStorage.setItem("cart", JSON.stringify(cart));
-      requestAnimationFrame(renderCart); // Tránh bị khựng khi cập nhật giao diện
+      requestAnimationFrame(renderCart);
     }
   });
 

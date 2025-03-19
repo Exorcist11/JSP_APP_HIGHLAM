@@ -38,7 +38,7 @@ contentType="text/html;charset=UTF-8" language="java" %>
           ></button>
         </div>
         <div class="offcanvas-body">
-          <p>Bạn đang có <span id="cartCount">0</span> sản phẩm trong giỏ hàng.</p>
+        
           <div id="cartItems">
             <c:forEach items="${GHCT}" var="ghct">
               <div
@@ -70,9 +70,7 @@ contentType="text/html;charset=UTF-8" language="java" %>
           <a class="btn btn-dark w-100 mt-3" href="/cart/checkout"
             >TIẾN HÀNH ĐẶT HÀNG</a
           >
-          <a
-            href="/t-shirt-luxury/gio-hang-chi-tiet"
-            class="btn btn-light w-100 mt-2 text-center"
+          <a href="/cart" class="btn btn-light w-100 mt-2 text-center"
             >Xem chi tiết giỏ hàng ➔</a
           >
         </div>
