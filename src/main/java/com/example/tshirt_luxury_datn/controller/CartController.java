@@ -100,7 +100,9 @@ public class CartController {
     @ResponseBody
     public ResponseEntity<?> getCartApi(HttpSession session) {
         User loggedInUser = (User) session.getAttribute("loggedInUser");
-    
+        if (loggedInUser == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Người dùng chưa đăng nhập.");
+        }
         List<CartItemResponse> cartItems = cartService.getCartbyClientId(loggedInUser.getId());
         return ResponseEntity.ok(cartItems);
     }
