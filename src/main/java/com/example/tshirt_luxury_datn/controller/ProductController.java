@@ -88,4 +88,26 @@ public class ProductController {
     }
     return "redirect:/admin/products/" + productId;
   }
+
+  @PostMapping("/update/{id}")
+  public String updateProduct(@PathVariable Long id, @ModelAttribute("product") ProductDTO productDTO, Model model) {
+    try {
+      productService.updateProduct(id, productDTO);
+      model.addAttribute("success", "Cập nhật size thành công!");
+    } catch (Exception e) {
+      model.addAttribute("error", e.getMessage());
+    }
+    return "redirect:/admin/products";
+  }
+
+  @GetMapping("/delete/{id}")
+  public String deleteSize(@PathVariable Long id, Model model) {
+    try {
+      productService.deleteProduct(id);
+      model.addAttribute("success", "Xóa product thành công!");
+    } catch (Exception e) {
+      model.addAttribute("error", e.getMessage());
+    }
+    return "redirect:/admin/products";
+  }
 }

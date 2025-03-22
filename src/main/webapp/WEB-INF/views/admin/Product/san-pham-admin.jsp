@@ -121,6 +121,7 @@ uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
               <thead>
                 <tr>
                   <th scope="col">STT</th>
+                  <th scope="col">Mã Sản Phẩm</th>
                   <th scope="col">Tên Sản Phẩm</th>
                   <th scope="col">Giá</th>
 
@@ -133,6 +134,7 @@ uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
                 <c:forEach items="${products}" var="sp" varStatus="i">
                   <tr>
                     <td>${i.index+1}</td>
+                    <td>${sp.code}</td>
                     <td>${sp.name}</td>
                     <td>
                       <fmt:formatNumber
@@ -152,7 +154,18 @@ uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
                       </c:if>
                     </td>
                     <td>
-                      <a class="btn edit-btn" title="Chỉnh Sửa"
+                      <a
+                        class="btn edit-btn"
+                        data-bs-toggle="modal"
+                        data-bs-target="#editModal"
+                        data-id="${sp.id}"
+                        data-code="${sp.code}"
+                        data-name="${sp.name}"
+                        data-price="${sp.price}"
+                        data-status="${sp.status}"
+                        data-description="${sp.description}"
+                        data-category="${sp.category.id}"
+                        title="Chỉnh Sửa"
                         ><i class="fa-solid fa-pen-to-square"></i
                       ></a>
                       <a
@@ -160,6 +173,7 @@ uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
                         data-toggle="tooltip"
                         data-placement="top"
                         title="Xóa"
+                        data-id="${sp.id}"
                         onclick="return confirmDelete()"
                         ><i class="fa-solid fa-trash"></i
                       ></a>
@@ -229,6 +243,7 @@ uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
                   id="price"
                   name="price"
                   required
+                  min="0"
                 />
               </div>
 
@@ -277,6 +292,129 @@ uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
       </div>
     </form>
 
+    <!-- Modal Edit -->
+    <form id="editCategoryForm" method="post">
+      <div
+        class="modal fade"
+        id="editModal"
+        tabindex="-1"
+        aria-labelledby="editModalLabel"
+        aria-hidden="true"
+      >
+        <div class="modal-dialog">
+          <div class="modal-content" style="font-size: 14px">
+            <div class="modal-header">
+              <h5 class="modal-title" id="editModalLabel">
+                Chỉnh Sửa Sản phẩm
+              </h5>
+              <button
+                type="button"
+                class="btn-close"
+                data-bs-dismiss="modal"
+                aria-label="Close"
+              ></button>
+            </div>
+            <div class="modal-body">
+              <!-- Mã Sản Phẩm -->
+              <div class="mb-3">
+                <label for="code" class="form-label">Mã sản phẩm</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="code"
+                  name="code"
+                  required
+                />
+              </div>
+
+              <!-- Tên Sản Phẩm -->
+              <div class="mb-3">
+                <label for="nameP" class="form-label">Tên sản phẩm</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="nameP"
+                  name="name"
+                  required
+                />
+              </div>
+
+              <!-- Giá -->
+              <div class="mb-3">
+                <label for="price" class="form-label">Giá</label>
+                <input
+                  type="number"
+                  class="form-control"
+                  id="priceP"
+                  name="price"
+                  required
+                  min="0"
+                />
+              </div>
+
+              <!-- Danh mục sản phẩm -->
+              <div class="mb-3">
+                <label for="categoryId" class="form-label">Danh mục</label>
+                <select
+                  class="form-select"
+                  id="categoryIdP"
+                  name="categoryId"
+                  required
+                
+                >
+                  <option value="">Chọn danh mục</option>
+                  <c:forEach var="category" items="${categories}">
+                    <option value="${category.id}">${category.name}</option>
+                  </c:forEach>
+                </select>
+              </div>
+
+              <!-- Mô Tả Sản Phẩm -->
+              <div class="mb-3">
+                <label for="description" class="form-label">Mô tả</label>
+                <textarea
+                  class="form-control"
+                  id="descriptionP"
+                  name="description"
+                ></textarea>
+              </div>
+
+              <div class="form-check form-switch">
+                <input
+                  class="form-check-input"
+                  type="checkbox"
+                  role="switch"
+                  id="flexSwitchCheckChecked"
+                  name="status"
+                  checked
+                  value="true"
+                />
+
+                <span id="statusText" class="ms-2 fw-bold text-success"
+                  >Hoạt Động</span
+                >
+              </div>
+
+              <p style="color: red">${errorMessageSanPham}</p>
+            </div>
+
+            <div class="modal-footer">
+              <button
+                type="button"
+                class="btn btn-secondary"
+                data-bs-dismiss="modal"
+              >
+                Đóng
+              </button>
+              <button type="submit" class="btn btn-primary">Cập Nhật</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+
+    <script src="../js/actionProduct.js"></script>
+
     <script>
       document.addEventListener("DOMContentLoaded", function () {
         var myModal = new bootstrap.Modal(
@@ -291,9 +429,4 @@ uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
     integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4="
     crossorigin="anonymous"
   ></script>
-  <script>
-    confirmDelete = () => {
-      return confirm("Bạn có chắc chắn muốn xóa Sản Phẩm này không ?");
-    };
-  </script>
 </html>
