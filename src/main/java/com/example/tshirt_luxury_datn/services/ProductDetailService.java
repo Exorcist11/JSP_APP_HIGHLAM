@@ -60,4 +60,41 @@ public class ProductDetailService {
     }
   }
 
+  public ProductDetail updateProductDetail(Long id, ProductDetailDTO detailDTO) {
+    try {
+      Optional<ProductDetail> optProductDetail = detailRepository.findById(id);
+      if (optProductDetail.isEmpty()) {
+        throw new RuntimeException("Không tìm thấy product detail với ID: " + id);
+      }
+      Optional<Product> productOpt = productRepository.findById(detailDTO.getProductID());
+      Optional<Size> sizeOpt = sizeRepository.findById(detailDTO.getSizeID());
+      Optional<Color> colorOpt = colorRepository.findById(detailDTO.getColorID());
+      if (productOpt.isEmpty() || sizeOpt.isEmpty() || colorOpt.isEmpty()) {
+        throw new RuntimeException("Some field is misssing");
+      }
+      ProductDetail productDetail = optProductDetail.get();
+      productDetail.setQuantity(detailDTO.getQuantity());
+      productDetail.setStatus(detailDTO.getStatus());
+      productDetail.setColor(colorOpt.get());
+      productDetail.setSize(sizeOpt.get());
+      productDetail.setProduct(productOpt.get());
+
+      return detailRepository.save(productDetail);
+    } catch (Exception e) {
+      throw new RuntimeException("Lỗi khi cập nhật product detail: " + e.getMessage());
+    }
+  }
+
+  public void deleteProductDetail(Long id) {
+    try {
+      Optional<ProductDetail> productDetailOpt = detailRepository.findById(id);
+      if (productDetailOpt.isEmpty()) {
+        throw new RuntimeException("Không tìm thấy product detail với ID: " + id);
+      }
+      detailRepository.deleteById(id);
+    } catch (Exception e) {
+      throw new RuntimeException("Lỗi khi xóa product detail: " + e.getMessage());
+    }
+  }
+
 }

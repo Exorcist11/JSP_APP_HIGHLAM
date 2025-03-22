@@ -360,7 +360,6 @@ uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
                   id="categoryIdP"
                   name="categoryId"
                   required
-                
                 >
                   <option value="">Chọn danh mục</option>
                   <c:forEach var="category" items="${categories}">

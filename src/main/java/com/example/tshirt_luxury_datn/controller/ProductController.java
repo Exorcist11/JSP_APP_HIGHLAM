@@ -63,6 +63,28 @@ public class ProductController {
     return "redirect:/admin/products";
   }
 
+  @PostMapping("/update/{id}")
+  public String updateProduct(@PathVariable Long id, @ModelAttribute("product") ProductDTO productDTO, Model model) {
+    try {
+      productService.updateProduct(id, productDTO);
+      model.addAttribute("success", "Cập nhật size thành công!");
+    } catch (Exception e) {
+      model.addAttribute("error", e.getMessage());
+    }
+    return "redirect:/admin/products";
+  }
+
+  @GetMapping("/delete/{id}")
+  public String deleteProduct(@PathVariable Long id, Model model) {
+    try {
+      productService.deleteProduct(id);
+      model.addAttribute("success", "Xóa product thành công!");
+    } catch (Exception e) {
+      model.addAttribute("error", e.getMessage());
+    }
+    return "redirect:/admin/products";
+  }
+
   // Action cho sản phẩm chi tiết
   @GetMapping("/{productId}")
   public String getProductDetails(@PathVariable Long productId, Model model) {
@@ -89,10 +111,11 @@ public class ProductController {
     return "redirect:/admin/products/" + productId;
   }
 
-  @PostMapping("/update/{id}")
-  public String updateProduct(@PathVariable Long id, @ModelAttribute("product") ProductDTO productDTO, Model model) {
+  @PostMapping("/updateDetail/{id}")
+  public String updateProductDetail(@PathVariable Long id,
+      @ModelAttribute("productDetail") ProductDetailDTO productDetailDTO, Model model) {
     try {
-      productService.updateProduct(id, productDTO);
+      detailService.updateProductDetail(id, productDetailDTO);
       model.addAttribute("success", "Cập nhật size thành công!");
     } catch (Exception e) {
       model.addAttribute("error", e.getMessage());
@@ -100,14 +123,15 @@ public class ProductController {
     return "redirect:/admin/products";
   }
 
-  @GetMapping("/delete/{id}")
-  public String deleteSize(@PathVariable Long id, Model model) {
+  @GetMapping("/deleteProductDetail/{id}")
+  public String deleteProductDetail(@PathVariable Long id, Model model) {
     try {
-      productService.deleteProduct(id);
+      detailService.deleteProductDetail(id);
       model.addAttribute("success", "Xóa product thành công!");
     } catch (Exception e) {
       model.addAttribute("error", e.getMessage());
     }
     return "redirect:/admin/products";
   }
+
 }
