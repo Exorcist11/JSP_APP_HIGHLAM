@@ -6,7 +6,8 @@ document.addEventListener("DOMContentLoaded", function () {
             let id = this.getAttribute("data-id");
             let name = this.getAttribute("data-name");
             let status = this.getAttribute("data-status")
-            let colorHex = this.getAttribute("data-colorHex");
+            let colorHex = this.getAttribute("data-hex");
+       
 
             document.getElementById("colorName").value = name;
             document.getElementById("colorHex").value = colorHex;

@@ -86,7 +86,7 @@ contentType="text/html;charset=UTF-8" language="java" %>
                         data-id="${ms.id}"
                         data-name="${ms.name}"
                         data-status="${ms.status}"
-                        data-hexColor="${ms.hexColor}"
+                        data-hex="${ms.hexColor}"
                         title="Chỉnh Sửa"
                         ><i class="fa-solid fa-pen-to-square"></i
                       ></a>
