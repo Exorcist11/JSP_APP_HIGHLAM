@@ -23,7 +23,7 @@ public class CategoryController {
   @PostMapping("/save")
   public String createCategory(@ModelAttribute("category") CategoryDTO categoryDTO, Model model) {
     try {
-      categoryService.createColor(categoryDTO);
+      categoryService.createCategory(categoryDTO);
     } catch (Exception e) {
       model.addAttribute("error", e.getMessage());
     }

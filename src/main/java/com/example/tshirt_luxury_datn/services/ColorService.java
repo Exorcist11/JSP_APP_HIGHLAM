@@ -49,7 +49,9 @@ public class ColorService {
         try {
             Optional<Color> color = colorRepository.findById(id);
             if (color.isPresent()) {
-                colorRepository.deleteById(id);
+                Color colorDelete = color.get();
+                colorDelete.setStatus(false);
+                colorRepository.save(colorDelete);
             } else {
                 throw new RuntimeException("Không tìm thấy color với ID: " + id);
             }

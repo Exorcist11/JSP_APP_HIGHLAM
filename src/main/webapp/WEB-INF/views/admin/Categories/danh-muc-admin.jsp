@@ -65,16 +65,16 @@ contentType="text/html;charset=UTF-8" language="java" %>
                 </tr>
               </thead>
               <tbody>
-                <c:forEach items="${categories}" varStatus="i" var="danhmuc">
+                <c:forEach items="${categories}" varStatus="i" var="dm">
                   <tr>
                     <th scope="row">${i.index + 1}</th>
-                    <td>${danhmuc.name}</td>
+                    <td>${dm.name}</td>
 
                     <td>
-                      <c:if test="${danhmuc.status == true}">
+                      <c:if test="${dm.status == true}">
                         <span class="badge bg-success">Hoạt Động</span>
                       </c:if>
-                      <c:if test="${danhmuc.status == false}">
+                      <c:if test="${dm.status == false}">
                         <span class="badge bg-danger">Không Hoạt Động</span>
                       </c:if>
                     </td>
@@ -82,8 +82,11 @@ contentType="text/html;charset=UTF-8" language="java" %>
                       <a
                         style="font-size: 14px"
                         class="btn edit-btn"
-                        data-toggle="tooltip"
-                        data-placement="top"
+                        data-bs-toggle="modal"
+                        data-bs-target="#editModal"
+                        data-id="${dm.id}"
+                        data-name="${dm.name}"
+                        data-status="${dm.status}"
                         title="Chỉnh Sửa"
                         ><i class="fa-solid fa-pen-to-square"></i
                       ></a>
@@ -93,6 +96,7 @@ contentType="text/html;charset=UTF-8" language="java" %>
                         class="btn delete-btn"
                         data-toggle="tooltip"
                         data-placement="top"
+                        data-id="${dm.id}"
                         title="Xóa"
                         ><i class="fa-solid fa-trash"></i
                       ></a>
@@ -128,6 +132,7 @@ contentType="text/html;charset=UTF-8" language="java" %>
                 aria-label="Close"
               ></button>
             </div>
+
             <div class="modal-body">
               <div class="form-floating mb-3">
                 <input
@@ -176,11 +181,88 @@ contentType="text/html;charset=UTF-8" language="java" %>
         </div>
       </div>
     </form>
+
+    <!-- Modal Edit -->
+    <form id="editCategoryForm" method="post">
+      <div
+        class="modal fade"
+        id="editModal"
+        tabindex="-1"
+        aria-labelledby="editModalLabel"
+        aria-hidden="true"
+      >
+        <div class="modal-dialog">
+          <div class="modal-content" style="font-size: 14px">
+            <div class="modal-header">
+              <h5 class="modal-title" id="editModalLabel">
+                Chỉnh Sửa Danh Mục
+              </h5>
+              <button
+                type="button"
+                class="btn-close"
+                data-bs-dismiss="modal"
+                aria-label="Close"
+              ></button>
+            </div>
+            <div class="modal-body">
+              <!-- ID Ẩn -->
+              <input type="hidden" id="editCategoryId" name="id" />
+
+              <div class="form-floating mb-3">
+                <input
+                  type="text"
+                  class="form-control"
+                  id="categoryName"
+                  placeholder="Tên Danh Mục"
+                  name="name"
+                  required
+                />
+                <label for="categoryName"
+                  >Tên Danh Mục <span class="text-danger">*</span></label
+                >
+              </div>
+
+              <div class="mb-3 mt-3">
+                <label for="cDescription" class="form-label">Mô tả</label>
+                <textarea
+                  class="form-control"
+                  id="cDescription"
+                  rows="3"
+                  name="moTa"
+                ></textarea>
+              </div>
+
+              <div class="form-check form-switch">
+                <input
+                  class="form-check-input"
+                  type="checkbox"
+                  role="switch"
+                  id="flexSwitchCheckChecked"
+                  name="status"
+                  checked
+                  value="true"
+                />
+
+                <span id="statusText" class="ms-2 fw-bold text-success"
+                  >Hoạt Động</span
+                >
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button
+                type="button"
+                class="btn btn-secondary"
+                data-bs-dismiss="modal"
+              >
+                Đóng
+              </button>
+              <button type="submit" class="btn btn-primary">Cập Nhật</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
   </body>
 
-  <script>
-    confirmDelete = () => {
-      return confirm("Bạn có chắc muốn xóa ?");
-    };
-  </script>
+  <script src="../js/categoryAction.js"></script>
 </html>

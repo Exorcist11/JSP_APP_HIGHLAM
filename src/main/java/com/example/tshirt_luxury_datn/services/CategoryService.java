@@ -20,7 +20,7 @@ public class CategoryService {
     return categoryRepository.findAll();
   }
 
-  public Category createColor(CategoryDTO categoryDTO) {
+  public Category createCategory(CategoryDTO categoryDTO) {
     try {
       Category category = new Category();
       category.setName(categoryDTO.getName());
@@ -49,7 +49,9 @@ public class CategoryService {
     try {
       Optional<Category> category = categoryRepository.findById(id);
       if (category.isPresent()) {
-        categoryRepository.deleteById(id);
+        Category categoryDelete = category.get();
+        categoryDelete.setStatus(false);
+        categoryRepository.save(categoryDelete);
       } else {
         throw new RuntimeException("Không tìm thấy category với ID: " + id);
       }

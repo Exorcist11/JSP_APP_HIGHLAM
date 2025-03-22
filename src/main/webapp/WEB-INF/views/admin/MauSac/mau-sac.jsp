@@ -81,8 +81,12 @@ contentType="text/html;charset=UTF-8" language="java" %>
                     <td>
                       <a
                         class="btn edit-btn"
-                        data-toggle="tooltip"
-                        data-placement="top"
+                        data-bs-toggle="modal"
+                        data-bs-target="#editModal"
+                        data-id="${ms.id}"
+                        data-name="${ms.name}"
+                        data-status="${ms.status}"
+                        data-hexColor="${ms.hexColor}"
                         title="Chỉnh Sửa"
                         ><i class="fa-solid fa-pen-to-square"></i
                       ></a>
@@ -91,6 +95,7 @@ contentType="text/html;charset=UTF-8" language="java" %>
                         class="btn delete-btn"
                         data-toggle="tooltip"
                         data-placement="top"
+                        data-id="${ms.id}"
                         title="Xóa"
                         ><i class="fa-solid fa-trash"></i
                       ></a>
@@ -172,11 +177,85 @@ contentType="text/html;charset=UTF-8" language="java" %>
         </div>
       </div>
     </form>
+
+    <form id="editColorForm" method="post">
+      <div
+        class="modal fade"
+        id="editModal"
+        tabindex="-1"
+        aria-labelledby="editModalLabel"
+        aria-hidden="true"
+      >
+        <div class="modal-dialog">
+          <div class="modal-content" style="font-size: 14px">
+            <div class="modal-header">
+              <h5 class="modal-title" id="editModalLabel">Chỉnh Sửa Màu Sắc</h5>
+              <button
+                type="button"
+                class="btn-close"
+                data-bs-dismiss="modal"
+                aria-label="Close"
+              ></button>
+            </div>
+            <div class="modal-body">
+              <!-- ID Ẩn -->
+              <input type="hidden" id="editColorId" name="id" />
+
+              <div class="form-floating mb-3">
+                <input
+                  type="text"
+                  class="form-control"
+                  id="colorHex"
+                  placeholder="Màu Sắc"
+                  name="hexColor"
+                  required
+                />
+                <label for="colorHex">Màu Sắc</label>
+              </div>
+
+              <div class="form-floating mb-3">
+                <input
+                  type="text"
+                  class="form-control"
+                  id="colorName"
+                  placeholder="Tên Màu Sắc"
+                  name="name"
+                  required
+                />
+                <label for="colorName">Tên Màu Sắc</label>
+              </div>
+
+              <div class="form-check form-switch">
+                <input
+                  class="form-check-input"
+                  type="checkbox"
+                  role="switch"
+                  id="flexSwitchCheckChecked"
+                  name="status"
+                  checked
+                  value="true"
+                />
+
+                <span id="statusText" class="ms-2 fw-bold text-success"
+                  >Hoạt Động</span
+                >
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button
+                type="button"
+                class="btn btn-secondary"
+                data-bs-dismiss="modal"
+              >
+                Đóng
+              </button>
+              <button type="submit" class="btn btn-primary">Cập Nhật</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
   </body>
 
-  <script>
-    confirmDelete = () => {
-      return confirm("Bạn có chắc muốn xóa ?");
-    };
-  </script>
+  <script src="../js/actionColor.js"></script>
 </html>

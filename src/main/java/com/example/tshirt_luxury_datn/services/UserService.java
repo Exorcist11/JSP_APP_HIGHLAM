@@ -72,7 +72,6 @@ public class UserService {
       }
 
       User userDelete = user.get();
-      userDelete.setStatus(false);
 
       userRepository.save(userDelete);
     } catch (Exception e) {
@@ -106,8 +105,7 @@ public class UserService {
     user.setUsername(userDTO.getUsername());
     user.setEmail(userDTO.getEmail());
     user.setPassword(passwordEncoder.encode(userDTO.getPassword()));
-    user.setRole("USER");
-    user.setStatus(true);
+    user.setRole("USER"); 
     return userRepository.save(user);
   }
 

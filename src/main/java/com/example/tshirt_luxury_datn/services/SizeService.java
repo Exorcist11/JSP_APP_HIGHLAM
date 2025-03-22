@@ -54,7 +54,9 @@ public class SizeService {
         try {
             Optional<Size> size = sizeRepository.findById(id);
             if (size.isPresent()) {
-                sizeRepository.deleteById(id);
+                Size sizeDelete = size.get();
+                sizeDelete.setStatus(false);
+                sizeRepository.save(sizeDelete);
             } else {
                 throw new RuntimeException("Không tìm thấy size với ID: " + id);
             }
