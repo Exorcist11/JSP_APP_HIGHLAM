@@ -35,17 +35,11 @@ uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
           <div class="row">
             <h2 class="mb-3">Quản Lý Đơn Hàng</h2>
 
-            <!-- <div class="p-2 bd-highlight d-flex justify-content-end">
-                    <button type="button" class="btn btn-outline-success" data-bs-toggle="modal"
-                        data-bs-target="#themSanPham">
-                        <i class="fa-solid fa-circle-plus"></i> Thêm Mới
-                    </button>
-                </div> -->
-
             <table class="table table-striped" style="font-size: 14px">
               <thead>
                 <tr>
                   <th scope="col">STT</th>
+                  <th scope="col">Mã Hoá Đơn</th>
                   <th scope="col">Email</th>
                   <th scope="col">Tên Khách Hàng</th>
                   <th scope="col">Số Điện Thoại</th>
@@ -59,6 +53,7 @@ uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
                 <c:forEach items="${listOrders}" var="hd" varStatus="i">
                   <tr>
                     <td>${i.index +1}</td>
+                    <td>${hd.code}</td>
                     <td>${hd.guestEmail}</td>
                     <td>${hd.recipientName}</td>
                     <td>${hd.recipientPhone}</td>
@@ -73,13 +68,71 @@ uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
                     </td>
                     <td>${hd.status}</td>
                     <td>
+                      <!-- Nút Xem Chi Tiết -->
                       <a
-                        class="btn btn-secondary rounded-pill"
+                        class="rounded-pill"
+                        data-toggle="tooltip"
                         data-placement="top"
                         title="Xem Chi Tiết"
+                        href="/admin/order/${hd.id}"
                       >
                         <i class="fa-solid fa-eye"></i>
                       </a>
+
+                      <!-- Dropdown với chỉ icon -->
+                      <div class="dropdown d-inline-block">
+                        <!-- Icon wrench (🔧) -->
+                        <a
+                          href="#"
+                          class="dropdown-toggle"
+                          id="dropdownMenuButton"
+                          data-bs-toggle="dropdown"
+                          aria-expanded="false"
+                          title="Cập Nhật"
+                        >
+                          <i class="fa-solid fa-wrench"></i>
+                        </a>
+
+                        <!-- Dropdown menu -->
+                        <div
+                          class="dropdown-menu"
+                          aria-labelledby="dropdownMenuButton"
+                        >
+                          <!-- Chỉnh sửa đơn hàng -->
+                          <a
+                            class="dropdown-item"
+                            th:href="@{'/admin/order/edit/' + ${hd.id}}"
+                          >
+                            ✏️ Chỉnh sửa đơn hàng
+                          </a>
+
+                          <!-- In hóa đơn -->
+                          <a
+                            class="dropdown-item"
+                            th:href="@{'/admin/order/print/' + ${hd.id}}"
+                          >
+                            🖨️ In hóa đơn
+                          </a>
+
+                          <!-- Cập nhật trạng thái: Xác nhận đơn hàng -->
+                          <a
+                            href="#"
+                            class="dropdown-item"
+                            onclick="updateOrderStatus('${hd.id}', 'CONFIRMED')"
+                          >
+                            ✅ Xác nhận đơn hàng
+                          </a>
+
+                          <!-- Cập nhật trạng thái: Hủy đơn hàng -->
+                          <a
+                            href="#"
+                            class="dropdown-item text-danger"
+                            onclick="if(confirm('Bạn có chắc chắn muốn hủy đơn hàng này?')) updateOrderStatus('${hd.id}', 'CANCELLED')"
+                          >
+                            🚫 Hủy đơn hàng
+                          </a>
+                        </div>
+                      </div>
                     </td>
                   </tr>
                 </c:forEach>
@@ -89,5 +142,33 @@ uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
         </div>
       </div>
     </div>
+    <script>
+      async function updateOrderStatus(orderId, status) {
+        console.log("orderId", orderId);
+        if (!orderId) {
+          alert("Không tìm thấy mã đơn hàng!");
+          return;
+        }
+        const url = `/admin/order/changeStatus/` + orderId;
+        fetch(url, {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/x-www-form-urlencoded",
+          },
+          body: new URLSearchParams({ order: status }),
+        })
+          .then((response) => {
+            if (response.ok) {
+              alert("Cập nhật trạng thái thành công!");
+              location.reload();
+            } else {
+              response
+                .text()
+                .then((text) => console.log("Cập nhật thất bại: " + text));
+            }
+          })
+          .catch((error) => console.error("Lỗi kết nối:", error));
+      }
+    </script>
   </body>
 </html>

@@ -9,7 +9,7 @@ import lombok.Setter;
 @Setter
 public class OrderDTO {
   private String guestEmail;
-  private Boolean status;
+  private String status;
  
   private Long userID;
   private String note;

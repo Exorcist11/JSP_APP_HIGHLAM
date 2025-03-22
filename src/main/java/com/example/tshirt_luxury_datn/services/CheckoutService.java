@@ -1,5 +1,7 @@
 package com.example.tshirt_luxury_datn.services;
 
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -36,6 +38,14 @@ public class CheckoutService {
   @Autowired
   private PaymentRepository paymentRepository;
 
+  public static String generateOrderCode() {
+    LocalTime now = LocalTime.now();
+
+    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HHmmss");
+    String timeString = now.format(formatter);
+    return "HD" + timeString;
+  }
+
   public Order createOrder(OrderDTO orderDTO, HttpSession session) {
     try {
       Optional<User> loggedInUserOpt = Optional.ofNullable((User) session.getAttribute("loggedInUser"));
@@ -48,6 +58,7 @@ public class CheckoutService {
       order.setRecipientName(orderDTO.getRecipientName());
       order.setRecipientPhone(orderDTO.getRecipientPhone());
       order.setUser(loggedInUserOpt.orElse(null));
+      order.setCode(generateOrderCode());
 
       List<OrderItem> orderItems = new ArrayList<>();
       double totalAmount = 0;

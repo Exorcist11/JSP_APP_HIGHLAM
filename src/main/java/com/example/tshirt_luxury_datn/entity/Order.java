@@ -31,6 +31,9 @@ public class Order {
     @Column(nullable = false, unique = false, length = 50)
     private String guestEmail;
 
+    @Column(nullable = false, unique = false, length = 50)
+    private String code;
+
     @Column(nullable = false, columnDefinition = "NVARCHAR(50)")
     private String recipientName;
 

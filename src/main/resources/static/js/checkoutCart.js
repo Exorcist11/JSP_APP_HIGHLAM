@@ -63,6 +63,8 @@ document.addEventListener("DOMContentLoaded", async function () {
     .then((data) => { return data })
     .catch((e) => console.error(e));
 
+  console.log("Cart User:", cartUser);
+
   !cartUser && renderCart(); // Hiển thị giỏ hàng ban đầu
 
   const totalServer = cartUser.reduce((sum, item) => sum + item.total, 0)
