@@ -5,7 +5,12 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.example.tshirt_luxury_datn.dto.ProductDTO;
 import com.example.tshirt_luxury_datn.dto.ProductDetailDTO;
@@ -120,7 +125,7 @@ public class ProductController {
     } catch (Exception e) {
       model.addAttribute("error", e.getMessage());
     }
-    return "redirect:/admin/products";
+    return "redirect:/admin/products/" + productDetailDTO.getProductID();
   }
 
   @GetMapping("/deleteProductDetail/{id}")

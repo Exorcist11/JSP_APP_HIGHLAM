@@ -93,6 +93,8 @@ contentType="text/html;charset=UTF-8" language="java" %>
                         class="btn btn-danger rounded-pill"
                         data-toggle="tooltip"
                         title="Xóa"
+                        data-id="${s.id}"
+                        onclick="return confirmDelete()"
                       >
                         <i class="fa-solid fa-trash"></i>
                       </a>
@@ -246,7 +248,6 @@ contentType="text/html;charset=UTF-8" language="java" %>
                     type="text"
                     name="productID"
                     class="form-control"
-                    disabled
                     readonly
                     value="${product.id}"
                   />
@@ -269,22 +270,29 @@ contentType="text/html;charset=UTF-8" language="java" %>
                     >Chọn Size Sản Phẩm
                     <span class="text-danger">*</span></label
                   >
-                  <select class="form-select" id="sizeP" name="sizeID">
+                  <select class="form-select" id="sizeP" name="sizeID" disabled>
                     <c:forEach var="s" items="${sizes}">
                       <option value="${s.id}">${s.name}</option>
                     </c:forEach>
                   </select>
+                  <input type="hidden" name="sizeID" id="hiddenSizeId" />
                 </div>
 
                 <div class="col">
                   <label class="form-label fw-bold"
                     >Chọn Màu Sắc Sản Phẩm:</label
                   >
-                  <select class="form-select" id="colorP" name="colorID">
+                  <select
+                    class="form-select"
+                    id="colorP"
+                    name="colorID"
+                    disabled
+                  >
                     <c:forEach var="s" items="${colors}">
                       <option value="${s.id}">${s.name}</option>
                     </c:forEach>
                   </select>
+                  <input type="hidden" name="colorID" id="hiddenColorId" />
                 </div>
               </div>
 
@@ -348,8 +356,7 @@ contentType="text/html;charset=UTF-8" language="java" %>
             let status = this.getAttribute("data-status");
             let quantity = this.getAttribute("data-quantity");
 
-            console.log(size);
-            console.log(color);
+            console.log(id);
 
             const sizeSelect = document.getElementById("sizeP");
             sizeSelect.value = size;
@@ -375,7 +382,7 @@ contentType="text/html;charset=UTF-8" language="java" %>
             document.getElementById("flexSwitchCheckChecked").checked = status;
             document.getElementById("quantityP").value = quantity;
 
-            form.action = "/admin/products/update/" + id;
+            form.action = "/admin/products/updateDetail/" + id;
           });
         });
 
@@ -398,11 +405,12 @@ contentType="text/html;charset=UTF-8" language="java" %>
 
         switchInput.addEventListener("change", updateStatus);
 
-        document.querySelectorAll(".delete-btn").forEach((button) => {
+        document.querySelectorAll(".btn-danger").forEach((button) => {
           button.addEventListener("click", function () {
             let id = this.getAttribute("data-id");
             if (confirm("Bạn có chắc chắn muốn xóa sản phẩm này?")) {
-              window.location.href = "/admin/products/delete/" + id;
+              window.location.href =
+                "/admin/products/deleteProductDetail/" + id;
             }
           });
         });

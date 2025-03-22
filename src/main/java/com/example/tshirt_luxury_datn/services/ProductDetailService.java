@@ -47,6 +47,13 @@ public class ProductDetailService {
       if (productOpt.isEmpty() || sizeOpt.isEmpty() || colorOpt.isEmpty()) {
         throw new RuntimeException("Some field is misssing");
       }
+      Optional<ProductDetail> exitsingDetail = detailRepository.findByProductIdAndSizeIdAndColorId(
+          detailDTO.getProductID(), detailDTO.getSizeID(), detailDTO.getColorID());
+
+      if (exitsingDetail.isPresent()) {
+        throw new RuntimeException("Product detail đã tồn tại");
+      }
+
       ProductDetail productDetail = new ProductDetail();
       productDetail.setQuantity(detailDTO.getQuantity());
       productDetail.setStatus(true);
@@ -62,22 +69,14 @@ public class ProductDetailService {
 
   public ProductDetail updateProductDetail(Long id, ProductDetailDTO detailDTO) {
     try {
-      Optional<ProductDetail> optProductDetail = detailRepository.findById(id);
+      Optional<ProductDetail> optProductDetail = detailRepository
+          .findById(id);
       if (optProductDetail.isEmpty()) {
-        throw new RuntimeException("Không tìm thấy product detail với ID: " + id);
-      }
-      Optional<Product> productOpt = productRepository.findById(detailDTO.getProductID());
-      Optional<Size> sizeOpt = sizeRepository.findById(detailDTO.getSizeID());
-      Optional<Color> colorOpt = colorRepository.findById(detailDTO.getColorID());
-      if (productOpt.isEmpty() || sizeOpt.isEmpty() || colorOpt.isEmpty()) {
-        throw new RuntimeException("Some field is misssing");
+        throw new RuntimeException("Không tìm thấy product detail với ID: " + optProductDetail.get().getId());
       }
       ProductDetail productDetail = optProductDetail.get();
       productDetail.setQuantity(detailDTO.getQuantity());
       productDetail.setStatus(detailDTO.getStatus());
-      productDetail.setColor(colorOpt.get());
-      productDetail.setSize(sizeOpt.get());
-      productDetail.setProduct(productOpt.get());
 
       return detailRepository.save(productDetail);
     } catch (Exception e) {
