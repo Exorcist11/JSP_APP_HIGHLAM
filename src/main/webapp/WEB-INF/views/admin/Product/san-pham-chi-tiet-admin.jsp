@@ -23,7 +23,7 @@ contentType="text/html;charset=UTF-8" language="java" %>
     />
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
   </head>
-  <body class="container">
+  <body class="container" style="font-size: 14px">
     <jsp:include page="/WEB-INF/views/fragments/headerAdmin.jsp" />
 
     <div class="row">

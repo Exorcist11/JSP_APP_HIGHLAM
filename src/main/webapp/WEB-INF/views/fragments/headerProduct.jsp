@@ -161,7 +161,6 @@
         <img src="../images/black.webp" alt="" />
       </ul>
     </div>
-    
   </div>
   <div
     class="danh-muc-page-ctsp"
@@ -230,3 +229,5 @@
     </ul>
   </div>
 </div>
+
+<script src="../js/actionCart.js"></script>

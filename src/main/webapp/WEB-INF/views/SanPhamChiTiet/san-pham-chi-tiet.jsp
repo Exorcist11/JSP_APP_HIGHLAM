@@ -432,5 +432,7 @@ uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
   </script>
 
   <script src="../js/actionCart.js"></script>
+  <script src="../js/cart.js"></script>
+
   <!-- <script src="../js/productDetail.js"></script> -->
 </html>

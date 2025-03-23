@@ -35,7 +35,7 @@ document.addEventListener("DOMContentLoaded", async function () {
     );
     let selectedSizeName = selectedSizeInput?.getAttribute("data-name") || "Không xác định";
     let selectedSize = +selectedSizeInput?.value;
-    
+
     let quantity = +document.getElementById("quantity").value || 1;
     let productName = document
       .getElementById("productName")
@@ -73,7 +73,9 @@ document.addEventListener("DOMContentLoaded", async function () {
           return response.text(); // Trả về text (String)
         })
         .then(data => {
-          alert("Thêm sản phẩm thành công!"); // Hiển thị thông báo từ server
+          alert("Thêm sản phẩm thành công!");
+          // Hiển thị thông báo từ server
+          renderCart()
           localStorage.removeItem("cart");
         })
         .catch(err => {
@@ -108,6 +110,7 @@ document.addEventListener("DOMContentLoaded", async function () {
 
       localStorage.setItem("cart", JSON.stringify(cart));
       alert("Sản phẩm đã được thêm vào giỏ hàng!");
+      renderCart()
     }
   }
 
