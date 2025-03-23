@@ -54,20 +54,28 @@ document.addEventListener("DOMContentLoaded", async function () {
   }
 
   const cartUser = await fetch("/getCart", {
-    method: "GET", headers: {
-      'Content-Type': 'application/json'
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
     },
-    credentials: 'include'
+    credentials: "include",
   })
-    .then((response) => response.json())
-    .then((data) => { return data })
-    .catch((e) => console.error(e));
+    .then(async (response) => {
+      if (!response.ok) {
+        console.warn("Người dùng chưa đăng nhập hoặc giỏ hàng trống!");
+        return null; // Trả về null nếu chưa đăng nhập
+      }
+      return response.json();
+    })
+    .catch((e) => {
+      console.error("Lỗi khi lấy giỏ hàng:", e);
+      return null; // Trả về null khi có lỗi bất ngờ
+    });
 
-  console.log("Cart User:", cartUser);
 
   !cartUser && renderCart(); // Hiển thị giỏ hàng ban đầu
 
-  const totalServer = cartUser.reduce((sum, item) => sum + item.total, 0)
+  const totalServer = cartUser?.reduce((sum, item) => sum + item.total, 0)
 
   document.addEventListener("click", function (event) {
     let target = event.target;
