@@ -178,4 +178,12 @@ public class ClientController {
     return "Profile/history";
   }
 
+  @GetMapping("/orderDetail")
+  public String getOrderDetail(@RequestParam String code, Model model) {
+    Order order = orderService.getOrderByCode(code);
+    model.addAttribute("order", order);
+    model.addAttribute("orderItems",
+        orderService.getOrderItemsByOrderId(order.getId()));
+    return "Profile/orderDetail";
+  }
 }

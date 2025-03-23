@@ -70,4 +70,29 @@ public class OrderService {
             throw new RuntimeException("Failed to searcg order detail for orderId: " + e);
         }
     }
+
+    public Order getOrderByID(Long id) {
+        try {
+            Optional<Order> orderOpt = orderRepository.findById(id);
+            if (orderOpt.isEmpty()) {
+                throw new RuntimeException("Order not found for orderId: " + id);
+            }
+            return orderOpt.get();
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to fetch order detail for orderId: " + id, e);
+        }
+    }
+
+    public Order getOrderByCode(String code) {
+        try {
+            Optional<Order> orderOpt = orderRepository.findByCode(code);
+            if (orderOpt.isEmpty()) {
+                throw new RuntimeException("Order not found for orderId: " + code);
+            }
+            return orderOpt.get();
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to fetch order detail for orderId: " + code, e);
+        }
+    }
+
 }

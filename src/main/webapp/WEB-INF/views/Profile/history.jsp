@@ -54,12 +54,25 @@ uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
             <tbody>
               <c:forEach var="order" items="${orders}">
                 <tr>
-                  <td>${order.id}</td>
-                  <td>${order.orderDate}</td>
+                  <td>
+                    <a href="/orderDetail?code=${order.code}">${order.code}</a>
+                  </td>
+                  <td>
+                    <fmt:formatDate
+                      value="${order.orderDate}"
+                      pattern="dd/MM/yyyy  HH:mm:ss"
+                    />
+                  </td>
                   <td>${order.status}</td>
                   <td>${order.recipientName}</td>
                   <td>${order.recipientAddress}</td>
-                  <td class="text-end">${order.totalAmount} VND</td>
+                  <td class="text-end">
+                    <fmt:formatNumber
+                      value="${order.totalAmount}"
+                      pattern="#,##0"
+                    />
+                    VND
+                  </td>
                 </tr>
               </c:forEach>
             </tbody>
