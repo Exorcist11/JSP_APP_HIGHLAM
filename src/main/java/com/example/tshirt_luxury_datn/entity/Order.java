@@ -57,6 +57,11 @@ public class Order {
     private Timestamp updatedAt;
 
     @ManyToOne
+    @JoinColumn(name = "discount_id", nullable = true)
+    private Discount discount;
+
+
+    @ManyToOne
     @JoinColumn(name = "user_id", nullable = true)
     private User user;
 
