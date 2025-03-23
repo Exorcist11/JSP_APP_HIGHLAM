@@ -10,4 +10,10 @@ import com.example.tshirt_luxury_datn.entity.Order;
 @Repository
 public interface OrderRepository extends JpaRepository<Order, Long> {
     List<Order> findByUserId(Long userId);
+
+    List<Order> findByCodeIgnoreCaseStartingWithOrStatusIgnoreCase(String status, String code);
+
+    List<Order> findByCodeIgnoreCaseStartingWith(String code);
+
+    List<Order> findByStatusIgnoreCase(String status);
 }

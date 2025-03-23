@@ -1,5 +1,7 @@
 package com.example.tshirt_luxury_datn.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -11,6 +13,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.example.tshirt_luxury_datn.entity.Order;
 import com.example.tshirt_luxury_datn.services.OrderService;
 
 @Controller
@@ -49,6 +52,21 @@ public class OrderController {
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body("Lỗi khi cập nhật trạng thái: " + e.getMessage());
+        }
+    }
+
+    @GetMapping("/search")
+    public String searchOrder(@RequestParam(required = false) String code,
+            @RequestParam(required = false) String status, Model model) {
+
+        try {
+            List<Order> orders = orderService.searchOrder(code, status);
+            model.addAttribute("code", code);
+            model.addAttribute("status", status);
+            model.addAttribute("listOrders", orders);
+            return "HoaDon/hoa-don-admin";
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to fetch order detail for code: " + code, e);
         }
     }
 

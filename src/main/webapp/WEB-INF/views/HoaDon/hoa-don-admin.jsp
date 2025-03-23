@@ -35,6 +35,64 @@ uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
           <div class="row">
             <h2 class="mb-3">Quản Lý Đơn Hàng</h2>
 
+            <div class="p-3 bg-light rounded border mt-3 mb-3">
+              <nav class="navbar navbar-expand-lg navbar-light bg-light">
+                <div class="w-100">
+                  <form
+                    action="/admin/order/search"
+                    method="GET"
+                    class="row g-1"
+                  >
+                    <!-- Ô tìm kiếm -->
+                    <div class="col-5">
+                      <input
+                        name="code"
+                        class="form-control"
+                        type="search"
+                        placeholder="Tìm theo mã hoá đơn"
+                        aria-label="Search"
+                        style="font-size: 14px"
+                        value="${code}"
+                      />
+                    </div>
+
+                    <!-- Dropdown trạng thái -->
+                    <div class="col-2">
+                      <select
+                        class="form-select"
+                        name="status"
+                        id="trangThai"
+                        style="font-size: 14px"
+                      >
+                        <option value="">Trạng Thái</option>
+                        <option value="PENDING">Chờ Xác Nhận</option>
+                        <option value="CONFIRMED">Xác Nhận</option>
+                        <option value="CANCELLED">Đã Huỷ</option>
+                      </select>
+                    </div>
+
+                    <div class="col-5 d-flex justify-content-between">
+                      <button
+                        style="font-size: 14px"
+                        class="btn btn-success flex-fill mx-1"
+                        type="submit"
+                      >
+                        <i class="bi bi-search me-1"></i> Tìm Kiếm
+                      </button>
+
+                      <a
+                        href="/admin/order"
+                        style="font-size: 14px"
+                        class="btn btn-secondary flex-fill mx-1"
+                      >
+                        <i class="bi bi-arrow-clockwise"></i> Reset
+                      </a>
+                    </div>
+                  </form>
+                </div>
+              </nav>
+            </div>
+
             <table class="table table-striped" style="font-size: 14px">
               <thead>
                 <tr>

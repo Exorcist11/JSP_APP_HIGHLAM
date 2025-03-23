@@ -62,4 +62,12 @@ public class OrderService {
             throw new RuntimeException("Failed to fetch order detail for orderId: " + orderId, e);
         }
     }
+
+    public List<Order> searchOrder(String status, String code) {
+        try {
+            return orderRepository.findByCodeIgnoreCaseStartingWithOrStatusIgnoreCase(status, code);
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to searcg order detail for orderId: " + e);
+        }
+    }
 }
