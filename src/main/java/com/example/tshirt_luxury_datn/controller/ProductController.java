@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.example.tshirt_luxury_datn.dto.ProductDTO;
 import com.example.tshirt_luxury_datn.dto.ProductDetailDTO;
@@ -106,10 +107,12 @@ public class ProductController {
   }
 
   @PostMapping("/{productId}")
-  public String createProductDetail(@ModelAttribute("productDetail") ProductDetailDTO detailDTO, Model model,
+  public String createProductDetail(@ModelAttribute("productDetail") ProductDetailDTO detailDTO,
+      @RequestParam("images") List<MultipartFile> images, Model model,
       @PathVariable Long productId) {
     try {
-      detailService.createProductDetail(detailDTO);
+      detailService.createProductDetail(detailDTO, images);
+      model.addAttribute("successMessage", "Thêm sản phẩm chi tiết thành công!");
     } catch (Exception e) {
       model.addAttribute("error", e.getMessage());
     }

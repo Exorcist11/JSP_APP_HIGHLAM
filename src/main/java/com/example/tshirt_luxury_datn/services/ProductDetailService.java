@@ -5,6 +5,7 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.example.tshirt_luxury_datn.dto.ProductDetailDTO;
 import com.example.tshirt_luxury_datn.entity.Color;
@@ -30,6 +31,9 @@ public class ProductDetailService {
   @Autowired
   private ColorRepository colorRepository;
 
+  @Autowired
+  private ImageService imageService;
+
   public List<ProductDetail> getProductDetailByProductId(Long productId) {
     List<ProductDetail> details = detailRepository.findByProduct_Id(productId);
 
@@ -39,7 +43,7 @@ public class ProductDetailService {
     return details;
   }
 
-  public ProductDetail createProductDetail(ProductDetailDTO detailDTO) {
+  public ProductDetail createProductDetail(ProductDetailDTO detailDTO, List<MultipartFile> images) {
     try {
       Optional<Product> productOpt = productRepository.findById(detailDTO.getProductID());
       Optional<Size> sizeOpt = sizeRepository.findById(detailDTO.getSizeID());
@@ -61,7 +65,15 @@ public class ProductDetailService {
       productDetail.setSize(sizeOpt.get());
       productDetail.setProduct(productOpt.get());
 
-      return detailRepository.save(productDetail);
+      ProductDetail savedProductDetail = detailRepository.save(productDetail);
+
+      if (images != null && !images.isEmpty()) {
+        for (MultipartFile file : images) {
+          imageService.saveImage(file, productDetail);
+        }
+      }
+
+      return savedProductDetail;
     } catch (Exception e) {
       throw new RuntimeException("Lỗi khi thêm product detail: " + e.getMessage());
     }

@@ -114,7 +114,11 @@ contentType="text/html;charset=UTF-8" language="java" %>
     </div>
 
     <!-- --Modal-- -->
-    <form action="/admin/products/${product.id}" method="POST">
+    <form
+      action="/admin/products/${product.id}"
+      method="POST"
+      enctype="multipart/form-data"
+    >
       <input type="hidden" name="productID" value="${product.id}" />
       <div
         class="modal fade"
@@ -200,6 +204,17 @@ contentType="text/html;charset=UTF-8" language="java" %>
                     required
                   />
                 </div>
+              </div>
+
+              <div class="row">
+                <label for="images">Chọn ảnh:</label>
+                <input
+                  type="file"
+                  id="images"
+                  name="images"
+                  multiple
+                  required
+                />
               </div>
             </div>
             <div class="modal-footer">
