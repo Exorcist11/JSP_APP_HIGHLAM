@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.hibernate.annotations.CreationTimestamp;
@@ -47,6 +48,6 @@ public class ProductDetail {
     @Column(nullable = false)
     private Timestamp updatedAt;
 
-    @OneToMany(mappedBy = "productDetail")
-    private List<ProductImage> images;
+     @OneToMany(mappedBy = "productDetail", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<ProductImage> images = new ArrayList<>();
 }

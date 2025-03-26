@@ -23,6 +23,7 @@ import com.example.tshirt_luxury_datn.entity.ProductDetail;
 import com.example.tshirt_luxury_datn.entity.Size;
 import com.example.tshirt_luxury_datn.entity.User;
 import com.example.tshirt_luxury_datn.services.CartService;
+import com.example.tshirt_luxury_datn.services.ImageService;
 import com.example.tshirt_luxury_datn.services.OrderService;
 import com.example.tshirt_luxury_datn.services.ProductService;
 import com.example.tshirt_luxury_datn.services.UserService;
@@ -43,6 +44,9 @@ public class ClientController {
 
   @Autowired
   private CartService cartService;
+
+  @Autowired
+  private ImageService imageService;
 
   @GetMapping
   public String homepage(Model model, HttpSession session) {
@@ -66,6 +70,7 @@ public class ClientController {
       model.addAttribute("product", productService.getProductByID(id));
       model.addAttribute("sizes", uniqueSizes);
       model.addAttribute("colors", uniqueColors);
+      model.addAttribute("images", imageService.getImageUrlsByProductId(id));
 
       ObjectMapper objectMapper = new ObjectMapper();
       String productDetailsJson = objectMapper.writeValueAsString(product.getProductDetails());

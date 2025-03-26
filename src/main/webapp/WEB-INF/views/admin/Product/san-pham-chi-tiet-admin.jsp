@@ -55,6 +55,7 @@ contentType="text/html;charset=UTF-8" language="java" %>
             <tr>
               <th scope="col">STT</th>
 
+              <th scope="col"></th>
               <th scope="col">Size</th>
               <th scope="col">Màu Sắc</th>
               <th scope="col">Số Lượng</th>
@@ -70,6 +71,16 @@ contentType="text/html;charset=UTF-8" language="java" %>
                   <tr>
                     <td>${i.index + 1}</td>
 
+                    <td>
+                      <c:forEach items="${s.images}" var="img">
+                        <img
+                          src="${img.imageUrl}"
+                          alt="Ảnh sản phẩm"
+                          width="80"
+                          height="80"
+                        />
+                      </c:forEach>
+                    </td>
                     <td>${s.size.name}</td>
                     <td>${s.color.name}</td>
                     <td>${s.quantity}</td>

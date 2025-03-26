@@ -41,6 +41,8 @@ public class ProductController {
   @Autowired
   private ColorService colorService;
 
+
+
   @GetMapping
   public String listProduct(Model model) {
     model.addAttribute("products", productService.getAllProduct());
@@ -97,6 +99,7 @@ public class ProductController {
     model.addAttribute("colors", colorService.getAllColor());
     model.addAttribute("sizes", sizeService.getAllSize());
     model.addAttribute("product", productService.getProductByID(productId));
+    
     try {
       List<ProductDetail> lstPD = detailService.getProductDetailByProductId(productId);
       model.addAttribute("lstPD", lstPD);

@@ -1,14 +1,10 @@
 package com.example.tshirt_luxury_datn.services;
 
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
+import java.io.File;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.example.tshirt_luxury_datn.entity.ProductDetail;
@@ -20,41 +16,48 @@ public class ImageService {
     @Autowired
     private ProductImageRepository productImageRepository;
 
-    private final Path uploadDir = Paths.get("X:/Tshirt_Luxury/uploads");
+    private static final String UPLOAD_DIR = System.getProperty("user.dir") + "/uploads";
 
-    public ProductImage saveImage(MultipartFile file, ProductDetail productDetail) {
+    public void saveImage(MultipartFile file, ProductDetail productDetail) {
         try {
-            // Tạo thư mục nếu chưa tồn tại
-            if (!Files.exists(uploadDir)) {
-                Files.createDirectories(uploadDir);
+            if (file != null && !file.isEmpty()) {
+                // Kiểm tra tên file nhận được
+                System.out.println("Đang xử lý file: " + file.getOriginalFilename());
+
+                // Tạo tên file duy nhất
+                String fileName = System.currentTimeMillis() + "_" + file.getOriginalFilename();
+                File uploadPath = new File(UPLOAD_DIR);
+
+                // Kiểm tra và tạo thư mục
+                if (!uploadPath.exists()) {
+                    uploadPath.mkdirs();
+                    System.out.println("Đã tạo thư mục: " + UPLOAD_DIR);
+                }
+
+                // Lưu file vào thư mục
+                File saveFile = new File(uploadPath, fileName);
+                file.transferTo(saveFile);
+                System.out.println("File đã lưu tại: " + saveFile.getAbsolutePath());
+
+                // Lưu đường dẫn vào DB
+                ProductImage image = new ProductImage();
+                image.setImageUrl("/uploads/" + fileName);
+                image.setProductDetail(productDetail);
+                productImageRepository.save(image);
+                System.out.println("Đã lưu ảnh vào database: " + image.getImageUrl());
             }
-
-            // Kiểm tra kiểu file (chỉ cho phép ảnh)
-            String contentType = file.getContentType();
-            if (contentType == null || !contentType.startsWith("image/")) {
-                throw new IllegalArgumentException("Chỉ cho phép upload file ảnh.");
-            }
-
-            // Xử lý tên file an toàn
-            String originalFileName = file.getOriginalFilename();
-            if (originalFileName == null) {
-                throw new IllegalArgumentException("File name cannot be null.");
-            }
-            originalFileName = StringUtils.cleanPath(originalFileName);
-            String fileName = System.currentTimeMillis() + "_" + originalFileName;
-            Path filePath = uploadDir.resolve(fileName);
-
-            // Lưu file vào thư mục
-            Files.copy(file.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
-
-            // Lưu thông tin vào database
-            ProductImage productImage = new ProductImage();
-            productImage.setImageUrl(fileName);
-            productImage.setProductDetail(productDetail);
-
-            return productImageRepository.save(productImage);
-        } catch (IOException e) {
-            throw new RuntimeException("Lỗi khi lưu ảnh: " + e.getMessage(), e);
+        } catch (Exception e) {
+            e.printStackTrace(); // In lỗi chi tiết
+            throw new RuntimeException("Lỗi khi lưu ảnh: " + e.getMessage());
         }
+    }
+
+    public List<ProductImage> getImagesByProductDetailId(Long productDetailId) {
+        return productImageRepository.findByProductDetailId(productDetailId);
+    }
+
+    public List<String> getImageUrlsByProductId(Long productId) {
+        List<ProductImage> images = productImageRepository.findByProductDetail_Product_Id(productId);
+        return images.stream().map(ProductImage::getImageUrl).toList();
     }
 }

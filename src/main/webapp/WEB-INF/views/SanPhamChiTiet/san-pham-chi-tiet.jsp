@@ -70,6 +70,7 @@ uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
         </div>
       </div>
     </div>
+
     <div class="row" style="margin-top: 100px">
       <div class="col-1"></div>
       <div class="col-7">
@@ -79,27 +80,15 @@ uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
           data-bs-ride="carousel"
         >
           <div class="carousel-inner">
-            <div class="carousel-item active">
-              <img
-                src="../images/ao_phong_boxy/DEVOTUS/black.webp"
-                class="d-block w-100"
-                alt="..."
-              />
-            </div>
-            <div class="carousel-item">
-              <img
-                src="../images/ao_phong_boxy/DEVOTUS/wash.webp"
-                class="d-block w-100"
-                alt="..."
-              />
-            </div>
-            <div class="carousel-item">
-              <img
-                src="../images/ao_phong_boxy/DEVOTUS/white.webp"
-                class="d-block w-100"
-                alt="..."
-              />
-            </div>
+            <c:forEach var="imageUrl" items="${images}" varStatus="status">
+              <div class="carousel-item ${status.first ? 'active' : ''}">
+                <img
+                  src="${imageUrl}"
+                  class="d-block w-100"
+                  alt="Product Image"
+                />
+              </div>
+            </c:forEach>
           </div>
           <button
             class="carousel-control-prev"
