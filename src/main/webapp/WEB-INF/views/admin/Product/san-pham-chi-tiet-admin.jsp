@@ -225,7 +225,12 @@ contentType="text/html;charset=UTF-8" language="java" %>
                   name="images"
                   multiple
                   required
+                  onchange="previewImages(event)"
                 />
+                <div
+                  id="preview-container"
+                  class="mt-3 d-flex flex-wrap gap-2"
+                ></div>
               </div>
             </div>
             <div class="modal-footer">
@@ -445,6 +450,54 @@ contentType="text/html;charset=UTF-8" language="java" %>
       confirmDelete = () => {
         return confirm("Bạn có chắc muốn xóa ?");
       };
+    </script>
+    <script>
+      let selectedFiles = [];
+
+      function previewImages(event) {
+        const previewContainer = document.getElementById("preview-container");
+
+        Array.from(event.target.files).forEach((file) => {
+          if (!selectedFiles.some((f) => f.name === file.name)) {
+            selectedFiles.push(file);
+            const reader = new FileReader();
+
+            reader.onload = (e) => {
+              const imgWrapper = document.createElement("div");
+              imgWrapper.className = "position-relative";
+
+              const img = document.createElement("img");
+              img.src = e.target.result;
+              img.className = "img-thumbnail";
+              img.style.maxWidth = "150px";
+              img.style.maxHeight = "150px";
+
+              const removeBtn = document.createElement("button");
+              removeBtn.innerText = "X";
+              removeBtn.className =
+                "btn btn-danger btn-sm position-absolute top-0 end-0";
+              removeBtn.onclick = () => removeImage(file.name, imgWrapper);
+
+              imgWrapper.appendChild(img);
+              imgWrapper.appendChild(removeBtn);
+              previewContainer.appendChild(imgWrapper);
+            };
+
+            reader.readAsDataURL(file);
+          }
+        });
+      }
+
+      function removeImage(fileName, imgWrapper) {
+        selectedFiles = selectedFiles.filter((file) => file.name !== fileName);
+        imgWrapper.remove();
+      }
+
+      document.querySelector("form").addEventListener("submit", (e) => {
+        const dataTransfer = new DataTransfer();
+        selectedFiles.forEach((file) => dataTransfer.items.add(file));
+        document.getElementById("images").files = dataTransfer.files;
+      });
     </script>
   </body>
 </html>

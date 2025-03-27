@@ -17,7 +17,7 @@ public class User {
 
     @Column(nullable = false)
     private String username;
-    
+
     @Column(nullable = false)
     private String password;
 
@@ -26,6 +26,9 @@ public class User {
 
     @Column(nullable = false)
     private String role; // USER, ADMIN
+
+    @Column(nullable = false, columnDefinition = "BIT DEFAULT 1")
+    private Boolean status = true;
 
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
     private UserProfile profile;

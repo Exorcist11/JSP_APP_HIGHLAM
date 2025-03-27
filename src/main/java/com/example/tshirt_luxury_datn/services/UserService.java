@@ -41,6 +41,7 @@ public class UserService {
       user.setEmail(userDTO.getEmail());
       user.setPassword(passwordEncoder.encode(userDTO.getPassword()));
       user.setRole(userDTO.getRole());
+      user.setStatus(true);
       return userRepository.save(user);
     } catch (Exception e) {
       throw new RuntimeException("Error when create user:  " + e.getMessage());
@@ -57,6 +58,7 @@ public class UserService {
       userUpdate.setEmail(userDTO.getEmail());
       userUpdate.setPassword(passwordEncoder.encode(userDTO.getPassword()));
       userUpdate.setRole(userDTO.getRole());
+      userUpdate.setStatus(userDTO.getStatus());
 
       return userRepository.save(userUpdate);
     } catch (Exception e) {
@@ -65,6 +67,7 @@ public class UserService {
   }
 
   public void deleteUser(Long id) {
+
     try {
       Optional<User> user = userRepository.findById(id);
       if (!user.isPresent()) {
@@ -72,7 +75,7 @@ public class UserService {
       }
 
       User userDelete = user.get();
-
+      userDelete.setStatus(false);
       userRepository.save(userDelete);
     } catch (Exception e) {
       throw new RuntimeException("Error when delete user:  " + e.getMessage());
@@ -105,7 +108,7 @@ public class UserService {
     user.setUsername(userDTO.getUsername());
     user.setEmail(userDTO.getEmail());
     user.setPassword(passwordEncoder.encode(userDTO.getPassword()));
-    user.setRole("USER"); 
+    user.setRole("USER");
     return userRepository.save(user);
   }
 
