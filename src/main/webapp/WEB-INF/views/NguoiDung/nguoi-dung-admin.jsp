@@ -71,7 +71,7 @@ contentType="text/html;charset=UTF-8" language="java" %>
     <link rel="stylesheet" href="../css/button.css" />
   </head>
 
-  <body class="g-sidenav-show bg-gray-100">
+  <body class="g-sidenav-show bg-gray-100 text-sm">
     <!-- <jsp:include page="/WEB-INF/views/fragments/headerAdmin.jsp" /> -->
 
     <div class="mt-3">
@@ -165,17 +165,19 @@ contentType="text/html;charset=UTF-8" language="java" %>
                 <th scope="col">Email</th>
                 <th scope="col">Chức Vụ</th>
                 <th scope="col">Trạng Thái</th>
-                <th scope="col">Hành Động</th>
+                <th scope="col" class="text-end">Hành Động</th>
               </tr>
             </thead>
             <tbody>
               <c:forEach items="${listUser}" var="nd" varStatus="i">
                 <tr>
-                  <th class="text-center" scope="row">${i.index + 1}</th>
-                  <td>${nd.username}</td>
-                  <td>${nd.email}</td>
-                  <td>${nd.role}</td>
-                  <td>
+                  <th class="text-center align-middle" scope="row">
+                    ${i.index + 1}
+                  </th>
+                  <td class="align-middle">${nd.username}</td>
+                  <td class="align-middle">${nd.email}</td>
+                  <td class="align-middle">${nd.role}</td>
+                  <td class="align-middle">
                     <c:if test="${nd.status == true}">
                       <span class="badge bg-success">Hoạt Động</span>
                     </c:if>
@@ -183,9 +185,9 @@ contentType="text/html;charset=UTF-8" language="java" %>
                       <span class="badge bg-danger">Không Hoạt Động</span>
                     </c:if>
                   </td>
-                  <td>
+                  <td class="align-middle d-flex justify-content-end">
                     <a
-                      class="btn edit-btn"
+                      class="btn edit-btn mb-0"
                       data-bs-toggle="modal"
                       data-bs-target="#editModal"
                       data-id="${nd.id}"
@@ -200,7 +202,7 @@ contentType="text/html;charset=UTF-8" language="java" %>
 
                     <a
                       onclick="return confirmDelete()"
-                      class="btn delete-btn"
+                      class="btn delete-btn mb-0"
                       data-toggle="tooltip"
                       data-placement="top"
                       data-id="${nd.id}"
@@ -211,7 +213,7 @@ contentType="text/html;charset=UTF-8" language="java" %>
 
                     <a
                       href="/admin/nguoi-dung-chi-tiet"
-                      class="btn"
+                      class="btn mb-0"
                       data-placement="top"
                       title="Xem Chi Tiết"
                     >

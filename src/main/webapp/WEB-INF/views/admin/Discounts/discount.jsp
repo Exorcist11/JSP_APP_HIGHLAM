@@ -32,97 +32,113 @@ uri="http://java.sun.com/jsp/jstl/fmt" %>
     <link rel="stylesheet" href="../css/button.css" />
   </head>
 
-  <body class="container" style="font-size: 14px">
-    <div>
-      <jsp:include page="/WEB-INF/views/fragments/headerAdmin.jsp" />
+  <body class="g-sidenav-show bg-gray-100 text-sm">
+    <jsp:include page="/WEB-INF/views/fragments/menuAdmin.jsp" />
+    <main class="main-content max-height-vh-100 h-100 border-radius-lg pe-3">
+      <!-- Navbar -->
+      <nav
+        class="navbar navbar-main navbar-expand-lg px-0 shadow-none border-radius-xl"
+        id="navbarBlur"
+        navbar-scroll="true"
+      >
+        <nav aria-label="breadcrumb">
+          <ol
+            class="breadcrumb bg-transparent mb-0 pb-0 pt-1 px-0 me-sm-6 me-5"
+          >
+            <li class="breadcrumb-item text-sm">
+              <a class="opacity-5 text-dark" href="javascript:;">Pages</a>
+            </li>
+            <li
+              class="breadcrumb-item text-sm text-dark active"
+              aria-current="page"
+            >
+              Quản lý mã giảm giá
+            </li>
+          </ol>
+        </nav>
+      </nav>
+      <!-- End Navbar -->
+      <h2 class="">Quản Lý Mã Giảm Giá</h2>
 
-      <div class="row mt-3">
-        <jsp:include page="/WEB-INF/views/fragments/menuAdmin.jsp" />
-        <div class="col-9">
-          <div class="row">
-            <h2 class="">Quản Lý Mã Giảm Giá</h2>
-
-            <div class="p-2 bd-highlight d-flex justify-content-end">
-              <button
-                type="button"
-                class="btn btn-outline-success"
-                data-bs-toggle="modal"
-                style="font-size: 14px"
-                data-bs-target="#themMaGiamGia"
-              >
-                <i class="fa-solid fa-circle-plus"></i> Thêm Mới
-              </button>
-            </div>
-
-            <table class="table table-striped border rounded">
-              <thead>
-                <tr>
-                  <th scope="col">#</th>
-                  <th scope="col">Mã Giảm Giá</th>
-                  <th scope="col">Phần Trăm Giảm (%)</th>
-                  <th scope="col">Ngày Bắt Đầu</th>
-                  <th scope="col">Ngày Kết Thúc</th>
-                  <th scope="col">Trạng Thái</th>
-                  <th scope="col">Hành Động</th>
-                </tr>
-              </thead>
-              <tbody>
-                <c:forEach items="${discounts}" var="d" varStatus="i">
-                  <tr>
-                    <th scope="row">${i.index + 1}</th>
-                    <td>${d.code}</td>
-                    <td>${d.percentage}</td>
-                    <td>
-                      <fmt:formatDate
-                        value="${d.startDate}"
-                        pattern="dd/MM/yyyy  HH:mm:ss"
-                      />
-                    </td>
-                    <td>
-                      <fmt:formatDate
-                        value="${d.endDate}"
-                        pattern="dd/MM/yyyy  HH:mm:ss"
-                      />
-                    </td>
-
-                    <td>
-                      <c:if test="${d.status == true}">
-                        <span class="badge bg-success">Hoạt Động</span>
-                      </c:if>
-                      <c:if test="${d.status == false}">
-                        <span class="badge bg-danger">Không Hoạt Động</span>
-                      </c:if>
-                    </td>
-                    <td>
-                      <a
-                        class="btn edit-btn"
-                        data-bs-toggle="modal"
-                        data-bs-target="#editModal"
-                        data-id="${ms.id}"
-                        data-name="${ms.name}"
-                        data-status="${ms.status}"
-                        data-hex="${ms.hexColor}"
-                        title="Chỉnh Sửa"
-                        ><i class="fa-solid fa-pen-to-square"></i
-                      ></a>
-                      <a
-                        onclick="return confirmDelete()"
-                        class="btn delete-btn"
-                        data-toggle="tooltip"
-                        data-placement="top"
-                        data-id="${d.id}"
-                        title="Xóa"
-                        ><i class="fa-solid fa-trash"></i
-                      ></a>
-                    </td>
-                  </tr>
-                </c:forEach>
-              </tbody>
-            </table>
-          </div>
-        </div>
+      <div class="p-2 bd-highlight d-flex justify-content-end">
+        <button
+          type="button"
+          class="btn btn-outline-success"
+          data-bs-toggle="modal"
+          style="font-size: 14px"
+          data-bs-target="#themMaGiamGia"
+        >
+          <i class="fa-solid fa-circle-plus"></i> Thêm Mới
+        </button>
       </div>
-    </div>
+
+      <table class="table border rounded">
+        <thead>
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">Mã Giảm Giá</th>
+            <th scope="col">Phần Trăm Giảm (%)</th>
+            <th scope="col">Ngày Bắt Đầu</th>
+            <th scope="col">Ngày Kết Thúc</th>
+            <th scope="col">Trạng Thái</th>
+            <th scope="col" class="text-end">Hành Động</th>
+          </tr>
+        </thead>
+        <tbody>
+          <c:forEach items="${discounts}" var="d" varStatus="i">
+            <tr>
+              <th class="align-middle" scope="row">${i.index + 1}</th>
+              <td class="align-middle">${d.code}</td>
+              <td class="align-middle">${d.percentage}</td>
+              <td class="align-middle">
+                <fmt:formatDate
+                  value="${d.startDate}"
+                  pattern="dd/MM/yyyy  HH:mm:ss"
+                />
+              </td>
+              <td>
+                <fmt:formatDate
+                  value="${d.endDate}"
+                  pattern="dd/MM/yyyy  HH:mm:ss"
+                />
+              </td>
+
+              <td class="align-middle">
+                <c:if test="${d.status == true}">
+                  <span class="badge bg-success">Hoạt Động</span>
+                </c:if>
+                <c:if test="${d.status == false}">
+                  <span class="badge bg-danger">Không Hoạt Động</span>
+                </c:if>
+              </td>
+
+              <td class="d-flex gap-2 justify-content-end">
+                <a
+                  class="btn edit-btn mb-0"
+                  data-bs-toggle="modal"
+                  data-bs-target="#editModal"
+                  data-id="${ms.id}"
+                  data-name="${ms.name}"
+                  data-status="${ms.status}"
+                  data-hex="${ms.hexColor}"
+                  title="Chỉnh Sửa"
+                  ><i class="fa-solid fa-pen-to-square"></i
+                ></a>
+                <a
+                  onclick="return confirmDelete()"
+                  class="btn delete-btn mb-0"
+                  data-toggle="tooltip"
+                  data-placement="top"
+                  data-id="${d.id}"
+                  title="Xóa"
+                  ><i class="fa-solid fa-trash"></i
+                ></a>
+              </td>
+            </tr>
+          </c:forEach>
+        </tbody>
+      </table>
+    </main>
 
     <!-- Modal Thêm Mới Mã Giảm Giá -->
     <form action="/admin/discount/save" method="post">

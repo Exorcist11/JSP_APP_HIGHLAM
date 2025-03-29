@@ -30,172 +30,174 @@ uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
     <link rel="stylesheet" href="../css/button.css" />
   </head>
 
-  <body class="container">
-    <div>
-      <jsp:include page="/WEB-INF/views/fragments/headerAdmin.jsp" />
+  <body class="g-sidenav-show bg-gray-100 text-sm">
+    <jsp:include page="/WEB-INF/views/fragments/menuAdmin.jsp" />
+    <main class="main-content max-height-vh-100 h-100 border-radius-lg pe-3">
+      <!-- Navbar -->
+      <nav
+        class="navbar navbar-main navbar-expand-lg px-0 shadow-none border-radius-xl"
+        id="navbarBlur"
+        navbar-scroll="true"
+      >
+        <nav aria-label="breadcrumb">
+          <ol
+            class="breadcrumb bg-transparent mb-0 pb-0 pt-1 px-0 me-sm-6 me-5"
+          >
+            <li class="breadcrumb-item text-sm">
+              <a class="opacity-5 text-dark" href="javascript:;">Pages</a>
+            </li>
+            <li
+              class="breadcrumb-item text-sm text-dark active"
+              aria-current="page"
+            >
+              Quản lý sản phẩm
+            </li>
+          </ol>
+        </nav>
+      </nav>
+      <!-- End Navbar -->
 
-      <div class="row mt-3">
-        <jsp:include page="/WEB-INF/views/fragments/menuAdmin.jsp" />
-        <div class="col-9">
-          <div class="row">
-            <h2 class="">Quản Lý Sản Phẩm</h2>
+      <h2 class="">Quản Lý Sản Phẩm</h2>
 
-            <div class="p-3 bg-light rounded border mt-3">
-              <nav class="navbar navbar-expand-lg navbar-light bg-light">
-                <div class="w-100">
-                  <form
-                    action="/admin/products/search"
-                    method="GET"
-                    class="row g-1"
-                  >
-                    <!-- Ô tìm kiếm -->
-                    <div class="col-5">
-                      <input
-                        name="timKiemSanPham"
-                        class="form-control"
-                        type="search"
-                        placeholder="Tìm sản phẩm"
-                        aria-label="Search"
-                        style="font-size: 14px"
-                        value="${timKiemSanPham}"
-                      />
-                    </div>
-
-                    <!-- Dropdown trạng thái -->
-                    <div class="col-2">
-                      <select
-                        class="form-select"
-                        name="trangThai"
-                        id="trangThai"
-                        style="font-size: 14px"
-                      >
-                        <option value="">Trạng Thái</option>
-                        <option
-                          value="1"
-                          th:selected="${sanPham.trangThai == 1}"
-                        >
-                          Còn Hàng
-                        </option>
-                        <option
-                          value="0"
-                          th:selected="${sanPham.trangThai == 0}"
-                        >
-                          Hết Hàng
-                        </option>
-                      </select>
-                    </div>
-
-                    <div class="col-5 d-flex justify-content-between">
-                      <button
-                        style="font-size: 14px"
-                        class="btn btn-success flex-fill mx-1"
-                        type="submit"
-                      >
-                        <i class="bi bi-search me-1"></i> Tìm Kiếm
-                      </button>
-
-                      <a
-                        href="/admin/products"
-                        style="font-size: 14px"
-                        class="btn btn-secondary flex-fill mx-1"
-                      >
-                        <i class="bi bi-arrow-clockwise"></i> Reset
-                      </a>
-
-                      <button
-                        type="button"
-                        class="btn btn-outline-primary flex-fill mx-1"
-                        style="font-size: 14px"
-                        data-bs-toggle="modal"
-                        data-bs-target="#themSanPham"
-                      >
-                        <i class="fa-solid fa-circle-plus"></i> Thêm Mới
-                      </button>
-                    </div>
-                  </form>
-                </div>
-              </nav>
-            </div>
-
-            <table class="table table-striped border rounded">
-              <thead>
-                <tr>
-                  <th scope="col">STT</th>
-                  <th scope="col">Mã Sản Phẩm</th>
-                  <th scope="col">Tên Sản Phẩm</th>
-                  <th scope="col">Giá</th>
-
-                  <!-- <th scope="col">Danh Mục</th> -->
-                  <th scope="col">Trạng Thái</th>
-                  <th scope="col">Hành Động</th>
-                </tr>
-              </thead>
-              <tbody>
-                <c:forEach items="${products}" var="sp" varStatus="i">
-                  <tr>
-                    <td>${i.index+1}</td>
-                    <td>${sp.code}</td>
-                    <td>${sp.name}</td>
-                    <td>
-                      <fmt:formatNumber
-                        value="${sp.price}"
-                        groupingUsed="true"
-                        maxFractionDigits="0"
-                      />
-                      VND
-                    </td>
-
-                    <td>
-                      <c:if test="${sp.status == true}">
-                        <span class="badge bg-success">Còn Hàng</span>
-                      </c:if>
-                      <c:if test="${sp.status == false}">
-                        <span class="badge bg-danger">Hết Hàng</span>
-                      </c:if>
-                    </td>
-                    <td>
-                      <a
-                        class="btn edit-btn"
-                        data-bs-toggle="modal"
-                        data-bs-target="#editModal"
-                        data-id="${sp.id}"
-                        data-code="${sp.code}"
-                        data-name="${sp.name}"
-                        data-price="${sp.price}"
-                        data-status="${sp.status}"
-                        data-description="${sp.description}"
-                        data-category="${sp.category.id}"
-                        title="Chỉnh Sửa"
-                        ><i class="fa-solid fa-pen-to-square"></i
-                      ></a>
-                      <a
-                        class="btn delete-btn"
-                        data-toggle="tooltip"
-                        data-placement="top"
-                        title="Xóa"
-                        data-id="${sp.id}"
-                        onclick="return confirmDelete()"
-                        ><i class="fa-solid fa-trash"></i
-                      ></a>
-                      <a
-                        href="/admin/products/${sp.id}"
-                        class="btn btn-secondary rounded-pill"
-                        data-toggl
-                        e="tooltip"
-                        data-placement="top"
-                        title="Xem Chi Tiết"
-                      >
-                        <i class="fa-solid fa-eye"></i>
-                      </a>
-                    </td>
-                  </tr>
-                </c:forEach>
-              </tbody>
-            </table>
+      <div class="w-100">
+        <form action="/admin/products/search" method="GET" class="row g-1">
+          <!-- Ô tìm kiếm -->
+          <div class="col-5">
+            <input
+              name="timKiemSanPham"
+              class="form-control"
+              type="search"
+              placeholder="Tìm sản phẩm"
+              aria-label="Search"
+              style="font-size: 14px"
+              value="${timKiemSanPham}"
+            />
           </div>
-        </div>
+
+          <!-- Dropdown trạng thái -->
+          <div class="col-2">
+            <select
+              class="form-select"
+              name="trangThai"
+              id="trangThai"
+              style="font-size: 14px"
+            >
+              <option value="">Trạng Thái</option>
+              <option value="1" th:selected="${sanPham.trangThai == 1}">
+                Còn Hàng
+              </option>
+              <option value="0" th:selected="${sanPham.trangThai == 0}">
+                Hết Hàng
+              </option>
+            </select>
+          </div>
+
+          <div class="col-5 d-flex justify-content-between">
+            <button
+              style="font-size: 14px"
+              class="btn btn-success flex-fill mx-1"
+              type="submit"
+            >
+              <i class="bi bi-search me-1"></i> Tìm Kiếm
+            </button>
+
+            <a
+              href="/admin/products"
+              style="font-size: 14px"
+              class="btn btn-secondary flex-fill mx-1"
+            >
+              <i class="bi bi-arrow-clockwise"></i> Reset
+            </a>
+
+            <button
+              type="button"
+              class="btn btn-outline-primary flex-fill mx-1"
+              style="font-size: 14px"
+              data-bs-toggle="modal"
+              data-bs-target="#themSanPham"
+            >
+              <i class="fa-solid fa-circle-plus"></i> Thêm Mới
+            </button>
+          </div>
+        </form>
       </div>
-    </div>
+
+      <table class="table border rounded mt-2">
+        <thead>
+          <tr>
+            <th scope="col">STT</th>
+            <th scope="col">Mã Sản Phẩm</th>
+            <th scope="col">Tên Sản Phẩm</th>
+            <th scope="col">Giá</th>
+
+            <!-- <th scope="col">Danh Mục</th> -->
+            <th scope="col">Trạng Thái</th>
+            <th scope="col" class="text-end">Hành Động</th>
+          </tr>
+        </thead>
+        <tbody>
+          <c:forEach items="${products}" var="sp" varStatus="i">
+            <tr>
+              <td class="align-middle">${i.index+1}</td>
+              <td class="align-middle">${sp.code}</td>
+              <td class="align-middle">${sp.name}</td>
+              <td class="align-middle">
+                <fmt:formatNumber
+                  value="${sp.price}"
+                  groupingUsed="true"
+                  maxFractionDigits="0"
+                />
+                VND
+              </td>
+
+              <td class="align-middle">
+                <c:if test="${sp.status == true}">
+                  <span class="badge bg-success">Còn Hàng</span>
+                </c:if>
+                <c:if test="${sp.status == false}">
+                  <span class="badge bg-danger">Hết Hàng</span>
+                </c:if>
+              </td>
+              <td class="align-middle d-flex justify-content-end gap-2">
+                <a
+                  class="btn edit-btn mb-0"
+                  data-bs-toggle="modal"
+                  data-bs-target="#editModal"
+                  data-id="${sp.id}"
+                  data-code="${sp.code}"
+                  data-name="${sp.name}"
+                  data-price="${sp.price}"
+                  data-status="${sp.status}"
+                  data-description="${sp.description}"
+                  data-category="${sp.category.id}"
+                  title="Chỉnh Sửa"
+                  ><i class="fa-solid fa-pen-to-square"></i
+                ></a>
+                <a
+                  class="btn delete-btn mb-0"
+                  data-toggle="tooltip"
+                  data-placement="top"
+                  title="Xóa"
+                  data-id="${sp.id}"
+                  onclick="return confirmDelete()"
+                  ><i class="fa-solid fa-trash"></i
+                ></a>
+                <a
+                  href="/admin/products/${sp.id}"
+                  class="btn btn-secondary mb-0"
+                  data-toggl
+                  e="tooltip"
+                  data-placement="top"
+                  title="Xem Chi Tiết"
+                >
+                  <i class="fa-solid fa-eye"></i>
+                </a>
+              </td>
+            </tr>
+          </c:forEach>
+        </tbody>
+      </table>
+    </main>
 
     <!-- Modal -->
     <form action="/admin/products/save" method="POST">

@@ -30,84 +30,98 @@ contentType="text/html;charset=UTF-8" language="java" %>
     <link rel="stylesheet" href="../css/button.css" />
   </head>
 
-  <body class="container">
-    <div>
-      <jsp:include page="/WEB-INF/views/fragments/headerAdmin.jsp" />
+  <body class="g-sidenav-show bg-gray-100 text-sm">
+    <jsp:include page="/WEB-INF/views/fragments/menuAdmin.jsp" />
+    <main class="main-content max-height-vh-100 h-100 border-radius-lg pe-3">
+      <nav
+        class="navbar navbar-main navbar-expand-lg px-0 shadow-none border-radius-xl"
+        id="navbarBlur"
+        navbar-scroll="true"
+      >
+        <nav aria-label="breadcrumb">
+          <ol
+            class="breadcrumb bg-transparent mb-0 pb-0 pt-1 px-0 me-sm-6 me-5"
+          >
+            <li class="breadcrumb-item text-sm">
+              <a class="opacity-5 text-dark" href="javascript:;">Pages</a>
+            </li>
+            <li
+              class="breadcrumb-item text-sm text-dark active"
+              aria-current="page"
+            >
+              Quản lý màu sắc
+            </li>
+          </ol>
+        </nav>
+      </nav>
 
-      <div class="row mt-3">
-        <jsp:include page="/WEB-INF/views/fragments/menuAdmin.jsp" />
-        <div class="col-9">
-          <div class="row">
-            <h2 class="">Quản Lý Màu Sắc</h2>
+      <h2 class="">Quản Lý Màu Sắc</h2>
 
-            <div class="p-2 bd-highlight d-flex justify-content-end">
-              <button
-                type="button"
-                class="btn btn-outline-success"
-                data-bs-toggle="modal"
-                style="font-size: 14px"
-                data-bs-target="#themSanPham"
-              >
-                <i class="fa-solid fa-circle-plus"></i> Thêm Mới
-              </button>
-            </div>
-
-            <table class="table table-striped border rounded">
-              <thead>
-                <tr>
-                  <th scope="col">#</th>
-                  <th scope="col">Mã Màu Sắc</th>
-                  <th scope="col">Tên Màu Sắc</th>
-
-                  <th scope="col">Trạng Thái</th>
-                  <th scope="col">Hành Động</th>
-                </tr>
-              </thead>
-              <tbody>
-                <c:forEach items="${colors}" var="ms" varStatus="i">
-                  <tr>
-                    <th scope="row">${i.index + 1}</th>
-                    <td>${ms.hexColor}</td>
-                    <td>${ms.name}</td>
-
-                    <td>
-                      <c:if test="${ms.status == true}">
-                        <span class="badge bg-success">Hoạt Động</span>
-                      </c:if>
-                      <c:if test="${ms.status == false}">
-                        <span class="badge bg-danger">Không Hoạt Động</span>
-                      </c:if>
-                    </td>
-                    <td>
-                      <a
-                        class="btn edit-btn"
-                        data-bs-toggle="modal"
-                        data-bs-target="#editModal"
-                        data-id="${ms.id}"
-                        data-name="${ms.name}"
-                        data-status="${ms.status}"
-                        data-hex="${ms.hexColor}"
-                        title="Chỉnh Sửa"
-                        ><i class="fa-solid fa-pen-to-square"></i
-                      ></a>
-                      <a
-                        onclick="return confirmDelete()"
-                        class="btn delete-btn"
-                        data-toggle="tooltip"
-                        data-placement="top"
-                        data-id="${ms.id}"
-                        title="Xóa"
-                        ><i class="fa-solid fa-trash"></i
-                      ></a>
-                    </td>
-                  </tr>
-                </c:forEach>
-              </tbody>
-            </table>
-          </div>
-        </div>
+      <div class="p-2 bd-highlight d-flex justify-content-end">
+        <button
+          type="button"
+          class="btn btn-outline-success"
+          data-bs-toggle="modal"
+          style="font-size: 14px"
+          data-bs-target="#themSanPham"
+        >
+          <i class="fa-solid fa-circle-plus"></i> Thêm Mới
+        </button>
       </div>
-    </div>
+
+      <table class="table border rounded">
+        <thead>
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">Mã Màu Sắc</th>
+            <th scope="col">Tên Màu Sắc</th>
+
+            <th scope="col">Trạng Thái</th>
+            <th scope="col" class="text-end">Hành Động</th>
+          </tr>
+        </thead>
+        <tbody>
+          <c:forEach items="${colors}" var="ms" varStatus="i">
+            <tr>
+              <th class="align-middle" scope="row">${i.index + 1}</th>
+              <td class="align-middle">${ms.hexColor}</td>
+              <td class="align-middle">${ms.name}</td>
+
+              <td class="align-middle">
+                <c:if test="${ms.status == true}">
+                  <span class="badge bg-success">Hoạt Động</span>
+                </c:if>
+                <c:if test="${ms.status == false}">
+                  <span class="badge bg-danger">Không Hoạt Động</span>
+                </c:if>
+              </td>
+              <td class="align-middle d-flex justify-content-end gap-2">
+                <a
+                  class="btn edit-btn mb-0"
+                  data-bs-toggle="modal"
+                  data-bs-target="#editModal"
+                  data-id="${ms.id}"
+                  data-name="${ms.name}"
+                  data-status="${ms.status}"
+                  data-hex="${ms.hexColor}"
+                  title="Chỉnh Sửa"
+                  ><i class="fa-solid fa-pen-to-square"></i
+                ></a>
+                <a
+                  onclick="return confirmDelete()"
+                  class="btn delete-btn mb-0"
+                  data-toggle="tooltip"
+                  data-placement="top"
+                  data-id="${ms.id}"
+                  title="Xóa"
+                  ><i class="fa-solid fa-trash"></i
+                ></a>
+              </td>
+            </tr>
+          </c:forEach>
+        </tbody>
+      </table>
+    </main>
 
     <!-- Modal -->
     <form action="/admin/colors/save" method="post">
