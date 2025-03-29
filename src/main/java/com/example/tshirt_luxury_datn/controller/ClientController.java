@@ -155,6 +155,11 @@ public class ClientController {
     return "Profile/profile";
   }
 
+  @GetMapping("/t-shirt-luxury/admin")
+  public String abc() {
+    return "BanHang/abc";
+  }
+
   @PostMapping("/updateProfile")
   public String saveProfile(HttpSession session, UserProfileDTP userProfileDTP) {
     try {

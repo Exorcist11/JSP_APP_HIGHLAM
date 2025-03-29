@@ -106,7 +106,7 @@ uri="http://java.sun.com/jsp/jstl/fmt" %>
 
       <div class="row mt-2">
         <h3 class="text-center">Thông tin sản phẩm</h3>
-        <table class="table table-striped">
+        <table class="table table-striped border rounded">
           <thead>
             <tr>
               <th scope="col">STT</th>

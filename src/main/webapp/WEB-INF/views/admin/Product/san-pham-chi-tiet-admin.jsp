@@ -50,7 +50,7 @@ contentType="text/html;charset=UTF-8" language="java" %>
           </button>
         </div>
         <h2>${product.name}</h2>
-        <table class="table table-striped">
+        <table class="table table-striped border rounded">
           <thead>
             <tr>
               <th scope="col">STT</th>

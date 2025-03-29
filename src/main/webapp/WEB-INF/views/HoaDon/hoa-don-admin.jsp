@@ -93,7 +93,10 @@ uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
               </nav>
             </div>
 
-            <table class="table table-striped" style="font-size: 14px">
+            <table
+              class="table table-striped border rounded"
+              style="font-size: 14px"
+            >
               <thead>
                 <tr>
                   <th scope="col">STT</th>

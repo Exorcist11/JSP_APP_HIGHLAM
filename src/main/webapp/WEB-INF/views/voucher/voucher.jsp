@@ -71,7 +71,7 @@
                         </div>
 
 
-                        <table class="table table-striped" style="font-size: 14px;">
+                        <table class="table table-striped border rounded" style="font-size: 14px;">
                             <thead>
                                 <tr>
                                     <th scope="col">STT</th>

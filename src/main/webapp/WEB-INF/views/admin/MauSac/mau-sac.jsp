@@ -52,7 +52,7 @@ contentType="text/html;charset=UTF-8" language="java" %>
               </button>
             </div>
 
-            <table class="table table-striped">
+            <table class="table table-striped border rounded">
               <thead>
                 <tr>
                   <th scope="col">#</th>

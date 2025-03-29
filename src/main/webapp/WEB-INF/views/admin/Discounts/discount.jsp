@@ -54,7 +54,7 @@ uri="http://java.sun.com/jsp/jstl/fmt" %>
               </button>
             </div>
 
-            <table class="table table-striped">
+            <table class="table table-striped border rounded">
               <thead>
                 <tr>
                   <th scope="col">#</th>

@@ -27,7 +27,7 @@
                     </div>
                     <div class="row mt-2">
                         <h2 class="">Người Dùng Chi Tiết</h2>
-                        <table class="table table-striped">
+                        <table class="table table-striped border rounded">
                             <thead>
                                 <tr>
                                     <th scope="col">#</th>

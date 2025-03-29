@@ -26,7 +26,7 @@
                     </div>
                     <div class="row mt-2">
                         <h2 class="">Hóa Đơn Chi Tiết</h2>
-                        <table class="table table-striped" style="margin-left: 13px; max-width: 1476px">
+                        <table class="table table-striped border rounded" style="margin-left: 13px; max-width: 1476px">
                             <thead>
                                 <tr>
                                     <th scope="col">STT</th>
