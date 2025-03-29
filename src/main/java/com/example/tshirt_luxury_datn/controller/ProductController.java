@@ -41,23 +41,22 @@ public class ProductController {
   @Autowired
   private ColorService colorService;
 
-
-
   @GetMapping
-  public String listProduct(Model model) {
-    model.addAttribute("products", productService.getAllProduct());
-    model.addAttribute("categories", categoryService.getAllCategory());
-    return "admin/Product/san-pham-admin";
-  }
-
-  @GetMapping("/search")
-  public String searchProducts(@RequestParam(value = "timKiemSanPham", required = false) String timKiemSanPham,
+  public String listOrSearchProducts(
+      @RequestParam(value = "timKiemSanPham", required = false) String timKiemSanPham,
       @RequestParam(value = "trangThai", required = false) Boolean trangThai,
       Model model) {
-    List<Product> products = productService.searchProducts(timKiemSanPham, trangThai);
+
+    List<Product> products = (timKiemSanPham == null && trangThai == null)
+        ? productService.getAllProduct()
+        : productService.searchProducts(timKiemSanPham, trangThai);
+
     model.addAttribute("products", products);
+    model.addAttribute("categories", categoryService.getAllCategory());
+
     model.addAttribute("timKiemSanPham", timKiemSanPham);
     model.addAttribute("trangThai", trangThai);
+
     return "admin/Product/san-pham-admin";
   }
 
@@ -99,7 +98,7 @@ public class ProductController {
     model.addAttribute("colors", colorService.getAllColor());
     model.addAttribute("sizes", sizeService.getAllSize());
     model.addAttribute("product", productService.getProductByID(productId));
-    
+
     try {
       List<ProductDetail> lstPD = detailService.getProductDetailByProductId(productId);
       model.addAttribute("lstPD", lstPD);

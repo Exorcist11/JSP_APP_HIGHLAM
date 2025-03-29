@@ -23,8 +23,18 @@ public class OrderController {
     private OrderService orderService;
 
     @GetMapping
-    public String listOrders(Model model) {
-        model.addAttribute("listOrders", orderService.getListOrders());
+    public String listOrders(
+            @RequestParam(required = false) String code,
+            @RequestParam(required = false) String status,
+            Model model) {
+
+        List<Order> orders = (code != null || status != null)
+                ? orderService.searchOrder(code, status)
+                : orderService.getListOrders();
+
+        model.addAttribute("code", code);
+        model.addAttribute("status", status);
+        model.addAttribute("listOrders", orders);
         return "HoaDon/hoa-don-admin";
     }
 

@@ -56,7 +56,7 @@ uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
       <div>
         <div class="w-100">
-          <form action="/admin/order/search" method="GET" class="row g-1">
+          <form action="/admin/order" method="GET" class="row g-1">
             <!-- Ô tìm kiếm -->
             <div class="col-5">
               <input
@@ -121,92 +121,86 @@ uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
           </tr>
         </thead>
         <tbody>
-          <c:forEach items="${listOrders}" var="hd" varStatus="i">
-            <tr>
-              <td>${i.index +1}</td>
-              <td>${hd.code}</td>
-              <td>${hd.guestEmail}</td>
-              <td>${hd.recipientName}</td>
-              <td>${hd.recipientPhone}</td>
-              <td>${hd.recipientAddress}</td>
-              <td>
-                <fmt:formatNumber
-                  value="${hd.totalAmount}"
-                  groupingUsed="true"
-                  maxFractionDigits="0"
-                />
-                VND
-              </td>
-              <td>${hd.status}</td>
-              <td class="d-flex justify-content-end gap-2">
-                <!-- Nút Xem Chi Tiết -->
-                <a
-                  class="rounded-pill"
-                  data-toggle="tooltip"
-                  data-placement="top"
-                  title="Xem Chi Tiết"
-                  href="/admin/order/${hd.id}"
-                >
-                  <i class="fa-solid fa-eye"></i>
-                </a>
-
-                <!-- Dropdown với chỉ icon -->
-                <div class="dropdown d-inline-block">
-                  <!-- Icon wrench (🔧) -->
-                  <a
-                    href="#"
-                    class="dropdown-toggle"
-                    id="dropdownMenuButton"
-                    data-bs-toggle="dropdown"
-                    aria-expanded="false"
-                    title="Cập Nhật"
-                  >
-                    <i class="fa-solid fa-wrench"></i>
-                  </a>
-
-                  <!-- Dropdown menu -->
-                  <div
-                    class="dropdown-menu"
-                    aria-labelledby="dropdownMenuButton"
-                  >
-                    <!-- Chỉnh sửa đơn hàng -->
-                    <a
-                      class="dropdown-item"
-                      th:href="@{'/admin/order/edit/' + ${hd.id}}"
-                    >
-                      ✏️ Chỉnh sửa đơn hàng
-                    </a>
-
-                    <!-- In hóa đơn -->
-                    <a
-                      class="dropdown-item"
-                      th:href="@{'/admin/order/print/' + ${hd.id}}"
-                    >
-                      🖨️ In hóa đơn
-                    </a>
-
-                    <!-- Cập nhật trạng thái: Xác nhận đơn hàng -->
-                    <a
-                      href="#"
-                      class="dropdown-item"
-                      onclick="updateOrderStatus('${hd.id}', 'CONFIRMED')"
-                    >
-                      ✅ Xác nhận đơn hàng
-                    </a>
-
-                    <!-- Cập nhật trạng thái: Hủy đơn hàng -->
-                    <a
-                      href="#"
-                      class="dropdown-item text-danger"
-                      onclick="if(confirm('Bạn có chắc chắn muốn hủy đơn hàng này?')) updateOrderStatus('${hd.id}', 'CANCELLED')"
-                    >
-                      🚫 Hủy đơn hàng
-                    </a>
-                  </div>
-                </div>
-              </td>
-            </tr>
-          </c:forEach>
+          <c:choose>
+            <c:when test="${empty listOrders}">
+              <tr>
+                <td colspan="7" class="text-center">Không tìm thấy kết quả nào!</td>
+              </tr>
+            </c:when>
+            <c:otherwise>
+              <c:forEach items="${listOrders}" var="hd" varStatus="i">
+                <tr>
+                  <td>${i.index +1}</td>
+                  <td>${hd.code}</td>
+                  <td>${hd.guestEmail}</td>
+                  <td>${hd.recipientName}</td>
+                  <td>${hd.recipientPhone}</td>
+                  <td>${hd.recipientAddress}</td>
+                  <td>
+                    <fmt:formatNumber
+                      value="${hd.totalAmount}"
+                      groupingUsed="true"
+                      maxFractionDigits="0"
+                    />
+                    VND
+                  </td>
+                  <td>${hd.status}</td>
+                  <td class="text-end">
+                    <div class="d-flex justify-content-end gap-2 align-items-center" style="min-width: 120px">
+                      <!-- Nút Xem Chi Tiết -->
+                      <a class="btn btn-sm btn-outline-primary"
+                         data-toggle="tooltip"
+                         data-placement="top"
+                         title="Xem Chi Tiết"
+                         href="/admin/order/${hd.id}">
+                        <i class="fa-solid fa-eye"></i>
+                      </a>
+                  
+                      <!-- Dropdown Actions -->
+                      <div class="dropdown">
+                        <button class="btn btn-sm btn-outline-secondary dropdown-toggle"
+                                type="button"
+                                id="dropdownMenuButton_${hd.id}"
+                                data-bs-toggle="dropdown"
+                                aria-expanded="false"
+                                title="Cập Nhật">
+                          <i class="fa-solid fa-ellipsis-vertical"></i>
+                        </button>
+                        
+                        <ul class="dropdown-menu dropdown-menu-end"
+                            aria-labelledby="dropdownMenuButton_${hd.id}"
+                            style="min-width: 200px; max-width: 90vw">
+                          <li>
+                            <a class="dropdown-item" href="/admin/order/edit/${hd.id}">
+                              <i class="fas fa-edit me-2"></i>Chỉnh sửa đơn hàng
+                            </a>
+                          </li>
+                          <li>
+                            <a class="dropdown-item" href="/admin/order/print/${hd.id}">
+                              <i class="fas fa-print me-2"></i>In hóa đơn
+                            </a>
+                          </li>
+                          <li><hr class="dropdown-divider"></li>
+                          <li>
+                            <a class="dropdown-item text-success" href="#"
+                               onclick="updateOrderStatus('${hd.id}', 'CONFIRMED')">
+                              <i class="fas fa-check-circle me-2"></i>Xác nhận đơn hàng
+                            </a>
+                          </li>
+                          <li>
+                            <a class="dropdown-item text-danger" href="#"
+                               onclick="return confirm('Bạn chắc chắn muốn hủy?') && updateOrderStatus('${hd.id}', 'CANCELLED')">
+                              <i class="fas fa-times-circle me-2"></i>Hủy đơn hàng
+                            </a>
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
+                  </td>
+                </tr>
+              </c:forEach>
+            </c:otherwise>
+          </c:choose>
         </tbody>
       </table>
     </main>

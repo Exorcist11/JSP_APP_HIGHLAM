@@ -60,7 +60,7 @@ uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
       <h2 class="">Quản Lý Sản Phẩm</h2>
 
       <div class="w-100">
-        <form action="/admin/products/search" method="GET" class="row g-1">
+        <form action="/admin/products" method="GET" class="row g-1">
           <!-- Ô tìm kiếm -->
           <div class="col-5">
             <input
@@ -136,65 +136,76 @@ uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
           </tr>
         </thead>
         <tbody>
-          <c:forEach items="${products}" var="sp" varStatus="i">
-            <tr>
-              <td class="align-middle">${i.index+1}</td>
-              <td class="align-middle">${sp.code}</td>
-              <td class="align-middle">${sp.name}</td>
-              <td class="align-middle">
-                <fmt:formatNumber
-                  value="${sp.price}"
-                  groupingUsed="true"
-                  maxFractionDigits="0"
-                />
-                VND
-              </td>
+          <c:choose>
+            <c:when test="${empty products}">
+              <tr>
+                <td colspan="7" class="text-center">
+                  Không tìm thấy kết quả nào!
+                </td>
+              </tr>
+            </c:when>
+            <c:otherwise>
+              <c:forEach items="${products}" var="sp" varStatus="i">
+                <tr>
+                  <td class="align-middle">${i.index+1}</td>
+                  <td class="align-middle">${sp.code}</td>
+                  <td class="align-middle">${sp.name}</td>
+                  <td class="align-middle">
+                    <fmt:formatNumber
+                      value="${sp.price}"
+                      groupingUsed="true"
+                      maxFractionDigits="0"
+                    />
+                    VND
+                  </td>
 
-              <td class="align-middle">
-                <c:if test="${sp.status == true}">
-                  <span class="badge bg-success">Còn Hàng</span>
-                </c:if>
-                <c:if test="${sp.status == false}">
-                  <span class="badge bg-danger">Hết Hàng</span>
-                </c:if>
-              </td>
-              <td class="align-middle d-flex justify-content-end gap-2">
-                <a
-                  class="btn edit-btn mb-0"
-                  data-bs-toggle="modal"
-                  data-bs-target="#editModal"
-                  data-id="${sp.id}"
-                  data-code="${sp.code}"
-                  data-name="${sp.name}"
-                  data-price="${sp.price}"
-                  data-status="${sp.status}"
-                  data-description="${sp.description}"
-                  data-category="${sp.category.id}"
-                  title="Chỉnh Sửa"
-                  ><i class="fa-solid fa-pen-to-square"></i
-                ></a>
-                <a
-                  class="btn delete-btn mb-0"
-                  data-toggle="tooltip"
-                  data-placement="top"
-                  title="Xóa"
-                  data-id="${sp.id}"
-                  onclick="return confirmDelete()"
-                  ><i class="fa-solid fa-trash"></i
-                ></a>
-                <a
-                  href="/admin/products/${sp.id}"
-                  class="btn btn-secondary mb-0"
-                  data-toggl
-                  e="tooltip"
-                  data-placement="top"
-                  title="Xem Chi Tiết"
-                >
-                  <i class="fa-solid fa-eye"></i>
-                </a>
-              </td>
-            </tr>
-          </c:forEach>
+                  <td class="align-middle">
+                    <c:if test="${sp.status == true}">
+                      <span class="badge bg-success">Còn Hàng</span>
+                    </c:if>
+                    <c:if test="${sp.status == false}">
+                      <span class="badge bg-danger">Hết Hàng</span>
+                    </c:if>
+                  </td>
+                  <td class="align-middle d-flex justify-content-end gap-2">
+                    <a
+                      class="btn edit-btn mb-0"
+                      data-bs-toggle="modal"
+                      data-bs-target="#editModal"
+                      data-id="${sp.id}"
+                      data-code="${sp.code}"
+                      data-name="${sp.name}"
+                      data-price="${sp.price}"
+                      data-status="${sp.status}"
+                      data-description="${sp.description}"
+                      data-category="${sp.category.id}"
+                      title="Chỉnh Sửa"
+                      ><i class="fa-solid fa-pen-to-square"></i
+                    ></a>
+                    <a
+                      class="btn delete-btn mb-0"
+                      data-toggle="tooltip"
+                      data-placement="top"
+                      title="Xóa"
+                      data-id="${sp.id}"
+                      onclick="return confirmDelete()"
+                      ><i class="fa-solid fa-trash"></i
+                    ></a>
+                    <a
+                      href="/admin/products/${sp.id}"
+                      class="btn btn-secondary mb-0"
+                      data-toggl
+                      e="tooltip"
+                      data-placement="top"
+                      title="Xem Chi Tiết"
+                    >
+                      <i class="fa-solid fa-eye"></i>
+                    </a>
+                  </td>
+                </tr>
+              </c:forEach>
+            </c:otherwise>
+          </c:choose>
         </tbody>
       </table>
     </main>
