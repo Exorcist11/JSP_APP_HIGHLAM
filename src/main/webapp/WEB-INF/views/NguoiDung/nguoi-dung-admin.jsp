@@ -14,7 +14,11 @@ contentType="text/html;charset=UTF-8" language="java" %>
       href="../assets/img/apple-icon.png"
     />
     <link rel="icon" type="image/png" href="../assets/img/favicon.png" />
-    <title>Soft UI Dashboard 3 by Creative Tim</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css"
+      rel="stylesheet"
+    />
+    <title>Quản lý người dùng | T-Luxury</title>
     <!-- Fonts and icons -->
     <link
       href="https://fonts.googleapis.com/css?family=Inter:300,400,500,600,700,800"
@@ -72,7 +76,7 @@ contentType="text/html;charset=UTF-8" language="java" %>
 
     <div class="mt-3">
       <jsp:include page="/WEB-INF/views/fragments/menuAdmin.jsp" />
-      <main class="main-content max-height-vh-100 h-100 border-radius-lg">
+      <main class="main-content max-height-vh-100 h-100 border-radius-lg pe-3">
         <!-- Navbar -->
         <nav
           class="navbar navbar-main navbar-expand-lg px-0 shadow-none border-radius-xl"
