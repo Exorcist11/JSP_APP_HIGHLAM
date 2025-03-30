@@ -40,7 +40,6 @@ public class OrderController {
 
     @GetMapping("/{orderId}")
     public String orderDetail(Model model, @PathVariable Long orderId) {
-        System.out.println("orderId: " + orderId);
         try {
             model.addAttribute("order", orderService.getOrderDetail(orderId));
             model.addAttribute("orderItems",
@@ -55,7 +54,6 @@ public class OrderController {
     public ResponseEntity<String> updateOrderStatus(
             @PathVariable Long orderId,
             @RequestParam("order") String status) {
-        System.out.println("orderId: " + orderId + ", status: " + status);
         try {
             orderService.changeStatusOrder(orderId, status);
             return ResponseEntity.ok("Cập nhật thành công");

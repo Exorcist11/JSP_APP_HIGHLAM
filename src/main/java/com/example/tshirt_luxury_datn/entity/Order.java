@@ -60,11 +60,13 @@ public class Order {
     @JoinColumn(name = "discount_id", nullable = true)
     private Discount discount;
 
-
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = true)
     private User user;
 
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
     private List<OrderItem> orderItems;
+
+    @Column(nullable = false)
+    private String orderType;
 }

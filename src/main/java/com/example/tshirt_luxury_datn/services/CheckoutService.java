@@ -53,6 +53,7 @@ public class CheckoutService {
       Order order = new Order();
       order.setGuestEmail(orderDTO.getGuestEmail());
       order.setStatus("PENDING");
+      order.setOrderType("ONLINE");
       order.setNotes(orderDTO.getNote());
       order.setRecipientAddress(orderDTO.getRecipientAddress());
       order.setRecipientName(orderDTO.getRecipientName());

@@ -20,4 +20,5 @@ public class OrderDTO {
   private List<ProductDetailDTO> productItems;
   
   private String paymentMethod;
+  public String orderType;
 }
