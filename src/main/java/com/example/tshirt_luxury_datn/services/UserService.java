@@ -141,4 +141,11 @@ public class UserService {
       throw new RuntimeException("Lỗi khi tạo mới profile:  " + e.getMessage());
     }
   }
+
+  public List<User> searchUsers(String keyword) {
+    if (keyword == null || keyword.isBlank()) {
+      return userRepository.findAll();
+    }
+    return userRepository.findByUsernameIgnoreCaseContainingOrEmailIgnoreCaseContaining(keyword, keyword);
+  }
 }

@@ -1,13 +1,17 @@
 package com.example.tshirt_luxury_datn.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.example.tshirt_luxury_datn.dto.UserDTO;
+import com.example.tshirt_luxury_datn.entity.User;
 import com.example.tshirt_luxury_datn.services.UserService;
 import org.springframework.web.bind.annotation.PostMapping;
 
@@ -18,8 +22,10 @@ public class UserController {
   private UserService userService;
 
   @GetMapping
-  public String listUser(Model model) {
-    model.addAttribute("listUser", userService.getListUser());
+  public String listUser(@RequestParam(name = "keyword", required = false) String keyword, Model model) {
+    List<User> users = userService.searchUsers(keyword);
+    model.addAttribute("listUser", users);
+    model.addAttribute("keyword", keyword); 
     return "NguoiDung/nguoi-dung-admin";
   }
 

@@ -48,6 +48,6 @@ public class ProductDetail {
     @Column(nullable = false)
     private Timestamp updatedAt;
 
-     @OneToMany(mappedBy = "productDetail", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "productDetail", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<ProductImage> images = new ArrayList<>();
 }

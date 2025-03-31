@@ -105,26 +105,20 @@ contentType="text/html;charset=UTF-8" language="java" %>
           <h2>Quản Lý Người Dùng</h2>
           <div>
             <nav>
-              <div class="">
-                <form
-                  action="/t-shirt-luxury/admin/timNguoiDung"
-                  method="GET"
-                  class="row g-1 w-100"
-                >
+              <div class="/admin/user">
+                <form action="" method="GET" class="row g-1 w-100">
                   <!-- Ô tìm kiếm -->
                   <div class="col-5">
                     <input
-                      name="timKiemNguoiDung"
-                      class="form-control"
-                      type="search"
-                      placeholder="Tìm tên người dùng"
-                      aria-label="Search"
+                      type="text"
+                      name="keyword"
+                      placeholder="Tìm kiếm theo username hoặc email"
+                      value="${keyword}"
                       style="font-size: 14px"
-                      value="${timKiemNguoiDung}"
+                      class="form-control"
                     />
                   </div>
 
-                  <!-- Dropdown trạng thái -->
                   <div class="col-5 d-flex justify-content-between">
                     <button
                       style="font-size: 14px"
@@ -135,7 +129,7 @@ contentType="text/html;charset=UTF-8" language="java" %>
                     </button>
 
                     <a
-                      href="/t-shirt-luxury/admin/timNguoiDung"
+                      href="/admin/user"
                       style="font-size: 14px"
                       class="btn btn-secondary flex-fill mx-1"
                     >
