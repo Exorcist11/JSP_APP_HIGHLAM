@@ -1,11 +1,17 @@
 package com.example.tshirt_luxury_datn.controller;
 
+import java.util.List;
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import com.example.tshirt_luxury_datn.dto.CategoryDTO;
+import com.example.tshirt_luxury_datn.dto.CategoryDetailDTO;
+import com.example.tshirt_luxury_datn.entity.CategoryDetail;
 import com.example.tshirt_luxury_datn.services.CategoryService;
 
 @Controller
@@ -52,4 +58,27 @@ public class CategoryController {
     }
     return "redirect:/admin/categories";
   }
+
+  // Category Detail Service
+  @PostMapping("/saveDetail")
+  @ResponseBody
+  public ResponseEntity<?> saveCategoryDetail(@RequestBody CategoryDetailDTO request) {
+    try {
+      CategoryDetail detail = categoryService.createCategoryDetail(request);
+      return ResponseEntity.ok().body(Map.of(
+          "success", true,
+          "detail", detail));
+    } catch (RuntimeException e) {
+      return ResponseEntity.badRequest().body(Map.of(
+          "success", false,
+          "message", e.getMessage()));
+    }
+  }
+
+  @GetMapping("/{categoryId}/details")
+  @ResponseBody
+  public List<CategoryDetail> getCategoryDetails(@PathVariable Long categoryId) {
+    return categoryService.getAllCategoryDetail(categoryId);
+  }
+
 }

@@ -22,6 +22,9 @@ public class ProductDetail {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(name = "code", unique = true, nullable = false, length = 100)
+    private String code;
+
     @ManyToOne
     @JoinColumn(name = "product_id")
     private Product product;

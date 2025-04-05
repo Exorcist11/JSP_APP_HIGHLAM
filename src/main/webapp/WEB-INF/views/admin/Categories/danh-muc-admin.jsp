@@ -28,6 +28,13 @@ contentType="text/html;charset=UTF-8" language="java" %>
     />
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
     <link rel="stylesheet" href="../css/button.css" />
+
+    <style>
+      .offcanvas-wider {
+        width: 40vw !important;
+        max-width: 700px;
+      }
+    </style>
   </head>
 
   <body class="g-sidenav-show bg-gray-100 text-sm">
@@ -79,7 +86,6 @@ contentType="text/html;charset=UTF-8" language="java" %>
           <thead>
             <tr>
               <th scope="col">#</th>
-              <!-- <th scope="col">Mã Danh Mục</th> -->
               <th scope="col">Tên Danh Mục</th>
               <th scope="col">Trạng Thái</th>
               <th scope="col" class="text-end">Hành Động</th>
@@ -90,7 +96,6 @@ contentType="text/html;charset=UTF-8" language="java" %>
               <tr class="mb-0">
                 <td class="align-middle" scope="row">${i.index + 1}</td>
                 <td class="align-middle">${dm.name}</td>
-
                 <td class="align-middle">
                   <c:if test="${dm.status == true}">
                     <span class="badge bg-success">Hoạt Động</span>
@@ -103,14 +108,15 @@ contentType="text/html;charset=UTF-8" language="java" %>
                   <a
                     style="font-size: 14px; height: fit-content"
                     class="btn edit-btn mb-0"
-                    data-bs-toggle="modal"
-                    data-bs-target="#editModal"
+                    data-bs-toggle="offcanvas"
+                    data-bs-target="#editOffcanvas"
                     data-id="${dm.id}"
                     data-name="${dm.name}"
                     data-status="${dm.status}"
                     title="Chỉnh Sửa"
-                    ><i class="fa-solid fa-pen-to-square"></i
-                  ></a>
+                  >
+                    <i class="fa-solid fa-pen-to-square"></i>
+                  </a>
                   <a
                     style="font-size: 14px; height: fit-content"
                     onclick="return confirmDelete()"
@@ -119,28 +125,31 @@ contentType="text/html;charset=UTF-8" language="java" %>
                     data-placement="top"
                     data-id="${dm.id}"
                     title="Xóa"
-                    ><i class="fa-solid fa-trash"></i
-                  ></a>
+                  >
+                    <i class="fa-solid fa-trash"></i>
+                  </a>
                 </td>
               </tr>
             </c:forEach>
           </tbody>
         </table>
       </div>
+    </main>
 
-      <!-- Modal Thêm Mới -->
+    <!-- Add Category Modal -->
+    <form method="POST" action="/admin/categories/save">
       <div
         class="modal fade"
-        id="themNguoiDung"
+        id="themSanPham"
         tabindex="-1"
         aria-labelledby="exampleModalLabel"
         aria-hidden="true"
       >
         <div class="modal-dialog">
-          <div class="modal-content">
+          <div class="modal-content" style="font-size: 14px">
             <div class="modal-header">
               <h5 class="modal-title" id="exampleModalLabel">
-                Thêm Mới Người Dùng
+                Thêm Mới Danh Mục
               </h5>
               <button
                 type="button"
@@ -149,319 +158,175 @@ contentType="text/html;charset=UTF-8" language="java" %>
                 aria-label="Close"
               ></button>
             </div>
-            <form action="/admin/user/post" method="POST">
-              <div class="modal-body d-flex flex-column gap-2">
-                <div class="form-group">
-                  <label class="mb-1" for="username">Tên Người Dùng:</label>
-                  <input
-                    type="string"
-                    class="form-control"
-                    id="username"
-                    aria-describedby="emailHelp"
-                    placeholder="Nhập tên người dùng"
-                    name="username"
-                    required
-                  />
-                </div>
-
-                <div class="form-group">
-                  <label class="mb-1" for="email">Email:</label>
-                  <input
-                    type="email"
-                    name="email"
-                    class="form-control"
-                    id="email"
-                    aria-describedby="email"
-                    placeholder="Nhập Email"
-                  />
-                </div>
-
-                <div class="form-group">
-                  <label class="mb-1" for="password">Mật Khẩu:</label>
-                  <input
-                    type="password"
-                    class="form-control"
-                    id="password"
-                    aria-describedby="password"
-                    placeholder="Nhập mật khẩu"
-                    name="password"
-                  />
-                </div>
-
-                <div class="form-group">
-                  <label class="mb-1" for="password">Vai Trò:</label>
-                  <select id="role" name="role" class="form-select">
-                    <option value="USER">USER</option>
-                    <option value="ADMIN">ADMIN</option>
-                  </select>
-                </div>
-
-                <div class="form-group">
-                  <label class="mb-1" for="password">Trạng Thái:</label>
-                  <select id="status" name="status" class="form-select">
-                    <option value="1">Hoạt Động</option>
-                    <option value="0">Không Hoạt Động</option>
-                  </select>
-                </div>
-              </div>
-              <div class="modal-footer">
-                <button
-                  type="button"
-                  class="btn btn-secondary"
-                  data-bs-dismiss="modal"
+            <div class="modal-body">
+              <div class="form-floating mb-3">
+                <input
+                  type="text"
+                  class="form-control"
+                  id="floatingInput"
+                  placeholder="Tên Danh Mục"
+                  name="name"
+                  required
+                />
+                <label for="floatingInput"
+                  >Tên Danh Mục <span class="text-danger">*</span></label
                 >
-                  Đóng
-                </button>
-                <button type="submit" class="btn btn-success">Thêm Mới</button>
               </div>
-            </form>
+              <div class="mb-3 mt-3">
+                <label for="exampleFormControlTextarea1" class="form-label"
+                  >Mô tả</label
+                >
+                <textarea
+                  class="form-control"
+                  id="exampleFormControlTextarea1"
+                  rows="3"
+                  name="moTa"
+                ></textarea>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button
+                type="button"
+                class="btn btn-secondary"
+                data-bs-dismiss="modal"
+                style="font-size: 14px"
+              >
+                Đóng
+              </button>
+              <button
+                type="submit"
+                class="btn btn-success"
+                style="font-size: 14px"
+              >
+                Thêm Mới
+              </button>
+            </div>
           </div>
         </div>
       </div>
+    </form>
 
-      <!-- Modal Edit -->
-      <form id="editUserForm" method="POST">
-        <div
-          class="modal fade"
-          id="editModal"
-          tabindex="-1"
-          aria-labelledby="editModalLabel"
-          aria-hidden="true"
-        >
-          <div class="modal-dialog">
-            <div class="modal-content">
-              <div class="modal-header">
-                <h5 class="modal-title" id="editModalLabel">
-                  Chỉnh Sửa Người Dùng
-                </h5>
-                <button
-                  type="button"
-                  class="btn-close"
-                  data-bs-dismiss="modal"
-                  aria-label="Close"
-                ></button>
-              </div>
-              <div class="modal-body d-flex flex-column gap-2">
-                <input type="hidden" id="userId" name="id" />
-
-                <div class="form-group">
-                  <label class="mb-1" for="username">Tên Người Dùng:</label>
-                  <input
-                    type="text"
-                    class="form-control"
-                    id="usernameU"
-                    name="username"
-                    placeholder="Nhập tên người dùng"
-                    required
-                    readonly
-                  />
-                </div>
-
-                <div class="form-group">
-                  <label class="mb-1" for="email">Email:</label>
-                  <input
-                    type="email"
-                    class="form-control"
-                    id="emailU"
-                    name="email"
-                    placeholder="Nhập Email"
-                  />
-                </div>
-
-                <div class="form-group">
-                  <label class="mb-1" for="password">Mật Khẩu:</label>
-                  <input
-                    type="password"
-                    class="form-control"
-                    id="passwordU"
-                    name="password"
-                    placeholder="Nhập mật khẩu"
-                  />
-                </div>
-
-                <div class="form-group">
-                  <label class="mb-1" for="role">Vai Trò:</label>
-                  <select id="roleU" name="role" class="form-select">
-                    <option value="USER">USER</option>
-                    <option value="ADMIN">ADMIN</option>
-                  </select>
-                </div>
-
-                <div class="form-group">
-                  <label class="mb-1" for="status">Trạng Thái:</label>
-                  <select id="statusU" name="status" class="form-select">
-                    <option value="true">Hoạt Động</option>
-                    <option value="false">Không Hoạt Động</option>
-                  </select>
-                </div>
-              </div>
-              <div class="modal-footer">
-                <button
-                  type="button"
-                  class="btn btn-secondary"
-                  data-bs-dismiss="modal"
-                >
-                  Đóng
-                </button>
-                <button type="submit" class="btn btn-success">Cập Nhật</button>
-              </div>
-            </div>
-          </div>
-        </div>
-      </form>
-    </main>
-  </body>
-
-  <!-- Modal -->
-  <form method="POST" action="/admin/categories/save">
+    <!-- Edit Category Offcanvas -->
     <div
-      class="modal fade"
-      id="themSanPham"
+      class="offcanvas offcanvas-end offcanvas-wider"
       tabindex="-1"
-      aria-labelledby="exampleModalLabel"
-      aria-hidden="true"
+      id="editOffcanvas"
+      aria-labelledby="editOffcanvasLabel"
     >
-      <div class="modal-dialog">
-        <div class="modal-content" style="font-size: 14px">
-          <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLabel">
-              Thêm Mới Danh Mục
-            </h5>
-            <button
-              type="button"
-              class="btn-close"
-              data-bs-dismiss="modal"
-              aria-label="Close"
-            ></button>
-          </div>
+      <div class="offcanvas-header">
+        <h3 class="offcanvas-title" id="editOffcanvasLabel">
+          Chỉnh Sửa Danh Mục
+        </h3>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="offcanvas"
+          aria-label="Close"
+        ></button>
+      </div>
 
-          <div class="modal-body">
-            <div class="form-floating mb-3">
-              <input
-                type="text"
-                class="form-control"
-                id="floatingInput"
-                placeholder="Tên Danh Mục"
-                name="name"
-                required
-              />
-              <label for="floatingInput"
-                >Tên Danh Mục <span class="text-danger">*</span></label
-              >
-            </div>
+      <div class="offcanvas-body" style="font-size: 14px">
+        <!-- Form chính chỉnh sửa category -->
+        <form id="editCategoryForm" method="post">
+          <input type="hidden" id="editCategoryId" name="id" />
 
-            <div class="mb-3 mt-3">
-              <label for="exampleFormControlTextarea1" class="form-label"
-                >Mô tả</label
-              >
-              <textarea
-                class="form-control"
-                id="exampleFormControlTextarea1"
-                rows="3"
-                name="moTa"
-              ></textarea>
-            </div>
-          </div>
-          <div class="modal-footer">
-            <button
-              type="button"
-              class="btn btn-secondary"
-              data-bs-dismiss="modal"
-              style="font-size: 14px"
+          <div class="form-floating mb-3">
+            <input
+              type="text"
+              class="form-control"
+              id="categoryName"
+              placeholder="Tên Danh Mục"
+              name="name"
+              required
+            />
+            <label for="categoryName"
+              >Tên Danh Mục <span class="text-danger">*</span></label
             >
-              Đóng
-            </button>
+          </div>
+
+          <div class="mb-3 mt-3">
+            <label for="cDescription" class="form-label">Mô tả</label>
+            <textarea
+              class="form-control"
+              id="cDescription"
+              rows="3"
+              name="moTa"
+            ></textarea>
+          </div>
+
+          <div class="form-check form-switch">
+            <input
+              class="form-check-input"
+              type="checkbox"
+              role="switch"
+              id="flexSwitchCheckChecked"
+              name="status"
+              checked
+              value="true"
+            />
+            <span id="statusText" class="ms-2 fw-bold text-success"
+              >Hoạt Động</span
+            >
+          </div>
+        </form>
+
+        <!-- Phần quản lý category detail -->
+        <h5 class="mt-4">Danh mục chi tiết</h5>
+
+        <!-- Form thêm mới category detail -->
+        <form id="addDetailForm" class="mb-3">
+          <div class="d-flex gap-2">
+            <input type="hidden" id="categoryIdForDetail" name="categoryId" />
+            <input
+              type="text"
+              class="form-control"
+              id="detailName"
+              name="name"
+              placeholder="Tên danh mục chi tiết"
+              required
+            />
             <button
               type="submit"
-              class="btn btn-success"
-              style="font-size: 14px"
+              class="btn btn-outline-success"
+              style="font-size: 14px; margin-bottom: 0"
             >
-              Thêm Mới
+              <i class="fa-solid fa-circle-plus"></i>
             </button>
           </div>
+        </form>
+
+        <!-- Bảng hiển thị danh sách category detail -->
+        <div class="table-responsive">
+          <table class="table border rounded" style="font-size: 14px">
+            <thead>
+              <tr>
+                <th>Tên</th>
+                <th>Trạng thái</th>
+                <th class="text-end">Hành động</th>
+              </tr>
+            </thead>
+            <tbody id="categoryDetailsTable">
+              <!-- Nội dung sẽ được load bằng AJAX -->
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Nút submit cho form chính -->
+        <div class="mt-4 d-flex justify-content-end gap-2">
+          <button type="submit" form="editCategoryForm" class="btn btn-primary">
+            Cập Nhật
+          </button>
+          <button
+            type="button"
+            class="btn btn-secondary"
+            data-bs-dismiss="offcanvas"
+          >
+            Đóng
+          </button>
         </div>
       </div>
     </div>
-  </form>
 
-  <!-- Modal Edit -->
-  <form id="editCategoryForm" method="post">
-    <div
-      class="modal fade"
-      id="editModal"
-      tabindex="-1"
-      aria-labelledby="editModalLabel"
-      aria-hidden="true"
-    >
-      <div class="modal-dialog">
-        <div class="modal-content" style="font-size: 14px">
-          <div class="modal-header">
-            <h5 class="modal-title" id="editModalLabel">Chỉnh Sửa Danh Mục</h5>
-            <button
-              type="button"
-              class="btn-close"
-              data-bs-dismiss="modal"
-              aria-label="Close"
-            ></button>
-          </div>
-          <div class="modal-body">
-            <!-- ID Ẩn -->
-            <input type="hidden" id="editCategoryId" name="id" />
-
-            <div class="form-floating mb-3">
-              <input
-                type="text"
-                class="form-control"
-                id="categoryName"
-                placeholder="Tên Danh Mục"
-                name="name"
-                required
-              />
-              <label for="categoryName"
-                >Tên Danh Mục <span class="text-danger">*</span></label
-              >
-            </div>
-
-            <div class="mb-3 mt-3">
-              <label for="cDescription" class="form-label">Mô tả</label>
-              <textarea
-                class="form-control"
-                id="cDescription"
-                rows="3"
-                name="moTa"
-              ></textarea>
-            </div>
-
-            <div class="form-check form-switch">
-              <input
-                class="form-check-input"
-                type="checkbox"
-                role="switch"
-                id="flexSwitchCheckChecked"
-                name="status"
-                checked
-                value="true"
-              />
-
-              <span id="statusText" class="ms-2 fw-bold text-success"
-                >Hoạt Động</span
-              >
-            </div>
-          </div>
-          <div class="modal-footer">
-            <button
-              type="button"
-              class="btn btn-secondary"
-              data-bs-dismiss="modal"
-            >
-              Đóng
-            </button>
-            <button type="submit" class="btn btn-primary">Cập Nhật</button>
-          </div>
-        </div>
-      </div>
-    </div>
-  </form>
-
-  <script src="../js/categoryAction.js"></script>
+    <script src="../js/categoryAction.js"></script>
+  </body>
 </html>

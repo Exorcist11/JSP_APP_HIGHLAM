@@ -11,7 +11,9 @@ import org.springframework.stereotype.Service;
 
 import com.example.tshirt_luxury_datn.dto.ProductDTO;
 import com.example.tshirt_luxury_datn.entity.Category;
+import com.example.tshirt_luxury_datn.entity.CategoryDetail;
 import com.example.tshirt_luxury_datn.entity.Product;
+import com.example.tshirt_luxury_datn.repository.CategoryDetailRepository;
 import com.example.tshirt_luxury_datn.repository.CategoryRepository;
 import com.example.tshirt_luxury_datn.repository.ProductRepository;
 
@@ -22,6 +24,9 @@ public class ProductService {
 
   @Autowired
   private CategoryRepository categoryRepository;
+
+  @Autowired
+  private CategoryDetailRepository categoryDetailRepository;
 
   private static final Set<String> generatedCodes = new HashSet<>();
   private static final String CODE_PREFIX = "SP";
@@ -58,9 +63,10 @@ public class ProductService {
 
   public Product createProduct(ProductDTO productDTO) {
     try {
-      Optional<Category> categoryOpt = categoryRepository.findById(productDTO.getCategoryId());
-      if (categoryOpt.isEmpty()) {
-        throw new RuntimeException("Category not found");
+     
+      Optional<CategoryDetail> categortDetailOpt = categoryDetailRepository.findById(productDTO.getCategoryId());
+      if (categortDetailOpt.isEmpty()) {
+        throw new RuntimeException("Category Detail not found");
       }
 
       Product product = new Product();
@@ -68,7 +74,7 @@ public class ProductService {
       product.setStatus(true);
       product.setDescription(productDTO.getDescription());
       product.setPrice(productDTO.getPrice());
-      product.setCategory(categoryOpt.get());
+      product.setCategoryDetail(categortDetailOpt.get());
       product.setCode(generateCode());
       return productRepository.save(product);
     } catch (Exception e) {
@@ -83,6 +89,10 @@ public class ProductService {
         throw new RuntimeException("Không tìm thấy product với ID: " + id);
       }
 
+      Optional<CategoryDetail> categortDetailOpt = categoryDetailRepository.findById(productDTO.getCategoryId());
+      if (categortDetailOpt.isEmpty()) {
+        throw new RuntimeException("Category Detail not found");
+      }
       Optional<Category> categoryOpt = categoryRepository.findById(productDTO.getCategoryId());
       if (categoryOpt.isEmpty()) {
         throw new RuntimeException("Không tìm thấy category với ID: " + productDTO.getCategoryId());
@@ -93,7 +103,7 @@ public class ProductService {
       p.setDescription(productDTO.getDescription());
       p.setPrice(productDTO.getPrice());
       p.setStatus(productDTO.getStatus());
-      p.setCategory(categoryOpt.get());
+      p.setCategoryDetail(categortDetailOpt.get());
       productRepository.save(p);
     } catch (Exception e) {
       throw new RuntimeException("Lỗi khi cập nhật product: " + e.getMessage());

@@ -178,7 +178,7 @@ uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
                       data-price="${sp.price}"
                       data-status="${sp.status}"
                       data-description="${sp.description}"
-                      data-category="${sp.category.id}"
+                      data-category="${sp.categoryDetail.id}"
                       title="Chỉnh Sửa"
                       ><i class="fa-solid fa-pen-to-square"></i
                     ></a>

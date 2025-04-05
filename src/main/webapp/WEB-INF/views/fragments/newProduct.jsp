@@ -20,10 +20,10 @@ uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
                         maxFractionDigits="0"
                       /> VND</p>
 
-                    <div class="text-center" style="font-size:5px">
-                        <a href="#" class="btn btn-outline-light">
+                    <div class="text-center" style="font-size:5px;">
+                        <a href="#" class="btn btn-outline-light text-black">
                             <i class="fa-solid fa-cart-shopping"></i>Mua Nhanh</a>
-                        <a href="/product?id=${spNew.id}" class="btn btn-outline-light">
+                        <a href="/product?id=${spNew.id}" class="btn btn-outline-light text-black">
                             <i class="fa-solid fa-eye"></i>Xem chi tiết</a>
                     </div>
                 </div>

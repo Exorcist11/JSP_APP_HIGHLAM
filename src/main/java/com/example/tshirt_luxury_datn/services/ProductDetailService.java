@@ -44,6 +44,7 @@ public class ProductDetailService {
   }
 
   public ProductDetail createProductDetail(ProductDetailDTO detailDTO, List<MultipartFile> images) {
+    System.out.println("ProductDetailDTO: " + detailDTO);
     try {
       Optional<Product> productOpt = productRepository.findById(detailDTO.getProductID());
       Optional<Size> sizeOpt = sizeRepository.findById(detailDTO.getSizeID());
@@ -64,6 +65,7 @@ public class ProductDetailService {
       productDetail.setColor(colorOpt.get());
       productDetail.setSize(sizeOpt.get());
       productDetail.setProduct(productOpt.get());
+      productDetail.setCode(productOpt.get().getCode() + "S" + sizeOpt.get().getId() + "C" + colorOpt.get().getId());
 
       ProductDetail savedProductDetail = detailRepository.save(productDetail);
 

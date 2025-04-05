@@ -89,5 +89,71 @@ uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
       <jsp:include page="/WEB-INF/views/fragments/footer.jsp" />
     </div>
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        let cartItems = JSON.parse(localStorage.getItem("cart")) || [];
+        console.log(cartItems);
+
+        let cartContainer = document.querySelector(".cart-container");
+        let emptyCartMessage = document.querySelector(
+          ".text-danger.text-center"
+        );
+
+        // Nếu có sản phẩm trong LocalStorage nhưng không có bảng, thì tạo bảng
+        if (cartItems.length > 0) {
+          // Ẩn thông báo "Giỏ hàng trống" nếu có
+          if (emptyCartMessage) emptyCartMessage.style.display = "none";
+
+          // Kiểm tra bảng có tồn tại không, nếu không thì tạo
+          let cartTable = document.querySelector(".table");
+          if (!cartTable) {
+            let tableHtml = `
+              <table class="table table-bordered text-center mt-3">
+                <thead class="table-light">
+                  <tr>
+                    <th>Tên sản phẩm</th>
+                    <th>Size</th>
+                    <th>Màu sắc</th>
+                    <th>Số lượng</th>
+                    <th>Hành động</th>
+                  </tr>
+                </thead>
+                <tbody></tbody>
+              </table>`;
+            cartContainer.insertAdjacentHTML("afterbegin", tableHtml);
+            cartTable = document.querySelector(".table tbody");
+          } else {
+            cartTable = cartTable.querySelector("tbody");
+          }
+
+          // Thêm sản phẩm từ LocalStorage vào bảng
+          cartItems.forEach((item) => {
+            let row = document.createElement("tr");
+            row.innerHTML = `
+              <td>${item.productName} 1</td>
+              <td>${item.size}</td>
+              <td>${item.color}</td>
+              <td><input type="number" value="${item.quantity}" class="form-control text-center" min="1" /></td>
+              <td>
+                <button class="btn btn-primary update-cart" data-id="${item.productId}">Cập nhật</button>
+                <button class="btn btn-danger remove-cart" data-id="${item.productId}">Xóa</button>
+              </td>
+            `;
+            cartTable.appendChild(row);
+          });
+        }
+      });
+
+      // Xử lý nút "Xóa" sản phẩm khỏi LocalStorage
+      document.addEventListener("click", function (event) {
+        if (event.target.classList.contains("remove-cart")) {
+          let productId = event.target.getAttribute("data-id");
+          let cartItems = JSON.parse(localStorage.getItem("cart")) || [];
+          cartItems = cartItems.filter((item) => item.productId != productId);
+          localStorage.setItem("cart", JSON.stringify(cartItems));
+          location.reload();
+        }
+      });
+    </script>
   </body>
 </html>

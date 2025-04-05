@@ -44,8 +44,8 @@ public class Product {
     private Timestamp updatedAt;
 
     @ManyToOne
-    @JoinColumn(name = "category_id")
-    private Category category;
+    @JoinColumn(name = "category_detail_id", nullable = false)
+    private CategoryDetail categoryDetail;
 
     @OneToMany(mappedBy = "product")
     private List<ProductDetail> productDetails;

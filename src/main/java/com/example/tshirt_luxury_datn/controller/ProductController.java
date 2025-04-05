@@ -52,7 +52,7 @@ public class ProductController {
         : productService.searchProducts(timKiemSanPham, trangThai);
 
     model.addAttribute("products", products);
-    model.addAttribute("categories", categoryService.getAllCategory());
+    model.addAttribute("categories", categoryService.getAllCategoryDetail());
 
     model.addAttribute("timKiemSanPham", timKiemSanPham);
     model.addAttribute("trangThai", trangThai);
