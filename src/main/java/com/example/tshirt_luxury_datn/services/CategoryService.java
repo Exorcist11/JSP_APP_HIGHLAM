@@ -2,6 +2,7 @@ package com.example.tshirt_luxury_datn.services;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -71,8 +72,11 @@ public class CategoryService {
     return categoryDetailRepository.findAll();
   }
 
-  public List<CategoryDetail> getAllCategoryDetail(Long id) {
-    return categoryDetailRepository.findByCategoryId(id);
+  public List<CategoryDetailDTO> getAllCategoryDetail(Long id) {
+    List<CategoryDetail> list = categoryDetailRepository.findByCategoryId(id);
+    return list.stream()
+        .map(cd -> new CategoryDetailDTO(cd)) 
+        .collect(Collectors.toList());
   }
 
   public CategoryDetail createCategoryDetail(CategoryDetailDTO request) {

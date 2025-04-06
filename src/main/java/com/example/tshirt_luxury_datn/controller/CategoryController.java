@@ -77,7 +77,7 @@ public class CategoryController {
 
   @GetMapping("/{categoryId}/details")
   @ResponseBody
-  public List<CategoryDetail> getCategoryDetails(@PathVariable Long categoryId) {
+  public List<CategoryDetailDTO> getCategoryDetails(@PathVariable Long categoryId) {
     return categoryService.getAllCategoryDetail(categoryId);
   }
 

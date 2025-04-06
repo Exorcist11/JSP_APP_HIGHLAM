@@ -54,9 +54,10 @@ contentType="text/html;charset=UTF-8" language="java" %>
           <thead>
             <tr>
               <th scope="col">STT</th>
-
+              <th scope="col">Code</th>
               <th scope="col"></th>
               <th scope="col">Size</th>
+
               <th scope="col">Màu Sắc</th>
               <th scope="col">Số Lượng</th>
               <th scope="col">Trạng Thái</th>
@@ -70,6 +71,7 @@ contentType="text/html;charset=UTF-8" language="java" %>
                 <c:forEach items="${lstPD}" var="s" varStatus="i">
                   <tr>
                     <td>${i.index + 1}</td>
+                    <td>${s.code}</td>
 
                     <td>
                       <c:forEach items="${s.images}" var="img">

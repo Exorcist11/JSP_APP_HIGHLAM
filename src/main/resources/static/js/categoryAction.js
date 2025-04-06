@@ -96,6 +96,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Hàm load danh sách category detail
     function loadCategoryDetails(categoryId) {
+        console.log("Loading details for category ID:", categoryId);
         fetch(`/admin/categories/${categoryId}/details`)
             .then(response => response.json())
             .then(details => {

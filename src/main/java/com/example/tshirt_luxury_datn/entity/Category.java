@@ -6,8 +6,6 @@ import java.util.List;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -38,6 +36,5 @@ public class Category {
     private Timestamp updatedAt;
 
     @OneToMany(mappedBy = "category")
-    @JsonManagedReference 
     private List<CategoryDetail> categoryDetails;
 }

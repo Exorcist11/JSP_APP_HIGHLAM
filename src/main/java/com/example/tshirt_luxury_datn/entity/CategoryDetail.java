@@ -2,8 +2,6 @@ package com.example.tshirt_luxury_datn.entity;
 
 import java.util.List;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -27,7 +25,6 @@ public class CategoryDetail {
 
     @ManyToOne
     @JoinColumn(name = "category_id", nullable = false)
-    @JsonBackReference
     private Category category;
 
     @OneToMany(mappedBy = "categoryDetail")
