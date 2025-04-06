@@ -11,7 +11,7 @@ uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
     <c:forEach var="spNew" items="${sanPhamList}">
         <div class="col-3">
             <div class="card" style="width: 18rem; border-style:none">
-                <img src="../images/ao_phong_boxy/DEVOTUS/black.webp" class="card-img-top" alt="...">
+                <img src="${spNew.imgUrl}" class="card-img-top" alt="...">
                 <div class="card-body">
                     <h5 class="card-title text-center" style="font-size:13px">${spNew.name}</h5>
                     <p class="card-text fw-bold text-center" style="font-size: 14px;"><fmt:formatNumber

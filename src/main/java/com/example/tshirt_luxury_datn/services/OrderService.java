@@ -127,7 +127,8 @@ public class OrderService {
             Order order = new Order();
             order.setOrderType("POS");
             order.setStatus("SUCCCESS");
-            order.setTotalAmount(0.0);
+            order.setTotalAmount(cart.stream()
+                    .mapToDouble(item -> item.getProductDetail().getProduct().getPrice() * item.getQuantity()).sum());
             order.setCode(generateOrderCode());
             order.setRecipientAddress(request.getRecipientAddress());
             order.setRecipientPhone(request.getRecipientPhone());

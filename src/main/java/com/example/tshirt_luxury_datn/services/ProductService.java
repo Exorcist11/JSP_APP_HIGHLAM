@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Random;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,6 +14,7 @@ import com.example.tshirt_luxury_datn.dto.ProductDTO;
 import com.example.tshirt_luxury_datn.entity.Category;
 import com.example.tshirt_luxury_datn.entity.CategoryDetail;
 import com.example.tshirt_luxury_datn.entity.Product;
+import com.example.tshirt_luxury_datn.entity.ProductDetail;
 import com.example.tshirt_luxury_datn.repository.CategoryDetailRepository;
 import com.example.tshirt_luxury_datn.repository.CategoryRepository;
 import com.example.tshirt_luxury_datn.repository.ProductRepository;
@@ -63,7 +65,7 @@ public class ProductService {
 
   public Product createProduct(ProductDTO productDTO) {
     try {
-     
+
       Optional<CategoryDetail> categortDetailOpt = categoryDetailRepository.findById(productDTO.getCategoryId());
       if (categortDetailOpt.isEmpty()) {
         throw new RuntimeException("Category Detail not found");
@@ -124,7 +126,18 @@ public class ProductService {
     }
   }
 
-  public List<Product> getLastestProducts() {
-    return productRepository.findTop4ByOrderByCreatedAtDesc();
+  public List<ProductDTO> getLastestProducts() {
+    List<Product> products = productRepository.findTop4ByOrderByCreatedAtDesc();
+    return products.stream().map(p -> {
+      ProductDTO dto = new ProductDTO();
+      dto.setId(p.getId());
+      dto.setName(p.getName());
+      dto.setPrice(p.getPrice());
+      dto.setStatus(p.getStatus());
+      dto.setCategoryId(p.getCategoryDetail().getId());
+      dto.setDescription(p.getDescription());
+      dto.setImgUrl(p.getProductDetails().get(0).getFirstImageUrl());
+      return dto;
+    }).collect(Collectors.toList());
   }
 }

@@ -109,7 +109,7 @@
               <div class="cart-panel p-3 sticky-top" style="top: 20px">
                 <div class="d-flex justify-content-between align-items-center mb-3">
                   <h4 class="mb-0">Đơn hàng hiện tại</h4>
-                  <span class="badge bg-secondary">#DH12345</span>
+                  <span class="badge bg-secondary"></span>
                 </div>
 
                 <div class="cart-items mb-3" style="max-height: 400px; overflow-y: auto">
@@ -165,7 +165,7 @@
                       <i class="fas fa-trash-alt"></i> Hủy đơn
                     </button>
                   </form>
-                  <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#checkoutModal">
+                  <button type="button" class="btn btn-success col w-100" data-bs-toggle="modal" data-bs-target="#checkoutModal">
                     <i class="fas fa-credit-card"></i> Thanh toán
                   </button>
                 </div>
