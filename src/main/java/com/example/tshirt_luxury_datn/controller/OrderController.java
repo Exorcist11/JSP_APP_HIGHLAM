@@ -12,13 +12,9 @@ import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.example.tshirt_luxury_datn.dto.OrderDTO;
 import com.example.tshirt_luxury_datn.entity.Order;
 import com.example.tshirt_luxury_datn.services.OrderService;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 
 
 @Controller
@@ -83,13 +79,5 @@ public class OrderController {
         }
     }
 
-    @PostMapping("/in-store")
-    @ResponseBody
-    public ResponseEntity<Order> createInStoreOrder(@RequestBody OrderDTO order) {
-        Order newOrder = orderService.orderInStore(order);
-        
-        return ResponseEntity.ok(newOrder);
-    }
-    
 
 }

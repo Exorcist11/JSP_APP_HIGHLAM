@@ -10,9 +10,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.example.tshirt_luxury_datn.dto.CartItemDTO;
+import com.example.tshirt_luxury_datn.dto.OrderDTO;
 import com.example.tshirt_luxury_datn.entity.CartItem;
+import com.example.tshirt_luxury_datn.entity.Order;
 import com.example.tshirt_luxury_datn.entity.ProductDetail;
 import com.example.tshirt_luxury_datn.services.CartService;
+import com.example.tshirt_luxury_datn.services.OrderService;
 import com.example.tshirt_luxury_datn.services.ProductDetailService;
 
 import jakarta.servlet.http.HttpSession;
@@ -28,6 +31,9 @@ public class PosController {
 
     @Autowired
     private CartService cartService;
+
+    @Autowired
+    private OrderService orderService;
 
     @GetMapping
     public String PointOfSale(Model model, @RequestParam(required = false) String code, HttpSession session) {
@@ -49,7 +55,8 @@ public class PosController {
     @PostMapping
     public String handlePOSAction(@RequestParam String action, @RequestParam(required = false) String productCode,
             @RequestParam(required = false) Integer quantity, @RequestParam(required = false) String code,
-            HttpSession session) {
+            OrderDTO orderDTO,
+            HttpSession session, Model model) {
         List<CartItem> cart = (List<CartItem>) session.getAttribute("cart");
 
         switch (action) {
@@ -69,11 +76,16 @@ public class PosController {
                 cart.clear();
                 break;
             case "checkout":
+                if (cart != null && !cart.isEmpty()) {
+                    Order order = orderService.orderInStore(cart, orderDTO);
+                    cart.clear();
+                    model.addAttribute("message", order.getCode());
+                }
                 break;
             default:
                 break;
         }
-
+        session.setAttribute("cart", cart);
         return "redirect:/admin/pos";
     }
 

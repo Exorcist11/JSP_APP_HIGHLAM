@@ -17,10 +17,10 @@
         <link rel="stylesheet" href="../css/button.css" />
         <style>
           .square-button {
-            width: 40px; 
-            height: 40px; 
-            padding: 0; 
-            border-radius: 0; 
+            width: 40px;
+            height: 40px;
+            padding: 0;
+            border-radius: 0;
           }
 
           .w-70 {
@@ -55,7 +55,7 @@
                   <form method="GET" action="/admin/pos">
                     <div class="input-group mb-3">
                       <input type="text" name="code" class="form-control"
-                        placeholder="Tìm kiếm sản phẩm theo tên, mã SKU..." />
+                        placeholder="Tìm kiếm sản phẩm theo mã sản phẩm" />
                       <button class="btn btn-primary mb-0" type="submit">
                         <i class="fas fa-search"></i> Tìm kiếm
                       </button>
@@ -117,26 +117,30 @@
                     <div class="d-flex justify-content-between align-items-center py-2 border-bottom ">
                       <div class="me-3 w-70">
                         <div class="fw-bold">${item.productName} - ${item.sizeName} - ${item.colorName} </div>
-                       
+
                         <div class="small text-muted">
-                           <fmt:formatNumber value="${item.price}" groupingUsed="true" maxFractionDigits="0"/>đ x ${item.quantity}
-                         
+                          <fmt:formatNumber value="${item.price}" groupingUsed="true" maxFractionDigits="0" />đ x
+                          ${item.quantity}
+
                         </div>
                       </div>
                       <div class="d-flex align-items-center cart-item-controls border bg-white rounded-3">
                         <form method="POST" action="/admin/pos" class="d-inline">
                           <input type="hidden" name="action" value="update">
                           <input type="hidden" name="code" value="${item.productDetailCode}">
-                          <button type="submit" value="${item.quantity - 1}" name="quantity" class="btn btn-outline-secondary btn-sm mb-0 square-button">
+                          <button type="submit" value="${item.quantity - 1}" name="quantity"
+                            class="btn btn-outline-secondary btn-sm mb-0 square-button">
                             <i class="fas fa-minus"></i>
                           </button>
-                          
+
                         </form>
-                        <input type="text" class="form-control form-control-sm text-center border-0" value="${item.quantity}" readonly>
+                        <input type="text" class="form-control form-control-sm text-center border-0"
+                          value="${item.quantity}" readonly>
                         <form method="POST" action="/admin/pos" class="d-inline">
                           <input type="hidden" name="action" value="update">
                           <input type="hidden" name="code" value="${item.productDetailCode}">
-                          <button type="submit" value="${item.quantity + 1}" name="quantity"  class="btn btn-outline-secondary btn-sm mb-0 square-button">
+                          <button type="submit" value="${item.quantity + 1}" name="quantity"
+                            class="btn btn-outline-secondary btn-sm mb-0 square-button">
                             <i class="fas fa-plus"></i>
                           </button>
                         </form>
@@ -149,29 +153,63 @@
                 <div class="d-flex justify-content-between align-items-center py-2 border-top">
                   <div class="fw-bold">Tổng cộng:</div>
                   <div class="fw-bold fs-5">
-                    <fmt:formatNumber value="${total}" groupingUsed="true" maxFractionDigits="0"/>đ
+                    <fmt:formatNumber value="${total}" groupingUsed="true" maxFractionDigits="0" />đ
                   </div>
                 </div>
 
                 <!-- Nút hủy đơn và thanh toán -->
-                <div class="d-grid gap-2 mt-3">
-                  <form method="POST" action="/admin/pos">
+                <div class="row mt-3">
+                  <form method="POST" action="/admin/pos" class="col">
                     <input type="hidden" name="action" value="clear">
-                    <button type="submit" class="btn btn-outline-danger">
+                    <button type="submit" class="btn btn-outline-danger w-100">
                       <i class="fas fa-trash-alt"></i> Hủy đơn
                     </button>
                   </form>
-                  <form method="POST" action="/admin/pos">
-                    <input type="hidden" name="action" value="checkout">
-                    <button type="submit" class="btn btn-success">
-                      <i class="fas fa-credit-card"></i> Thanh toán
-                    </button>
-                  </form>
+                  <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#checkoutModal">
+                    <i class="fas fa-credit-card"></i> Thanh toán
+                  </button>
                 </div>
               </div>
             </div>
           </div>
         </main>
+
+        <!-- Modal Thanh toán -->
+        <div class="modal fade" id="checkoutModal" tabindex="-1" aria-labelledby="checkoutModalLabel"
+          aria-hidden="true">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="checkoutModalLabel">Xác nhận thanh toán</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <form method="POST" action="/admin/pos">
+                <div class="modal-body">
+                  <input type="hidden" name="action" value="checkout">
+                  <div class="mb-3">
+                    <label for="recipientName" class="form-label">Tên người nhận</label>
+                    <input type="text" class="form-control" id="recipientName" name="recipientName" required>
+                  </div>
+                  <div class="mb-3">
+                    <label for="recipientPhone" class="form-label">Số điện thoại</label>
+                    <input type="text" class="form-control" id="recipientPhone" name="recipientPhone" required>
+                  </div>
+                  <div class="mb-3">
+                    <label for="recipientAddress" class="form-label">Địa chỉ</label>
+                    <input type="text" class="form-control" id="recipientAddress" name="recipientAddress" required>
+                  </div>
+                  <p>Tổng tiền: <strong>
+                      <fmt:formatNumber value="${total}" groupingUsed="true" maxFractionDigits="0" />đ
+                    </strong></p>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+                  <button type="submit" class="btn btn-success">Xác nhận thanh toán</button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
       </body>
 
       </html>

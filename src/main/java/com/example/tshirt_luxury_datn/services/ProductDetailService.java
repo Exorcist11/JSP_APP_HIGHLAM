@@ -130,4 +130,8 @@ public class ProductDetailService {
     }
   }
 
+  public void _posUpdateProductDetail(ProductDetail pd) {
+    detailRepository.save(pd);
+  }
+
 }
