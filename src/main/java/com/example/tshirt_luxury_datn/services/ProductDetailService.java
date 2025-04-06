@@ -43,8 +43,28 @@ public class ProductDetailService {
     return details;
   }
 
+  public List<ProductDetail> getAllProductDetail() {
+    try {
+      return detailRepository.findAll();
+    } catch (Exception e) {
+      throw new RuntimeException("ERROR WHEN GET ALL PRODUCT DETAIL: " + e.getMessage());
+    }
+  }
+
+  public List<ProductDetail> searchProductDetail(String code) {
+    try {
+      return detailRepository.findByCodeContainingIgnoreCase(code);
+    } catch (Exception e) {
+      throw new RuntimeException("ERROR WHEN SEARCH PRODUCT DETAIL: " + e.getMessage());
+    }
+  }
+
+  public ProductDetail getProductDetailByCode(String code) {
+    Optional<ProductDetail> productDetail = detailRepository.findByCode(code);
+    return productDetail.orElse(null);
+  }
+
   public ProductDetail createProductDetail(ProductDetailDTO detailDTO, List<MultipartFile> images) {
-    System.out.println("ProductDetailDTO: " + detailDTO);
     try {
       Optional<Product> productOpt = productRepository.findById(detailDTO.getProductID());
       Optional<Size> sizeOpt = sizeRepository.findById(detailDTO.getSizeID());

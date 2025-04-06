@@ -11,4 +11,5 @@ public class ProductDetailDTO {
   private Long colorID;
   private Long productID;
   private Long sizeID;
+  private String code;
 }

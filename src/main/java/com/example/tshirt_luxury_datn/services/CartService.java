@@ -110,4 +110,40 @@ public class CartService {
             throw new RuntimeException("Lỗi khi xóa size: " + e.getMessage());
         }
     }
+
+    public List<CartItemDTO> pos_cartItem(List<CartItem> cart){
+        return cart.stream().map(CartItemDTO::new).collect(Collectors.toList());
+    }
+
+    public void pos_addToCart(List<CartItem> cart, ProductDetail productDetail) {
+        for (CartItem item : cart) {
+            if (item.getProductDetail().getCode().equals(productDetail.getCode())) {
+                item.setQuantity(item.getQuantity() + 1);
+                return;
+            }
+        }
+        cart.add(new CartItem(null, null, productDetail, 1));
+    }
+
+    public void pos_updateQuantity(List<CartItem> cart, String code, int quantity) {
+        for (CartItem item : cart) {
+            if (item.getProductDetail().getCode().equals(code)) {
+                item.setQuantity(quantity);
+                if (quantity <= 0) {
+                    cart.remove(item);
+                }
+                return;
+            }
+        }
+    }
+
+    public void pos_removeFromCart(List<CartItem> cart, String code) {
+        cart.removeIf(item -> item.getProductDetail().getCode().equals(code));
+    }
+
+    public double pos_caculateTotal(List<CartItem> cart) {
+        return cart.stream()
+                .mapToDouble(item -> item.getProductDetail().getProduct().getPrice() * item.getQuantity())
+                .sum();
+    }
 }

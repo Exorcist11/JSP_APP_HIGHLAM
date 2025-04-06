@@ -53,4 +53,12 @@ public class ProductDetail {
 
     @OneToMany(mappedBy = "productDetail", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<ProductImage> images = new ArrayList<>();
+
+    @Transient
+    public String getFirstImageUrl() {
+        if (images != null && !images.isEmpty()) {
+            return images.get(0).getImageUrl(); 
+        }
+        return "/images/no-image.png"; 
+    }
 }
