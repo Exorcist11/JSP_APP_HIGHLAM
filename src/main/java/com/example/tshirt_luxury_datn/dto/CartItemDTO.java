@@ -19,6 +19,7 @@ public class CartItemDTO {
     private String colorName;
     private Long productID;
     private Double price;
+    private String imageUrl;
     private ProductDetail productDetail;
 
     // No-args constructor
@@ -30,11 +31,13 @@ public class CartItemDTO {
         if (item != null && item.getProductDetail() != null) {
             ProductDetail pd = item.getProductDetail();
             this.productDetailCode = pd.getCode();
+            this.productDetailId = pd.getId();
             this.productName = pd.getProduct().getName();
             this.sizeName = pd.getSize().getName();
             this.colorName = pd.getColor().getName();
             this.price = pd.getProduct().getPrice();
             this.quantity = item.getQuantity();
+            this.imageUrl = pd.getFirstImageUrl();
         }
     }
 }

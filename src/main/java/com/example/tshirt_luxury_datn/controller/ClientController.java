@@ -136,10 +136,11 @@ public class ClientController {
   public String actionLogin(@ModelAttribute("login") UserDTO loginDto, RedirectAttributes redirectAttributes,
       HttpSession session) {
     try {
-      Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-      User userLogin = (User) auth.getPrincipal();
-      cartService.syncCartOnLogin(session, userLogin);
+      // Authentication auth = SecurityContextHolder.getContext().getAuthentication();
       User user = userService.login(loginDto);
+   
+      cartService.syncCartOnLogin(session, user);
+
       session.setAttribute("loggedInUser", user);
       return "redirect:/";
     } catch (IllegalArgumentException e) {

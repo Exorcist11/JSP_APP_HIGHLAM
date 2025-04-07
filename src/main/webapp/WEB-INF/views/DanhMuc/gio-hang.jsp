@@ -1,5 +1,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %> <%@ page
-contentType="text/html;charset=UTF-8" language="java" %>
+contentType="text/html;charset=UTF-8" language="java" %> <%@ taglib
+uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -18,7 +19,7 @@ contentType="text/html;charset=UTF-8" language="java" %>
     />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <script src="../js/script.js"></script>
-    <link href="../css/aoNam.css" rel="stylesheet" />
+    <style></style>
   </head>
   <body>
     <div class="drawer">
@@ -40,43 +41,44 @@ contentType="text/html;charset=UTF-8" language="java" %>
         <div class="offcanvas-body">
           <div id="cartItems">
             <c:forEach items="${cartItems}" var="item">
-              <div
-                class="cart-item d-flex justify-content-between align-items-center"
-              >
+              <div class="cart-item d-flex align-items-center gap-2">
                 <div class="cart-item-image">
                   <img
-                    src="${item.productDetail.firstImageUrl}"
+                    src="${item.imageUrl}"
                     alt="Product"
                     class="img-fluid"
-                    width="300px"
-                    height="200px"
+                    width="150px"
+                    height="150px"
                   />
                 </div>
-                <div class="cart-item-info">
-                  <p>
-                    ${item.productDetail.product.name} -
-                    ${item.productDetail.color.name} -
-                    ${item.productDetail.size.name}
-                  </p>
-                  <p>
-                    <fmt:formatNumber
-                      value="${item.productDetail.product.price}"
-                      groupingUsed="true"
-                      maxFractionDigits="0"
+                <div
+                  class="d-flex align-items-center justify-content-between w-100"
+                >
+                  <div class="cart-item-info">
+                    <h6 class="mb-1">
+                      ${item.productName} - ${item.colorName} - ${item.sizeName}
+                    </h6>
+
+                    <p class="mb-1">
+                      <fmt:formatNumber
+                        value="${item.price}"
+                        groupingUsed="true"
+                        maxFractionDigits="0"
+                      />
+                      đ x ${item.quantity}
+                    </p>
+                  </div>
+                  <form method="POST" action="/cart/remove" class="d-inline">
+                    <input
+                      type="hidden"
+                      name="productDetailId"
+                      value="${item.productDetailId}"
                     />
-                    đ x ${item.quantity}
-                  </p>
+                    <button type="submit" class="btn btn-danger btn-sm">
+                      Xóa
+                    </button>
+                  </form>
                 </div>
-                <form method="POST" action="/cart/remove" class="d-inline">
-                  <input
-                    type="hidden"
-                    name="productDetailId"
-                    value="${item.productDetail.id}"
-                  />
-                  <button type="submit" class="btn btn-danger btn-sm">
-                    Xóa
-                  </button>
-                </form>
               </div>
               <hr />
             </c:forEach>

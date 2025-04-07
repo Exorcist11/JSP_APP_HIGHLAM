@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.example.tshirt_luxury_datn.dto.CartItemDTO;
@@ -122,26 +124,28 @@ public class CartController {
 
         ProductDetail productDetail = productDetailService.getProductDetailByProductSizeColor(
                 cartItemDTO.getProductID(), cartItemDTO.getSizeID(), cartItemDTO.getColorID());
-        System.out.println("PRODUCT DETAIL: " + productDetail.getCode());
+
         if (productDetail != null) {
             cartService.addToCart(cartItemDTO, session);
         }
         Cart cart = cartService.getOrCreateCart(session);
         model.addAttribute("cartItems", cartService.getCartItems(cart));
         model.addAttribute("totalPrice", cartService.caculateTotalUserCart(cart));
-        System.out.println("CART ITEMS LENGTH: " + cartService.getCartItems(cart).size());
+
         return "redirect:/product?id=" + cartItemDTO.getProductID();
     }
 
     @PostMapping("/cart/remove")
-    public String removeFromCart(CartItemDTO cartItemDTO, HttpSession session, Model model) {
-        cartService.removeFromCart(session, cartItemDTO);
-
+    public String removeFromCart(@RequestParam("productDetailId") Long productDetailId, HttpSession session,
+            Model model, @RequestHeader(value = "referer", required = false) String referer) {
         Cart cart = cartService.getOrCreateCart(session);
+        cartService.removeFromCart(cart, productDetailId, session);
 
+        // Cập nhật lại dữ liệu cho giao diện
         model.addAttribute("cartItems", cartService.getCartItems(cart));
         model.addAttribute("totalPrice", cartService.caculateTotalUserCart(cart));
-        return "redirect:/product?id=" + cartItemDTO.getProductID();
+
+        return "redirect:" + (referer != null ? referer : "/product");
     }
 
 }

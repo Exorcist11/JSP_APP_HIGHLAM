@@ -16,7 +16,6 @@ import com.example.tshirt_luxury_datn.entity.Cart;
 import com.example.tshirt_luxury_datn.entity.CartItem;
 import com.example.tshirt_luxury_datn.entity.ProductDetail;
 import com.example.tshirt_luxury_datn.entity.User;
-import com.example.tshirt_luxury_datn.repository.CartItemsRepository;
 import com.example.tshirt_luxury_datn.repository.CartRepository;
 import com.example.tshirt_luxury_datn.repository.UserRepository;
 
@@ -29,10 +28,10 @@ public class CartService {
     private CartRepository cartRepository;
 
     @Autowired
-    private CartItemsRepository cartItemsRepository;
+    private UserRepository userRepository;
 
     @Autowired
-    private UserRepository userRepository;
+    private ProductDetailService productDetailService;
 
     @SuppressWarnings("unchecked")
     @Transactional
@@ -49,17 +48,13 @@ public class CartService {
             }
             return cart;
         } else {
-            Object sessionCart = session.getAttribute("userCart");
-            List<CartItem> cartItems;
-            System.out.println("SESSION CART: " + sessionCart.toString());
+            List<CartItem> cartItems = (List<CartItem>) session.getAttribute("userCart");
 
-            if (sessionCart == null || !(sessionCart instanceof List<?>)) {
+            if (cartItems == null) {
                 cartItems = new ArrayList<>();
                 session.setAttribute("userCart", cartItems);
-            } else {
-                cartItems = (List<CartItem>) sessionCart;
             }
-
+            System.out.println("SESSION CART: " + cartItems.size());
             Cart tempCart = new Cart();
             tempCart.setCartItems(cartItems);
             return tempCart;
@@ -69,39 +64,61 @@ public class CartService {
     @Transactional
     public void addToCart(CartItemDTO request, HttpSession session) {
 
-        Cart cart = getOrCreateCart(session);
-        System.out.println("CART: " + cart.getCartItems());
-        List<CartItem> cartItems = cart.getCartItems();
-        for (CartItem item : cartItems) {
-            if (item.getProductDetail().getId().equals(request.getProductDetailId())) {
-                item.setQuantity(item.getQuantity() + request.getQuantity());
+        try {
+            Cart cart = getOrCreateCart(session);
+            ProductDetail productDetail = productDetailService.getProductDetailByProductSizeColor(
+                    request.getProductID(), request.getSizeID(), request.getColorID());
 
-                if (cart.getId() != null) {
-                    cartItemsRepository.save(item);
+            List<CartItem> cartItems = cart.getCartItems();
+            for (CartItem item : cartItems) {
+                ProductDetail pd = item.getProductDetail();
+
+                if (pd.getProduct().getId().equals(request.getProductID())
+                        && pd.getSize().getId().equals(request.getSizeID())
+                        && pd.getColor().getId().equals(request.getColorID())) {
+                    item.setQuantity(item.getQuantity() + request.getQuantity());
+                    if (cart.getId() != null) {
+                        cartRepository.save(cart);
+                    }
+                    session.setAttribute("userCart", cartItems);
+                    return;
                 }
-                return;
-            }
-        }
 
-        CartItem newItem = new CartItem(null, cart, request.getProductDetail(), request.getQuantity());
-        cartItems.add(newItem);
-        if (cart.getId() != null) {
-            cartRepository.save(cart);
-        } else {
-            session.setAttribute("userCart", newItem);
+            }
+
+            CartItem newItem = new CartItem();
+            newItem.setCart(cart);
+            newItem.setProductDetail(productDetail);
+            newItem.setQuantity(request.getQuantity());
+
+            cartItems.add(newItem);
+            if (cart.getId() != null) {
+                cartRepository.save(cart);
+            } else {
+
+                session.setAttribute("userCart", cartItems);
+            }
+        } catch (
+
+        Exception e) {
+            throw new RuntimeException("Lỗi khi thêm vào giỏ hàng:" + e.getMessage());
         }
     }
 
     @Transactional
-    public void removeFromCart(HttpSession session, CartItemDTO request) {
-        Cart cart = getOrCreateCart(session);
-        List<CartItem> cartItems = cart.getCartItems();
-
-        cartItems.removeIf(item -> item.getProductDetail().getId().equals(request.getProductDetailId()));
-        if (cart.getId() != null) {
-            cartRepository.save(cart);
-        } else {
-            session.setAttribute("userCart", cartItems);
+    public void removeFromCart(Cart cart, Long productDetailId, HttpSession session) {
+        try {
+            List<CartItem> cartItems = cart.getCartItems();
+            if (cartItems != null) {
+                cartItems.removeIf(item -> item.getProductDetail().getId().equals(productDetailId));
+                if (cart.getId() != null) {
+                    cartRepository.save(cart);
+                } else {
+                    session.setAttribute("userCart", cartItems);
+                }
+            }
+        } catch (Exception e) {
+            throw new RuntimeException("Lỗi khi xóa khỏi giỏ hàng: " + e.getMessage());
         }
     }
 
@@ -110,8 +127,15 @@ public class CartService {
                 .mapToDouble(item -> item.getProductDetail().getProduct().getPrice() * item.getQuantity()).sum();
     }
 
-    public List<CartItem> getCartItems(Cart cart) {
-        return cart.getCartItems();
+    public List<CartItemDTO> getCartItems(Cart cart) {
+        List<CartItemDTO> cartItemDTOs = new ArrayList<>();
+        if (cart != null && cart.getCartItems() != null) {
+            for (CartItem item : cart.getCartItems()) {
+                CartItemDTO dto = new CartItemDTO(item);
+                cartItemDTOs.add(dto);
+            }
+        }
+        return cartItemDTOs;
     }
 
     public List<CartItemResponse> getCartbyClientId(Long userID) {
@@ -197,7 +221,6 @@ public class CartService {
             dbCart = new Cart();
             dbCart.setUser(user);
             dbCart.setCartItems(new ArrayList<>());
-
         }
 
         if (sessionCart != null && !sessionCart.isEmpty()) {
