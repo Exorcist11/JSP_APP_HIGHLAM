@@ -14,7 +14,6 @@ import com.example.tshirt_luxury_datn.dto.ProductDTO;
 import com.example.tshirt_luxury_datn.entity.Category;
 import com.example.tshirt_luxury_datn.entity.CategoryDetail;
 import com.example.tshirt_luxury_datn.entity.Product;
-import com.example.tshirt_luxury_datn.entity.ProductDetail;
 import com.example.tshirt_luxury_datn.repository.CategoryDetailRepository;
 import com.example.tshirt_luxury_datn.repository.CategoryRepository;
 import com.example.tshirt_luxury_datn.repository.ProductRepository;

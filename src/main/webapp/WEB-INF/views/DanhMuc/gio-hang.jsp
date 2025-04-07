@@ -39,32 +39,58 @@ contentType="text/html;charset=UTF-8" language="java" %>
         </div>
         <div class="offcanvas-body">
           <div id="cartItems">
-            <c:forEach items="${GHCT}" var="ghct">
+            <c:forEach items="${cartItems}" var="item">
               <div
                 class="cart-item d-flex justify-content-between align-items-center"
               >
                 <div class="cart-item-image">
                   <img
-                    width="300px"
-                    src="../images/ao_phong_boxy/DEVOTUS/black.webp"
-                    alt="Áo Phông"
-                    height="200px"
+                    src="${item.productDetail.firstImageUrl}"
+                    alt="Product"
                     class="img-fluid"
+                    width="300px"
+                    height="200px"
                   />
                 </div>
                 <div class="cart-item-info">
-                  <p>Áo Phông Fitted 1300 - Be - M</p>
-                  <p>329,000 đ x 1</p>
+                  <p>
+                    ${item.productDetail.product.name} -
+                    ${item.productDetail.color.name} -
+                    ${item.productDetail.size.name}
+                  </p>
+                  <p>
+                    <fmt:formatNumber
+                      value="${item.productDetail.product.price}"
+                      groupingUsed="true"
+                      maxFractionDigits="0"
+                    />
+                    đ x ${item.quantity}
+                  </p>
                 </div>
-                <button class="btn btn-danger btn-sm">Xóa</button>
+                <form method="POST" action="/cart/remove" class="d-inline">
+                  <input
+                    type="hidden"
+                    name="productDetailId"
+                    value="${item.productDetail.id}"
+                  />
+                  <button type="submit" class="btn btn-danger btn-sm">
+                    Xóa
+                  </button>
+                </form>
               </div>
               <hr />
             </c:forEach>
           </div>
-          <hr />
           <div class="d-flex justify-content-between">
             <strong>Tổng tiền tạm tính:</strong>
-            <span id="totalPrice">658,000 đ</span>
+            <span id="totalPrice">
+              <fmt:formatNumber
+                value="${totalPrice}"
+                groupingUsed="true"
+                maxFractionDigits="0"
+              />
+              đ
+            </span>
           </div>
           <a class="btn btn-dark w-100 mt-3" href="/cart/checkout"
             >TIẾN HÀNH ĐẶT HÀNG</a
@@ -75,13 +101,13 @@ contentType="text/html;charset=UTF-8" language="java" %>
         </div>
       </div>
     </div>
-    <script src="../js/actionCart.js"></script>
+    <!-- <script src="../js/actionCart.js"></script> -->
     <script
       src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
       integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
       crossorigin="anonymous"
     ></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js"></script>
-    <script src="../js/cart.js"></script>
+    <!-- <script src="../js/cart.js"></script> -->
   </body>
 </html>

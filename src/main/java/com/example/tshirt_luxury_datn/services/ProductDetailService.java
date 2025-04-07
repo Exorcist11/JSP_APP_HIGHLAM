@@ -134,4 +134,8 @@ public class ProductDetailService {
     detailRepository.save(pd);
   }
 
+  public ProductDetail getProductDetailByProductSizeColor(Long productId, Long sizeId, Long colorId) {
+    return detailRepository.findByProductIdAndSizeIdAndColorId(productId, sizeId, colorId).orElse(null);
+  }
+
 }

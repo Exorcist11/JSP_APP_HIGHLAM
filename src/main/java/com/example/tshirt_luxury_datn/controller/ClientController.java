@@ -5,6 +5,8 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,6 +18,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.example.tshirt_luxury_datn.dto.CartItemResponse;
 import com.example.tshirt_luxury_datn.dto.UserDTO;
 import com.example.tshirt_luxury_datn.dto.UserProfileDTP;
+import com.example.tshirt_luxury_datn.entity.Cart;
 import com.example.tshirt_luxury_datn.entity.Color;
 import com.example.tshirt_luxury_datn.entity.Order;
 import com.example.tshirt_luxury_datn.entity.Product;
@@ -56,7 +59,7 @@ public class ClientController {
   }
 
   @GetMapping("/product")
-  public String detailProduct(@RequestParam Long id, Model model) {
+  public String detailProduct(@RequestParam Long id, Model model, HttpSession session) {
     try {
       Product product = productService.getProductByID(id);
       Set<Size> uniqueSizes = product.getProductDetails().stream()
@@ -71,6 +74,9 @@ public class ClientController {
       model.addAttribute("sizes", uniqueSizes);
       model.addAttribute("colors", uniqueColors);
       model.addAttribute("images", imageService.getImageUrlsByProductId(id));
+      Cart cart = cartService.getOrCreateCart(session);
+      model.addAttribute("cartItems", cartService.getCartItems(cart));
+      model.addAttribute("totalPrice", cartService.caculateTotalUserCart(cart));
 
       ObjectMapper objectMapper = new ObjectMapper();
       String productDetailsJson = objectMapper.writeValueAsString(product.getProductDetails());
@@ -130,6 +136,9 @@ public class ClientController {
   public String actionLogin(@ModelAttribute("login") UserDTO loginDto, RedirectAttributes redirectAttributes,
       HttpSession session) {
     try {
+      Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+      User userLogin = (User) auth.getPrincipal();
+      cartService.syncCartOnLogin(session, userLogin);
       User user = userService.login(loginDto);
       session.setAttribute("loggedInUser", user);
       return "redirect:/";

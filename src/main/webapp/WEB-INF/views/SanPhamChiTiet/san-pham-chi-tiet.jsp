@@ -172,16 +172,9 @@ uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
             <div class="btn-group">
               <c:forEach items="${sizes}" var="item">
-                <input
-                  type="radio"
-                  class="btn-check"
-                  name="size"
-                  id="size_${item.id}"
-                  autocomplete="off"
-                  checked
-                  value="${item.id}"
-                  data-name="${item.name}"
-                />
+                <input type="radio" class="btn-check" name="size"
+                id="size_${item.id}" autocomplete="off" ${loop.first ? 'checked'
+                : ''} value="${item.id}" data-name="${item.name}" />
                 <label class="btn btn-default" for="size_${item.id}"
                   >${item.name}</label
                 >
@@ -215,14 +208,20 @@ uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
         </div>
 
         <div class="order" style="margin-top: 20px">
-          <button
-            type="button"
-            id="addToCartBtn"
-            class="btn btn-dark"
-            style="width: 185px"
-          >
-            THÊM VÀO GIỎ HÀNG
-          </button>
+          <form method="POST" action="/cart/add" class="d-inline">
+            <input type="hidden" name="productID" value="${product.id}" />
+            <input type="hidden" name="colorID" id="selectedColorId" />
+            <input type="hidden" name="sizeID" id="selectedSizeId" />
+            <input
+              type="hidden"
+              name="quantity"
+              id="selectedQuantity"
+              value="1"
+            />
+            <button type="submit" class="btn btn-dark" style="width: 185px">
+              THÊM VÀO GIỎ HÀNG
+            </button>
+          </form>
           <!-- <button type="submit" class="btn btn-dark">THÊM VÀO GIỎ HÀNG</button> -->
 
           <a class="btn btn-dark" id="buyNow" style="margin-left: 5px"
@@ -395,33 +394,50 @@ uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
   <script>
     $(document).ready(function () {
-      $("form").submit(function (e) {
-        let isValid = true;
-        let errorMessage = "";
+      // Gán giá trị mặc định cho selectedSizeId và selectedColorId khi trang tải
+      const defaultSizeId = $('input[name="size"]:checked').val();
+      const defaultColorId = $('input[name="color"]:checked').val();
+      $("#selectedSizeId").val(defaultSizeId);
+      $("#selectedColorId").val(defaultColorId);
 
-        // Kiểm tra màu sắc
-        if ($('input[name="mauSac"]:checked').length === 0) {
-          isValid = false;
-          errorMessage += "Vui lòng chọn màu sắc!\n";
+      // Cập nhật colorId khi chọn màu
+      $('input[name="color"]').change(function () {
+        $("#selectedColorId").val($(this).val());
+      });
+
+      // Cập nhật sizeId khi chọn kích thước
+      $('input[name="size"]').change(function () {
+        const selectedSizeId = $(this).val();
+        console.log("Selected Size ID:", selectedSizeId);
+        $("#selectedSizeId").val(selectedSizeId);
+      });
+
+      // Cập nhật quantity khi nhấn tăng/giảm
+      $("#increase").click(function () {
+        let qty = parseInt($("#quantity").val());
+        $("#quantity").val(qty + 1);
+        $("#selectedQuantity").val(qty + 1);
+      });
+
+      $("#decrease").click(function () {
+        let qty = parseInt($("#quantity").val());
+        if (qty > 1) {
+          $("#quantity").val(qty - 1);
+          $("#selectedQuantity").val(qty - 1);
         }
+      });
 
-        // Kiểm tra kích thước
-        if ($('input[name="size"]:checked').length === 0) {
-          isValid = false;
-          errorMessage += "Vui lòng chọn kích thước!\n";
-        }
-
-        // Hiển thị lỗi nếu không hợp lệ
-        if (!isValid) {
-          alert(errorMessage);
-          e.preventDefault(); // Ngăn form submit
+      // Kiểm tra trước khi submit form
+      $('form[action="/cart/add"]').submit(function (e) {
+        const sizeId = $("#selectedSizeId").val();
+        console.log("Size ID before submit:", sizeId);
+        if (!sizeId) {
+          e.preventDefault();
+          alert("Vui lòng chọn kích thước!");
         }
       });
     });
   </script>
-
-  <script src="../js/actionCart.js"></script>
-  <script src="../js/cart.js"></script>
 
   <!-- <script src="../js/productDetail.js"></script> -->
 </html>

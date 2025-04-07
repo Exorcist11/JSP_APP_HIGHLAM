@@ -21,13 +21,20 @@ public class CartItemDTO {
     private Double price;
     private ProductDetail productDetail;
 
+    // No-args constructor
+    public CartItemDTO() {
+    }
+
+    // Constructor with CartItem
     public CartItemDTO(CartItem item) {
-        ProductDetail pd = item.getProductDetail();
-        this.productDetailCode = pd.getCode();
-        this.productName = pd.getProduct().getName();
-        this.sizeName = pd.getSize().getName();
-        this.colorName = pd.getColor().getName();
-        this.price = pd.getProduct().getPrice();
-        this.quantity = item.getQuantity();
+        if (item != null && item.getProductDetail() != null) {
+            ProductDetail pd = item.getProductDetail();
+            this.productDetailCode = pd.getCode();
+            this.productName = pd.getProduct().getName();
+            this.sizeName = pd.getSize().getName();
+            this.colorName = pd.getColor().getName();
+            this.price = pd.getProduct().getPrice();
+            this.quantity = item.getQuantity();
+        }
     }
 }

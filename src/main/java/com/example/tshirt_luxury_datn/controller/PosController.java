@@ -39,6 +39,7 @@ public class PosController {
     public String PointOfSale(Model model, @RequestParam(required = false) String code, HttpSession session) {
         List<ProductDetail> list = (code != null && !code.isEmpty()) ? productDetailService.searchProductDetail(code)
                 : productDetailService.getAllProductDetail();
+        @SuppressWarnings("unchecked")
         List<CartItem> cart = (List<CartItem>) session.getAttribute("cart");
 
         if (cart == null) {
@@ -57,6 +58,7 @@ public class PosController {
             @RequestParam(required = false) Integer quantity, @RequestParam(required = false) String code,
             OrderDTO orderDTO,
             HttpSession session, Model model) {
+        @SuppressWarnings("unchecked")
         List<CartItem> cart = (List<CartItem>) session.getAttribute("cart");
 
         switch (action) {

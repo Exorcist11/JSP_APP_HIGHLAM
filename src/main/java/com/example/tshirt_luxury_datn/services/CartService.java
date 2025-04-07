@@ -6,6 +6,8 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import com.example.tshirt_luxury_datn.dto.CartItemDTO;
@@ -16,10 +18,10 @@ import com.example.tshirt_luxury_datn.entity.ProductDetail;
 import com.example.tshirt_luxury_datn.entity.User;
 import com.example.tshirt_luxury_datn.repository.CartItemsRepository;
 import com.example.tshirt_luxury_datn.repository.CartRepository;
-import com.example.tshirt_luxury_datn.repository.ProductDetailRepository;
 import com.example.tshirt_luxury_datn.repository.UserRepository;
 
 import jakarta.servlet.http.HttpSession;
+import jakarta.transaction.Transactional;
 
 @Service
 public class CartService {
@@ -32,45 +34,84 @@ public class CartService {
     @Autowired
     private UserRepository userRepository;
 
-    @Autowired
-    private ProductDetailRepository productDetailRepository;
+    @SuppressWarnings("unchecked")
+    @Transactional
+    public Cart getOrCreateCart(HttpSession session) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        if (auth != null && auth.isAuthenticated() && !"anonymousUser".equals(auth.getPrincipal())) {
+            User user = (User) auth.getPrincipal();
+            Cart cart = cartRepository.findByUserId(user.getId());
+            if (cart == null) {
+                cart = new Cart();
+                cart.setUser(user);
+                cart.setCartItems(new ArrayList<>());
+                cartRepository.save(cart);
+            }
+            return cart;
+        } else {
+            Object sessionCart = session.getAttribute("userCart");
+            List<CartItem> cartItems;
+            System.out.println("SESSION CART: " + sessionCart.toString());
 
-    public Cart getOrCreateCart(Long userID) {
-        User user = userRepository.findById(userID).orElseThrow(() -> new RuntimeException("User không tồn tại!"));
-
-        return cartRepository.findByUser(user).orElseGet(() -> {
-            Cart newCart = new Cart();
-            newCart.setUser(user);
-            return cartRepository.save(newCart);
-        });
-    }
-
-    public void addToCart(CartItemDTO request, HttpSession session) {
-        try {
-            User loggedInUser = (User) session.getAttribute("loggedInUser");
-            Cart cart = getOrCreateCart(loggedInUser.getId());
-            ProductDetail productDetail = productDetailRepository
-                    .findByProductIdAndSizeIdAndColorId(request.getProductID(), request.getSizeID(),
-                            request.getColorID())
-                    .orElseThrow(() -> new RuntimeException("Sản phẩm không tồn tại!"));
-
-            Optional<CartItem> existingItem = cart.getCartItems().stream()
-                    .filter(item -> item.getProductDetail().getId().equals(productDetail.getId())).findFirst();
-
-            if (existingItem.isPresent()) {
-                existingItem.get().setQuantity(existingItem.get().getQuantity() + request.getQuantity());
-                cartItemsRepository.save(existingItem.get());
+            if (sessionCart == null || !(sessionCart instanceof List<?>)) {
+                cartItems = new ArrayList<>();
+                session.setAttribute("userCart", cartItems);
             } else {
-                CartItem cartItem = new CartItem();
-                cartItem.setCart(cart);
-                cartItem.setProductDetail(productDetail);
-                cartItem.setQuantity(request.getQuantity());
-                cartItemsRepository.save(cartItem);
+                cartItems = (List<CartItem>) sessionCart;
             }
 
-        } catch (Exception e) {
-            throw new RuntimeException("Lỗi khi tạo cart: " + e.getMessage());
+            Cart tempCart = new Cart();
+            tempCart.setCartItems(cartItems);
+            return tempCart;
         }
+    }
+
+    @Transactional
+    public void addToCart(CartItemDTO request, HttpSession session) {
+
+        Cart cart = getOrCreateCart(session);
+        System.out.println("CART: " + cart.getCartItems());
+        List<CartItem> cartItems = cart.getCartItems();
+        for (CartItem item : cartItems) {
+            if (item.getProductDetail().getId().equals(request.getProductDetailId())) {
+                item.setQuantity(item.getQuantity() + request.getQuantity());
+
+                if (cart.getId() != null) {
+                    cartItemsRepository.save(item);
+                }
+                return;
+            }
+        }
+
+        CartItem newItem = new CartItem(null, cart, request.getProductDetail(), request.getQuantity());
+        cartItems.add(newItem);
+        if (cart.getId() != null) {
+            cartRepository.save(cart);
+        } else {
+            session.setAttribute("userCart", newItem);
+        }
+    }
+
+    @Transactional
+    public void removeFromCart(HttpSession session, CartItemDTO request) {
+        Cart cart = getOrCreateCart(session);
+        List<CartItem> cartItems = cart.getCartItems();
+
+        cartItems.removeIf(item -> item.getProductDetail().getId().equals(request.getProductDetailId()));
+        if (cart.getId() != null) {
+            cartRepository.save(cart);
+        } else {
+            session.setAttribute("userCart", cartItems);
+        }
+    }
+
+    public double caculateTotalUserCart(Cart cart) {
+        return cart.getCartItems().stream()
+                .mapToDouble(item -> item.getProductDetail().getProduct().getPrice() * item.getQuantity()).sum();
+    }
+
+    public List<CartItem> getCartItems(Cart cart) {
+        return cart.getCartItems();
     }
 
     public List<CartItemResponse> getCartbyClientId(Long userID) {
@@ -111,7 +152,7 @@ public class CartService {
         }
     }
 
-    public List<CartItemDTO> pos_cartItem(List<CartItem> cart){
+    public List<CartItemDTO> pos_cartItem(List<CartItem> cart) {
         return cart.stream().map(CartItemDTO::new).collect(Collectors.toList());
     }
 
@@ -145,5 +186,39 @@ public class CartService {
         return cart.stream()
                 .mapToDouble(item -> item.getProductDetail().getProduct().getPrice() * item.getQuantity())
                 .sum();
+    }
+
+    @SuppressWarnings("unchecked")
+    @Transactional
+    public void syncCartOnLogin(HttpSession session, User user) {
+        List<CartItem> sessionCart = (List<CartItem>) session.getAttribute("userCart");
+        Cart dbCart = cartRepository.findByUserId(user.getId());
+        if (dbCart == null) {
+            dbCart = new Cart();
+            dbCart.setUser(user);
+            dbCart.setCartItems(new ArrayList<>());
+
+        }
+
+        if (sessionCart != null && !sessionCart.isEmpty()) {
+            for (CartItem sessionItem : sessionCart) {
+                boolean exits = false;
+                for (CartItem dbItem : dbCart.getCartItems()) {
+                    if (dbItem.getProductDetail().getId().equals(sessionItem.getProductDetail().getId())) {
+                        dbItem.setQuantity(dbItem.getQuantity() + sessionItem.getQuantity());
+                        exits = true;
+                        break;
+                    }
+                }
+
+                if (!exits) {
+                    sessionItem.setCart(dbCart);
+                    dbCart.getCartItems().add(sessionItem);
+                }
+            }
+            session.removeAttribute("userCart");
+        }
+        cartRepository.save(dbCart);
+
     }
 }
