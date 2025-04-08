@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.example.tshirt_luxury_datn.entity.Order;
 import com.example.tshirt_luxury_datn.services.OrderService;
 
-
 @Controller
 @RequestMapping("/admin/order")
 public class OrderController {
@@ -27,8 +26,10 @@ public class OrderController {
     public String listOrders(
             @RequestParam(required = false) String code,
             @RequestParam(required = false) String status,
+            @RequestParam(required = false) Long id, // Thêm tham số id
             Model model) {
 
+        // Hiển thị danh sách hóa đơn
         List<Order> orders = (code != null || status != null)
                 ? orderService.searchOrder(code, status)
                 : orderService.getListOrders();
@@ -36,6 +37,17 @@ public class OrderController {
         model.addAttribute("code", code);
         model.addAttribute("status", status);
         model.addAttribute("listOrders", orders);
+
+        // Nếu có id thì thêm thông tin chi tiết hóa đơn
+        if (id != null) {
+            try {
+                model.addAttribute("selectedOrder", orderService.getOrderDetail(id));
+                model.addAttribute("orderItems", orderService.getOrderItemsByOrderId(id));
+            } catch (Exception e) {
+                model.addAttribute("error", "Không tìm thấy hóa đơn");
+            }
+        }
+
         return "HoaDon/hoa-don-admin";
     }
 
@@ -78,6 +90,5 @@ public class OrderController {
             throw new RuntimeException("Failed to fetch order detail for code: " + code, e);
         }
     }
-
 
 }

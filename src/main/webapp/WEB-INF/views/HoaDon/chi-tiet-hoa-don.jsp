@@ -16,8 +16,6 @@ uri="http://java.sun.com/jsp/jstl/fmt" %>
     <link
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
       rel="stylesheet"
-      integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
-      crossorigin="anonymous"
     />
     <link
       rel="stylesheet"
@@ -30,10 +28,12 @@ uri="http://java.sun.com/jsp/jstl/fmt" %>
 
     <div class="row">
       <div class="p-2 bd-highlight d-flex justify-content-start mt-3">
+        <!-- Sửa link trở về -->
         <a type="button" href="/admin/order" class="btn btn-outline-secondary">
           <i class="fa-solid fa-backward"></i> Trở lại
         </a>
       </div>
+
       <div class="row mt-2">
         <h3 class="text-center">Thông tin đặt hàng</h3>
         <table class="table table-bordered table-striped">
@@ -51,7 +51,7 @@ uri="http://java.sun.com/jsp/jstl/fmt" %>
               <td>
                 <fmt:formatDate
                   value="${order.createdAt}"
-                  pattern="dd/MM/yyyy  HH:mm:ss"
+                  pattern="dd/MM/yyyy HH:mm:ss"
                 />
               </td>
             </tr>
@@ -84,12 +84,10 @@ uri="http://java.sun.com/jsp/jstl/fmt" %>
                 />
               </td>
             </tr>
-
             <tr>
               <th>Ghi Chú</th>
               <td>${order.notes}</td>
             </tr>
-
             <tr>
               <th>Total Amount</th>
               <td>
@@ -116,19 +114,21 @@ uri="http://java.sun.com/jsp/jstl/fmt" %>
               <th scope="col">Số Lượng</th>
               <th scope="col">Đơn Giá</th>
             </tr>
+          </thead>
+          <tbody>
             <c:forEach items="${orderItems}" var="item" varStatus="i">
               <tr>
-                <td scope="col">${i.index +1}</td>
-                <td scope="col">${item.productDetail.product.name}</td>
-                <td scope="col">${item.productDetail.size.name}</td>
-                <td scope="col">${item.productDetail.color.name}</td>
-                <td scope="col">${item.quantity}</td>
-                <th scope="col">
+                <td>${i.index +1}</td>
+                <td>${item.productDetail.product.name}</td>
+                <td>${item.productDetail.size.name}</td>
+                <td>${item.productDetail.color.name}</td>
+                <td>${item.quantity}</td>
+                <td>
                   <fmt:formatNumber value="${item.price}" pattern="#,##0" /> VND
-                </th>
+                </td>
               </tr>
             </c:forEach>
-          </thead>
+          </tbody>
         </table>
       </div>
     </div>
