@@ -59,6 +59,10 @@ public class ProductDetailService {
     }
   }
 
+  public ProductDetail getProductDetailById(Long id) {
+    return detailRepository.findById(id).orElse(null);
+  }
+
   public ProductDetail getProductDetailByCode(String code) {
     Optional<ProductDetail> productDetail = detailRepository.findByCode(code);
     return productDetail.orElse(null);
@@ -119,15 +123,12 @@ public class ProductDetailService {
   }
 
   public void deleteProductDetail(Long id) {
-    try {
-      Optional<ProductDetail> productDetailOpt = detailRepository.findById(id);
-      if (productDetailOpt.isEmpty()) {
-        throw new RuntimeException("Không tìm thấy product detail với ID: " + id);
-      }
-      detailRepository.deleteById(id);
-    } catch (Exception e) {
-      throw new RuntimeException("Lỗi khi xóa product detail: " + e.getMessage());
-    }
+    ProductDetail productDetail = detailRepository.findById(id)
+        .orElseThrow(() -> new RuntimeException("Không tìm thấy sản phẩm chi tiết với ID: " + id));
+
+    productDetail.setStatus(false);
+
+    detailRepository.save(productDetail);
   }
 
   public void _posUpdateProductDetail(ProductDetail pd) {

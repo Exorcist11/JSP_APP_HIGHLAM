@@ -45,15 +45,31 @@ public class ProductController {
   public String listOrSearchProducts(
       @RequestParam(value = "timKiemSanPham", required = false) String timKiemSanPham,
       @RequestParam(value = "trangThai", required = false) Boolean trangThai,
+      @RequestParam(value = "productID", required = false) Long productID,
       Model model) {
 
+    if (productID != null) {
+      // Hiển thị chi tiết sản phẩm
+      model.addAttribute("colors", colorService.getAllColor());
+      model.addAttribute("sizes", sizeService.getAllSize());
+      model.addAttribute("product", productService.getProductByID(productID));
+
+      try {
+        List<ProductDetail> lstPD = detailService.getProductDetailByProductId(productID);
+        model.addAttribute("lstPD", lstPD);
+      } catch (Exception e) {
+        model.addAttribute("error", e.getMessage());
+      }
+      return "admin/Product/san-pham-admin"; // Sử dụng cùng layout với trang sản phẩm
+    }
+
+    // Hiển thị danh sách sản phẩm
     List<Product> products = (timKiemSanPham == null && trangThai == null)
         ? productService.getAllProduct()
         : productService.searchProducts(timKiemSanPham, trangThai);
 
     model.addAttribute("products", products);
     model.addAttribute("categories", categoryService.getAllCategoryDetail());
-
     model.addAttribute("timKiemSanPham", timKiemSanPham);
     model.addAttribute("trangThai", trangThai);
 
@@ -108,17 +124,17 @@ public class ProductController {
     return "admin/Product/san-pham-chi-tiet-admin";
   }
 
-  @PostMapping("/{productId}")
+  @PostMapping("/detail")
   public String createProductDetail(@ModelAttribute("productDetail") ProductDetailDTO detailDTO,
-      @RequestParam("images") List<MultipartFile> images, Model model,
-      @PathVariable Long productId) {
+      @RequestParam("images") List<MultipartFile> images, Model model) {
     try {
+
       detailService.createProductDetail(detailDTO, images);
       model.addAttribute("successMessage", "Thêm sản phẩm chi tiết thành công!");
     } catch (Exception e) {
       model.addAttribute("error", e.getMessage());
     }
-    return "redirect:/admin/products/" + productId;
+    return "redirect:/admin/products?productID=" + detailDTO.getProductID();
   }
 
   @PostMapping("/updateDetail/{id}")
@@ -130,18 +146,23 @@ public class ProductController {
     } catch (Exception e) {
       model.addAttribute("error", e.getMessage());
     }
-    return "redirect:/admin/products/" + productDetailDTO.getProductID();
+    return "redirect:/admin/products?productID=" + productDetailDTO.getProductID();
   }
 
   @GetMapping("/deleteProductDetail/{id}")
   public String deleteProductDetail(@PathVariable Long id, Model model) {
     try {
+      ProductDetail productDetail = detailService.getProductDetailById(id);
+      Long productId = productDetail.getProduct().getId();
+
       detailService.deleteProductDetail(id);
-      model.addAttribute("success", "Xóa product thành công!");
+      model.addAttribute("success", "Xóa sản phẩm chi tiết thành công!");
+
+      return "redirect:/admin/products?productID=" + productId;
     } catch (Exception e) {
-      model.addAttribute("error", e.getMessage());
+      model.addAttribute("error", "Lỗi khi xóa sản phẩm chi tiết: " + e.getMessage());
+      return "redirect:/admin/products";
     }
-    return "redirect:/admin/products";
   }
 
 }
