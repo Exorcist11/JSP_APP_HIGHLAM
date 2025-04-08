@@ -12,4 +12,9 @@ public class ProductDetailDTO {
   private Long productID;
   private Long sizeID;
   private String code;
+  private Double price;
+  private String productName;
+  private String sizeName;
+  private String colorName;
+  private String imageUrl;
 }

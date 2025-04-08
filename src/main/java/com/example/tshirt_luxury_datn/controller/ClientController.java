@@ -5,8 +5,6 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,10 +13,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.example.tshirt_luxury_datn.dto.CartItemResponse;
+import com.example.tshirt_luxury_datn.dto.CartItemDTO;
 import com.example.tshirt_luxury_datn.dto.UserDTO;
 import com.example.tshirt_luxury_datn.dto.UserProfileDTP;
 import com.example.tshirt_luxury_datn.entity.Cart;
+import com.example.tshirt_luxury_datn.entity.CartItem;
 import com.example.tshirt_luxury_datn.entity.Color;
 import com.example.tshirt_luxury_datn.entity.Order;
 import com.example.tshirt_luxury_datn.entity.Product;
@@ -93,11 +92,25 @@ public class ClientController {
   @GetMapping("/cart/checkout")
   public String checkoutCart(Model model, HttpSession session) {
     User loggedInUser = (User) session.getAttribute("loggedInUser");
-    if (loggedInUser != null) {
-      List<CartItemResponse> cartItems = cartService.getCartbyClientId(loggedInUser.getId());
+    List<CartItemDTO> cartItems;
 
-      model.addAttribute("cartItems", cartItems);
+    // if (loggedInUser != null) {
+    // Cart cart = cartService.getCartByUserId(loggedInUser.getId());
+    // cartItems = cartService.getCartItems(cart);
+    // } else {
+    Cart cart = cartService.getOrCreateCart(session);
+    cartItems = cartService.getCartItems(cart);
+
+    if (cartItems.isEmpty()) {
+      model.addAttribute("error", "Giỏ hàng trống!");
     }
+
+    double totalPrice = cartItems.stream()
+        .mapToDouble(item -> item.getPrice() * item.getQuantity())
+        .sum() + 35000; // Phí vận chuyển
+
+    model.addAttribute("cartItems", cartItems);
+    model.addAttribute("totalPrice", totalPrice);
 
     return "BanHang/ban-hang-onl";
   }
@@ -138,7 +151,7 @@ public class ClientController {
     try {
       // Authentication auth = SecurityContextHolder.getContext().getAuthentication();
       User user = userService.login(loginDto);
-   
+
       cartService.syncCartOnLogin(session, user);
 
       session.setAttribute("loggedInUser", user);
