@@ -40,7 +40,7 @@ public class Order {
     @Column(nullable = false)
     private String recipientPhone;
 
-    @Column(nullable = false, columnDefinition = "NVARCHAR(50)")
+    @Column(nullable = false, columnDefinition = "NVARCHAR(255)")
     private String recipientAddress;
 
     private String notes;

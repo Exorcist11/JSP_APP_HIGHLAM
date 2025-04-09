@@ -26,5 +26,5 @@ public class OrderDTO {
   private String district;
   private String ward;
   private String addressDetail;
-
+  private String trangThai;
 }

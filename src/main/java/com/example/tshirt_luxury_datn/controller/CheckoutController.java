@@ -21,9 +21,19 @@ public class CheckoutController {
   private CheckoutService checkoutService;
 
   @PostMapping("/cart/checkout")
-  public String processCheckout(OrderDTO request, Model model) {
-    // CONTROLLER CHECK OUT CART
-    return "";
+  public String processCheckout(OrderDTO request, Model model, HttpSession session) {
+
+    try {
+      String resultUrl = checkoutService.processCheckout(request, session);
+      if (resultUrl.startsWith("http")) {
+        return "redirect:" + resultUrl;
+      } else {
+        return resultUrl;
+      }
+    } catch (Exception e) {
+      model.addAttribute("errorMessage", "Error during checkout: " + e.getMessage());
+      return "BanHang/ban-hang-onl";
+    }
   }
 
   @PostMapping("/order/save")

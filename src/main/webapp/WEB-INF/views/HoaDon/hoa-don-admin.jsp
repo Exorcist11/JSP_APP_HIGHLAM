@@ -28,6 +28,8 @@
             border-left: none !important;
             border-right: none !important;
         }
+
+        
     </style>
 </head>
 
@@ -229,7 +231,7 @@
                                     <table class="table table-bordered no-left-right-border">
                                         <tr>
                                             <th width="40%">Tên khách hàng</th>
-                                            <td>${selectedOrder.recipientName}</td>
+                                            <td style="word-break: break-word; white-space: normal;">${selectedOrder.recipientName}</td>
                                         </tr>
                                         <tr>
                                             <th>Email</th>
@@ -241,7 +243,7 @@
                                         </tr>
                                         <tr>
                                             <th>Địa chỉ</th>
-                                            <td>${selectedOrder.recipientAddress}</td>
+                                            <td style="word-break: break-word; white-space: normal;">${selectedOrder.recipientAddress}</td>
                                         </tr>
                                     </table>
                                 </div>

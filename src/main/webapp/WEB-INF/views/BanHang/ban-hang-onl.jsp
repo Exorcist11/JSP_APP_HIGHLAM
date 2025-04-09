@@ -18,7 +18,7 @@ uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
         <div class="col-6 mt-5">
           <a href="/cart" style="text-decoration: none">Giỏ hàng > </a> Thanh
           toán
-          <div class="TTGH" style="margin-top: 60px">
+          <div class="TTGH mt-2">
             <h5>Thông tin giao hàng</h5>
             <div class="mb-3">
               <input
@@ -123,9 +123,10 @@ uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
         <div class="col-6 mt-3" style="background-color: rgb(247, 247, 247)">
           <c:if test="${not empty cartItems}">
-            <table class="table table-bordered text-center mt-3">
+            <table class="table  text-center mt-3">
               <thead class="table-light">
                 <tr>
+                  <th></th>
                   <th>Tên sản phẩm</th>
                   <th>Size</th>
                   <th>Màu sắc</th>
@@ -136,6 +137,7 @@ uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
               <tbody>
                 <c:forEach var="item" items="${cartItems}">
                   <tr>
+                    <td><img src="${item.imageUrl}" alt="${item.productName}" width="100px" height="100px"></td>
                     <td>${item.productName}</td>
                     <td>${item.sizeName}</td>
                     <td>${item.colorName}</td>
