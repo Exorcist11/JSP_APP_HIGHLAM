@@ -21,4 +21,10 @@ public class OrderDTO {
   
   private String paymentMethod;
   public String orderType;
+
+  private String province;
+  private String district;
+  private String ward;
+  private String addressDetail;
+
 }

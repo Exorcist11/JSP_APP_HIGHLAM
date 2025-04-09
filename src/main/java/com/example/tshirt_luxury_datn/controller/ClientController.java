@@ -17,7 +17,6 @@ import com.example.tshirt_luxury_datn.dto.CartItemDTO;
 import com.example.tshirt_luxury_datn.dto.UserDTO;
 import com.example.tshirt_luxury_datn.dto.UserProfileDTP;
 import com.example.tshirt_luxury_datn.entity.Cart;
-import com.example.tshirt_luxury_datn.entity.CartItem;
 import com.example.tshirt_luxury_datn.entity.Color;
 import com.example.tshirt_luxury_datn.entity.Order;
 import com.example.tshirt_luxury_datn.entity.Product;

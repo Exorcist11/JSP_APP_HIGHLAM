@@ -20,6 +20,12 @@ public class CheckoutController {
   @Autowired
   private CheckoutService checkoutService;
 
+  @PostMapping("/cart/checkout")
+  public String processCheckout(OrderDTO request, Model model) {
+    // CONTROLLER CHECK OUT CART
+    return "";
+  }
+
   @PostMapping("/order/save")
   public String saveOrder(@RequestBody OrderDTO orderDTO, Model model, HttpSession session) {
     try {
