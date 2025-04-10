@@ -2,21 +2,26 @@ package com.example.tshirt_luxury_datn.controller;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.example.tshirt_luxury_datn.dto.CartItemDTO;
 import com.example.tshirt_luxury_datn.dto.OrderDTO;
+import com.example.tshirt_luxury_datn.dto.ProductDetailDTO;
 import com.example.tshirt_luxury_datn.entity.CartItem;
 import com.example.tshirt_luxury_datn.entity.Order;
+import com.example.tshirt_luxury_datn.entity.Product;
 import com.example.tshirt_luxury_datn.entity.ProductDetail;
 import com.example.tshirt_luxury_datn.services.CartService;
 import com.example.tshirt_luxury_datn.services.OrderService;
 import com.example.tshirt_luxury_datn.services.ProductDetailService;
+import com.example.tshirt_luxury_datn.services.ProductService;
 
 import jakarta.servlet.http.HttpSession;
 
@@ -35,8 +40,13 @@ public class PosController {
     @Autowired
     private OrderService orderService;
 
+    @Autowired
+    private ProductService productService;
+
     @GetMapping
     public String PointOfSale(Model model, @RequestParam(required = false) String code, HttpSession session) {
+        // List<Product> list = (code != null && !code.isEmpty()) ? productService.searchProductByName(code)
+        //         : productService.getAllProduct();
         List<ProductDetail> list = (code != null && !code.isEmpty()) ? productDetailService.searchProductDetail(code)
                 : productDetailService.getAllProductDetail();
         @SuppressWarnings("unchecked")
@@ -51,6 +61,15 @@ public class PosController {
         model.addAttribute("cart", cartItems);
         model.addAttribute("total", cartService.pos_caculateTotal(cart));
         return "admin/Pos/pos";
+    }
+
+    @GetMapping("/product-details")
+    @ResponseBody
+    public List<ProductDetailDTO> getProductDetails(@RequestParam Long productId) {
+        List<ProductDetail> details = productDetailService.getProductDetailByProductId(productId);
+        return details.stream()
+                .map(ProductDetailDTO::new)
+                .collect(Collectors.toList());
     }
 
     @PostMapping

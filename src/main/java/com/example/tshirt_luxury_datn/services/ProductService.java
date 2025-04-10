@@ -58,6 +58,10 @@ public class ProductService {
     return productRepository.searchProducts(timKiemSanPham, trangThai);
   }
 
+  public List<Product> searchProductByName(String name) {
+    return productRepository.findByNameContainingIgnoreCase(name);
+  }
+
   public Product getProductByID(Long id) {
     return productRepository.findById(id).orElse(null);
   }

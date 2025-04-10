@@ -51,14 +51,14 @@ public class ProductDetail {
     @Column(nullable = false)
     private Timestamp updatedAt;
 
-    @OneToMany(mappedBy = "productDetail", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "productDetail", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<ProductImage> images = new ArrayList<>();
 
     @Transient
     public String getFirstImageUrl() {
         if (images != null && !images.isEmpty()) {
-            return images.get(0).getImageUrl(); 
+            return images.get(0).getImageUrl();
         }
-        return "/images/no-image.png"; 
+        return "/images/no-image.png";
     }
 }

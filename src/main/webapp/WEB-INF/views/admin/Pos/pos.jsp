@@ -69,7 +69,7 @@
                         <div class="card product-card h-100">
                           <div class="product-img">
                             <img src="${p.firstImageUrl}" alt="Ảnh sản phẩm" width="100%" height="auto"
-                              style="min-height: 151px; object-position: center" />
+                              style="height: 200px; object-position: center" />
                           </div>
                           <div class="card-body">
                             <h5 class="card-title product-name">

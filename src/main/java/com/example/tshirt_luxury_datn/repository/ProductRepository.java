@@ -11,11 +11,14 @@ import com.example.tshirt_luxury_datn.entity.Product;
 
 @Repository
 public interface ProductRepository extends JpaRepository<Product, Long> {
-    @Query("SELECT p FROM Product p WHERE " +
-            "(:timKiemSanPham IS NULL OR LOWER(p.name) LIKE LOWER(CONCAT('%', :timKiemSanPham, '%'))) AND " +
-            "(:trangThai IS NULL OR p.status = :trangThai)")
-    List<Product> searchProducts(@Param("timKiemSanPham") String timKiemSanPham,
-            @Param("trangThai") Boolean trangThai);
+        @Query("SELECT p FROM Product p WHERE " +
+                        "(:timKiemSanPham IS NULL OR LOWER(p.name) LIKE LOWER(CONCAT('%', :timKiemSanPham, '%'))) AND "
+                        +
+                        "(:trangThai IS NULL OR p.status = :trangThai)")
+        List<Product> searchProducts(@Param("timKiemSanPham") String timKiemSanPham,
+                        @Param("trangThai") Boolean trangThai);
 
-    List<Product> findTop4ByOrderByCreatedAtDesc();
+        List<Product> findTop4ByOrderByCreatedAtDesc();
+
+        List<Product> findByNameContainingIgnoreCase(String name);
 }
