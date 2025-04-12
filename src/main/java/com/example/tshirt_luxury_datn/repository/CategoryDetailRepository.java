@@ -10,4 +10,6 @@ import com.example.tshirt_luxury_datn.entity.CategoryDetail;
 @Repository
 public interface CategoryDetailRepository extends JpaRepository<CategoryDetail, Long> {
     List<CategoryDetail> findByCategoryId(Long categoryId);
+
+    List<CategoryDetail> findByCategoryIdAndStatusTrue(Long categoryId);
 }

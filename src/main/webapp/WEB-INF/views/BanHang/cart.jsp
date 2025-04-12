@@ -27,9 +27,9 @@ uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
     <script src="../js/script.js"></script>
   </head>
   <body>
-    <jsp:include page="/WEB-INF/views/fragments/headerProduct.jsp" />
+    <jsp:include page="/WEB-INF/views/fragments/header.jsp" />
 
-    <div class="container">
+    <div class="container" style="padding-top: 90px">
       <div style="min-height: 700px" class="mt-5">
         <div class="cart-container">
           <h2 class="text-center mb-4">🛒 Giỏ hàng của bạn</h2>
@@ -38,6 +38,7 @@ uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
             <table class="table table-bordered text-center mt-3">
               <thead class="table-light">
                 <tr>
+                  <th></th>
                   <th>Tên sản phẩm</th>
                   <th>Size</th>
                   <th>Màu sắc</th>
@@ -48,9 +49,18 @@ uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
               <tbody>
                 <c:forEach var="item" items="${cartItems}">
                   <tr>
+                    <td>
+                      <img
+                        src="${item.imageUrl}"
+                        alt="Product"
+                        class="img-fluid"
+                        width="150px"
+                        height="150px"
+                      />
+                    </td>
                     <td>${item.productName}</td>
-                    <td>${item.size}</td>
-                    <td>${item.color}</td>
+                    <td>${item.sizeName}</td>
+                    <td>${item.colorName}</td>
                     <td>
                       <input
                         type="number"

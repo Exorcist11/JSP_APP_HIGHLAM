@@ -72,9 +72,6 @@ public class ClientController {
       model.addAttribute("sizes", uniqueSizes);
       model.addAttribute("colors", uniqueColors);
       model.addAttribute("images", imageService.getImageUrlsByProductId(id));
-      Cart cart = cartService.getOrCreateCart(session);
-      model.addAttribute("cartItems", cartService.getCartItems(cart));
-      model.addAttribute("totalPrice", cartService.caculateTotalUserCart(cart));
 
       ObjectMapper objectMapper = new ObjectMapper();
       String productDetailsJson = objectMapper.writeValueAsString(product.getProductDetails());

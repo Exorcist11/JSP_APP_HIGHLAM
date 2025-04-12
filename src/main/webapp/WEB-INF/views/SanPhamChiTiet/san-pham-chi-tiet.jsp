@@ -1,7 +1,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %> <%@ page
 contentType="text/html;charset=UTF-8" language="java" %> <%@ taglib
 uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
-<jsp:include page="../DanhMuc/gio-hang.jsp" />
+
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -61,7 +61,7 @@ uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
   </style>
 
   <body>
-    <jsp:include page="/WEB-INF/views/fragments/headerProduct.jsp" />
+    <jsp:include page="/WEB-INF/views/fragments/header.jsp" />
 
     <div class="modal" tabindex="-1" id="bangsize">
       <div class="modal-dialog">

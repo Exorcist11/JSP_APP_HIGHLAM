@@ -94,15 +94,7 @@ public class CartController {
 
     @GetMapping("/cart")
     public String cart(HttpSession session, Model model) {
-        User loggedInUser = (User) session.getAttribute("loggedInUser");
-        // if (loggedInUser == null) {
-        // return "redirect:/login";
-        // }
 
-        List<CartItemResponse> cartItems = loggedInUser == null ? null
-                : cartService.getCartbyClientId(loggedInUser.getId());
-
-        model.addAttribute("cartItems", cartItems);
         return "BanHang/cart";
     }
 

@@ -30,7 +30,7 @@ contentType="text/html;charset=UTF-8" language="java" %>
 
       <div class="row mt-3">
         <jsp:include page="/WEB-INF/views/fragments/menuAdmin.jsp" />
-        <div class="col-9" style="">
+        <div class="col-9">
           <div class="row">
             <h2 class="">Quản Lý Hóa Đơn Online</h2>
 

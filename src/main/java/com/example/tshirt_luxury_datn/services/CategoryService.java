@@ -75,7 +75,7 @@ public class CategoryService {
   public List<CategoryDetailDTO> getAllCategoryDetail(Long id) {
     List<CategoryDetail> list = categoryDetailRepository.findByCategoryId(id);
     return list.stream()
-        .map(cd -> new CategoryDetailDTO(cd)) 
+        .map(cd -> new CategoryDetailDTO(cd))
         .collect(Collectors.toList());
   }
 
@@ -95,4 +95,21 @@ public class CategoryService {
     }
   }
 
+  public List<CategoryDTO> getAllCategoriesWithDetails() {
+    List<Category> categories = categoryRepository.findAll();
+    return categories.stream().map(category -> {
+      CategoryDTO categoryDTO = new CategoryDTO();
+      categoryDTO.setId(category.getId());
+      categoryDTO.setName(category.getName());
+      // Chuyển đổi danh sách CategoryDetail sang CategoryDetailDTO
+      List<CategoryDetailDTO> detailDTOs = category.getCategoryDetails().stream().map(detail -> {
+        CategoryDetailDTO detailDTO = new CategoryDetailDTO();
+        detailDTO.setId(detail.getId());
+        detailDTO.setName(detail.getName());
+        return detailDTO;
+      }).collect(Collectors.toList());
+      categoryDTO.setCategoryDetails(detailDTOs);
+      return categoryDTO;
+    }).collect(Collectors.toList());
+  }
 }

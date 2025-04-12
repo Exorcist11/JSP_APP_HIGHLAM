@@ -29,6 +29,13 @@ contentType="text/html;charset=UTF-8" language="java" %>
 
   <body>
     <jsp:include page="/WEB-INF/views/fragments/header.jsp" />
+    <img
+      class="banner-top"
+      style="padding-top: 90px"
+      src="../images/banner/banner1.jpg"
+      alt="T-shirt Luxury"
+    />
+
     <!-- End Header -->
     <div class="container">
       <jsp:include page="/WEB-INF/views/fragments/newProduct.jsp" />
