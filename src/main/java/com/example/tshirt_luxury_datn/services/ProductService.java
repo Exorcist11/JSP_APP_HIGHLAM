@@ -131,16 +131,18 @@ public class ProductService {
 
   public List<ProductDTO> getLastestProducts() {
     List<Product> products = productRepository.findTop4ByOrderByCreatedAtDesc();
-    return products.stream().map(p -> {
-      ProductDTO dto = new ProductDTO();
-      dto.setId(p.getId());
-      dto.setName(p.getName());
-      dto.setPrice(p.getPrice());
-      dto.setStatus(p.getStatus());
-      dto.setCategoryId(p.getCategoryDetail().getId());
-      dto.setDescription(p.getDescription());
-      dto.setImgUrl(p.getProductDetails().get(0).getFirstImageUrl());
-      return dto;
-    }).collect(Collectors.toList());
+    return products.stream()
+        .map(ProductDTO::new)
+        .collect(Collectors.toList());
+  }
+
+  public List<ProductDTO> getProductsByCategoryDetail(Long categoryDetailId) {
+    List<Product> products = productRepository.findByCategoryDetailId(categoryDetailId);
+    return products.stream().map(ProductDTO::new).collect(Collectors.toList());
+  }
+
+  public List<ProductDTO> getProductsByCategory(Long categoryId) {
+    List<Product> products = productRepository.findByCategoryDetail_CategoryId(categoryId);
+    return products.stream().map(ProductDTO::new).collect(Collectors.toList());
   }
 }

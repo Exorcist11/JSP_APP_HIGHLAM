@@ -1,7 +1,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %> <%@ page
 contentType="text/html;charset=UTF-8" language="java" %> <%@ taglib
 uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
-<jsp:include page="gio-hang.jsp" />
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -24,7 +23,7 @@ uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
   </head>
   <body>
     <header>
-      <jsp:include page="/WEB-INF/views/fragments/headerProduct.jsp" />
+      <jsp:include page="/WEB-INF/views/fragments/header.jsp" />
     </header>
 
     <div class="container">
@@ -38,7 +37,7 @@ uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
       </nav>
       <h1 class="mt-3">Áo Nam</h1>
 
-      <nav class="navbar navbar-expand-lg">
+      <nav class="navbar-expand-lg">
         <div class="collapse navbar-collapse" id="navbarNavDarkDropdown">
           <h4 class="mt-text">Bộ Lọc</h4>
           <ul class="navbar-nav">
@@ -241,7 +240,7 @@ uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
           </ul>
 
           <div class="sort-container">
-            <span class="sort-label">Sắp xếp theo:</span>
+            <span class="sort-label" style="width: 100%">Sắp xếp theo:</span>
             <select
               class="form-select dropdown"
               aria-label="Default select example"
@@ -269,14 +268,10 @@ uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
       </nav>
 
       <div class="row">
-        <c:forEach items="${listProduct}" var="p">
+        <c:forEach items="${products}" var="p">
           <div class="col-md-3">
             <div class="card product-card">
-              <img
-                alt="Anh1"
-                src="../images/ao_phong_boxy/DEVOTUS/black.webp"
-                width="600"
-              />
+              <img alt="Anh1" src="${p.imgUrl}" width="600" />
               <div class="product-info">
                 <div class="colors">
                   <img

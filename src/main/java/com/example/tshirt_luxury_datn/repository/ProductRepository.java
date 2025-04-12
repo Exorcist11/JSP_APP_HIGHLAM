@@ -21,4 +21,8 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
         List<Product> findTop4ByOrderByCreatedAtDesc();
 
         List<Product> findByNameContainingIgnoreCase(String name);
+
+        List<Product> findByCategoryDetailId(Long categoryDetailId);
+
+        List<Product> findByCategoryDetail_CategoryId(Long categoryId);
 }

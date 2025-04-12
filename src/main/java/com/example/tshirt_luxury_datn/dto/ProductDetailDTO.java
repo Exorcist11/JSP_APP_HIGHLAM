@@ -29,4 +29,8 @@ public class ProductDetailDTO {
     this.colorName = pd.getColor().getName();
     this.quantity = pd.getQuantity();
   }
+
+  public ProductDetailDTO() {
+
+  }
 }

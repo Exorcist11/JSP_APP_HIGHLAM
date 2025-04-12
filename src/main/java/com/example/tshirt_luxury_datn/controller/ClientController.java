@@ -2,6 +2,7 @@ package com.example.tshirt_luxury_datn.controller;
 
 import java.util.List;
 import java.util.Set;
+import java.util.Locale.Category;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.example.tshirt_luxury_datn.dto.CartItemDTO;
+import com.example.tshirt_luxury_datn.dto.ProductDTO;
 import com.example.tshirt_luxury_datn.dto.UserDTO;
 import com.example.tshirt_luxury_datn.dto.UserProfileDTP;
 import com.example.tshirt_luxury_datn.entity.Cart;
@@ -190,10 +192,28 @@ public class ClientController {
     return "redirect:/profile";
   }
 
-  @GetMapping("/ao-nam")
-  public String viewAo(Model model) {
-    model.addAttribute("listProduct", productService.getAllProduct());
-    return "DanhMuc/ao-nam";
+  @GetMapping("/category")
+  public String getProductsByCategoryOrDetail(
+      @RequestParam(value = "categoryId", required = false) Long categoryId,
+      @RequestParam(value = "categoryDetailId", required = false) Long categoryDetailId,
+      Model model) {
+
+    List<ProductDTO> products;
+    if (categoryDetailId != null) {
+      // Lấy sản phẩm theo CategoryDetail
+      products = productService.getProductsByCategoryDetail(categoryDetailId);
+    } else if (categoryId != null) {
+      // Lấy sản phẩm theo Category
+      products = productService.getProductsByCategory(categoryId);
+    } else {
+      // Nếu không có tham số, trả về trang mặc định hoặc thông báo lỗi
+      products = List.of();
+    }
+
+    // Thêm danh sách sản phẩm vào model
+    model.addAttribute("products", products);
+
+    return "DanhMuc/san-pham-theo-danh-muc";
   }
 
   @GetMapping("/history")

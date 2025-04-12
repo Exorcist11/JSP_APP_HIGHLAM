@@ -229,7 +229,11 @@ uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
                 >
                   <c:forEach var="detail" items="${category.categoryDetails}">
                     <li>
-                      <a class="dropdown-item" href="#">${detail.name}</a>
+                      <a
+                        class="dropdown-item"
+                        href="/category?categoryDetailId=${detail.id}"
+                        >${detail.name}</a
+                      >
                     </li>
                   </c:forEach>
                 </ul>
