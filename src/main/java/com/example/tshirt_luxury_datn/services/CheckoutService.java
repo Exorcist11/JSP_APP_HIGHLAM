@@ -9,11 +9,13 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Random;
 import java.util.TimeZone;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -116,7 +118,20 @@ public class CheckoutService {
         payment.setStatus(true);
         paymentRepository.save(payment);
         System.out.println("Payment saved for COD order: " + order.getCode());
-        paymentUrl = "redirect:/order/success?orderCode=" + order.getCode();
+
+        // Giả lập các tham số như thanh toán VNPay
+        String transactionNo = "COD" + new Random().nextInt(99999999);
+        String orderInfo = URLEncoder.encode("Thanh toan don hang: " + order.getCode(), "UTF-8");
+        String payDate = new SimpleDateFormat("yyyyMMddHHmmss").format(new Date());
+        String txnRef = "TXN-" + UUID.randomUUID().toString().substring(0, 8).toUpperCase();
+
+        long amountVND = (long) (totalAmount * 100);
+
+        paymentUrl = String.format(
+            "redirect:/paymentResult?vnp_Amount=%d&vnp_BankCode=COD&vnp_BankTranNo=%s&vnp_CardType=COD" +
+                "&vnp_OrderInfo=%s&vnp_PayDate=%s&vnp_ResponseCode=00&vnp_TmnCode=V9TZGVS9" +
+                "&vnp_TransactionNo=%s&vnp_TransactionStatus=00&vnp_TxnRef=%s&vnp_SecureHash=fakehash",
+            amountVND, transactionNo, orderInfo, payDate, transactionNo, txnRef);
       } else { // ONLINE (VNPay)
         Payment payment = createPayment(order, "ONLINE", generateTransactionId());
         payment.setStatus(false);

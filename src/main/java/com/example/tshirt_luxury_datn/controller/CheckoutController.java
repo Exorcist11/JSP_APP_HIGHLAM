@@ -62,6 +62,7 @@ public class CheckoutController {
     model.addAttribute("transactionId", params.get("vnp_TransactionNo"));
     model.addAttribute("amount", params.get("vnp_Amount"));
     model.addAttribute("orderInfo", params.get("vnp_OrderInfo"));
+    model.addAttribute("orderType", params.get("vnp_CardType"));
 
     return "BanHang/paymentResult"; // Trả về giao diện JSP paymentResult.jsp
   }
