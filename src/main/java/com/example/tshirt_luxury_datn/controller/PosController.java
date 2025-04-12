@@ -20,7 +20,6 @@ import com.example.tshirt_luxury_datn.entity.ProductDetail;
 import com.example.tshirt_luxury_datn.services.CartService;
 import com.example.tshirt_luxury_datn.services.OrderService;
 import com.example.tshirt_luxury_datn.services.ProductDetailService;
-import com.example.tshirt_luxury_datn.services.ProductService;
 
 import jakarta.servlet.http.HttpSession;
 
@@ -38,9 +37,6 @@ public class PosController {
 
     @Autowired
     private OrderService orderService;
-
-    @Autowired
-    private ProductService productService;
 
     @GetMapping
     public String PointOfSale(Model model, @RequestParam(required = false) String code, HttpSession session) {

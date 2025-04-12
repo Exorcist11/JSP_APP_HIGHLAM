@@ -121,7 +121,6 @@
                         <div class="small text-muted">
                           <fmt:formatNumber value="${item.price}" groupingUsed="true" maxFractionDigits="0" />đ x
                           ${item.quantity}
-
                         </div>
                       </div>
                       <div class="d-flex align-items-center cart-item-controls border bg-white rounded-3">

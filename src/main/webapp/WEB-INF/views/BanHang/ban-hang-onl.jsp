@@ -150,6 +150,7 @@
                       </p>
                     </div>
                     <div class="col-md-2 quantity-control">
+                      <input type="hidden" name="code" id="code" value="${item.productDetailCode}">
                       <span class="quantity-btn minus">-</span>
                       <span>${item.quantity}</span>
                       <span class="quantity-btn plus">+</span>
@@ -347,6 +348,7 @@
                 "span:not(.quantity-btn)"
               );
               let quantity = parseInt(quantityElement.textContent);
+              let code = document.getElementById("code").value;
 
               if (isPlus) {
                 quantity++;
@@ -356,6 +358,22 @@
 
               quantityElement.textContent = quantity;
               // Here you would update the cart in localStorage and recalculate total
+              fetch("/api/updateCart?code=" + encodeURIComponent(code) + "&quantity=" + quantity, {
+                method: "POST"
+              })
+                .then((response) => {
+                  if (!response.ok) {
+                    throw new Error("Lỗi khi cập nhật giỏ hàng");
+                  }
+                  return response.text();
+                })
+                .then((data) => {
+                  console.log("Server:", data);
+                  window.location.reload();
+                })
+                .catch((error) => {
+                  console.error("Lỗi:", error);
+                });
             });
           });
           document.querySelectorAll(".remove-btn").forEach((btn) => {
