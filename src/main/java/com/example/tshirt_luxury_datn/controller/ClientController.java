@@ -91,24 +91,26 @@ public class ClientController {
     User loggedInUser = (User) session.getAttribute("loggedInUser");
     List<CartItemDTO> cartItems;
 
-    // if (loggedInUser != null) {
-    // Cart cart = cartService.getCartByUserId(loggedInUser.getId());
-    // cartItems = cartService.getCartItems(cart);
-    // } else {
-    Cart cart = cartService.getOrCreateCart(session);
-    cartItems = cartService.getCartItems(cart);
+    if (loggedInUser != null) {
+      Cart cart = cartService.getCartByUserId(loggedInUser.getId());
+      System.out.println("CART" + cart);
+      cartItems = cartService.getCartItems(cart);
+    } else {
+      Cart cart = cartService.getOrCreateCart(session);
+      cartItems = cartService.getCartItems(cart);
 
-    if (cartItems.isEmpty()) {
-      model.addAttribute("error", "Giỏ hàng trống!");
+      if (cartItems.isEmpty()) {
+        model.addAttribute("error", "Giỏ hàng trống!");
+      }
+
+      double totalPrice = cartItems.stream()
+          .mapToDouble(item -> item.getPrice() * item.getQuantity())
+          .sum() + 35000; // Phí vận chuyển
+
+      model.addAttribute("cartItems", cartItems);
+      model.addAttribute("totalPrice", totalPrice);
+
     }
-
-    double totalPrice = cartItems.stream()
-        .mapToDouble(item -> item.getPrice() * item.getQuantity())
-        .sum() + 35000; // Phí vận chuyển
-
-    model.addAttribute("cartItems", cartItems);
-    model.addAttribute("totalPrice", totalPrice);
-
     return "BanHang/ban-hang-onl";
   }
 

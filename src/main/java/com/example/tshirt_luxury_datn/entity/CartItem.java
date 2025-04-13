@@ -8,6 +8,7 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "cart_items")
+@ToString(exclude = {"cart", "productDetail"}) 
 public class CartItem {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

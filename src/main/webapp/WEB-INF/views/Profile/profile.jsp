@@ -27,10 +27,10 @@ contentType="text/html;charset=UTF-8" language="java" %>
   </head>
 
   <body>
-    <jsp:include page="/WEB-INF/views/fragments/headerProduct.jsp" />
+    <jsp:include page="/WEB-INF/views/fragments/header.jsp" />
     <!-- End Header -->
 
-    <div class="container-fluid">
+    <div class="container-fluid" style="margin-top: 90px">
       <div class="row flex-nowrap">
         <div class="col-auto col-md-3 col-xl-2 px-sm-2 px-0 bg-primary">
           <jsp:include page="/WEB-INF/views/Profile/fragments/sideBar.jsp" />

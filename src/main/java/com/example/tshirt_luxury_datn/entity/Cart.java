@@ -13,6 +13,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "carts")
+@ToString(exclude = "cartItems") 
 public class Cart {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

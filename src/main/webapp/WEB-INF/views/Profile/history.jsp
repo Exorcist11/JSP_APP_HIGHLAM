@@ -28,7 +28,7 @@ uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
   </head>
 
   <body>
-    <jsp:include page="/WEB-INF/views/fragments/headerProduct.jsp" />
+    <jsp:include page="/WEB-INF/views/fragments/header.jsp" />
     <!-- End Header -->
 
     <div class="container-fluid">

@@ -342,7 +342,7 @@
           });
 
           document.querySelectorAll(".quantity-btn").forEach((btn) => {
-            btn.addEventListener("click", function () {
+            btn.addEventListener("click", async function () {
               const isPlus = this.classList.contains("plus");
               const quantityElement = this.parentElement.querySelector(
                 "span:not(.quantity-btn)"
@@ -358,7 +358,7 @@
 
               quantityElement.textContent = quantity;
               // Here you would update the cart in localStorage and recalculate total
-              fetch("/api/updateCart?code=" + encodeURIComponent(code) + "&quantity=" + quantity, {
+              await fetch("/api/updateCart?code=" + encodeURIComponent(code) + "&quantity=" + quantity, {
                 method: "POST"
               })
                 .then((response) => {

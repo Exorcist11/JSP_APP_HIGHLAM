@@ -34,9 +34,15 @@ public class SessionController {
     @PostMapping("/api/updateCart")
     public ResponseEntity<String> updateCartItemQuantity(@RequestParam String code, @RequestParam Integer quantity,
             HttpSession session) {
-        List<CartItem> cart = (List<CartItem>) session.getAttribute("userCart");
-        cartService.pos_updateQuantity(cart, code, quantity);
-        session.setAttribute("userCart", cart);
+        User loggedInUser = (User) session.getAttribute("loggedInUser");
+        if (loggedInUser != null) {
+            cartService.updateCartItemQuantity(code, quantity, loggedInUser);
+        } else {
+            List<CartItem> cart = (List<CartItem>) session.getAttribute("userCart");
+            cartService.pos_updateQuantity(cart, code, quantity);
+            session.setAttribute("userCart", cart);
+        }
+
         return ResponseEntity.ok("ok");
     }
 

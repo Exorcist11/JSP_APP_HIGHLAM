@@ -6,8 +6,6 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import com.example.tshirt_luxury_datn.dto.CartItemDTO;
@@ -16,6 +14,7 @@ import com.example.tshirt_luxury_datn.entity.Cart;
 import com.example.tshirt_luxury_datn.entity.CartItem;
 import com.example.tshirt_luxury_datn.entity.ProductDetail;
 import com.example.tshirt_luxury_datn.entity.User;
+import com.example.tshirt_luxury_datn.repository.CartItemsRepository;
 import com.example.tshirt_luxury_datn.repository.CartRepository;
 import com.example.tshirt_luxury_datn.repository.UserRepository;
 
@@ -33,16 +32,19 @@ public class CartService {
     @Autowired
     private ProductDetailService productDetailService;
 
+    @Autowired
+    private CartItemsRepository cartItemRepository;
+
     @SuppressWarnings("unchecked")
     @Transactional
     public Cart getOrCreateCart(HttpSession session) {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        if (auth != null && auth.isAuthenticated() && !"anonymousUser".equals(auth.getPrincipal())) {
-            User user = (User) auth.getPrincipal();
-            Cart cart = cartRepository.findByUserId(user.getId());
+        User auth = (User) session.getAttribute("loggedInUser");
+        if (auth != null) {
+
+            Cart cart = cartRepository.findByUserId(auth.getId());
             if (cart == null) {
                 cart = new Cart();
-                cart.setUser(user);
+                cart.setUser(auth);
                 cart.setCartItems(new ArrayList<>());
                 cartRepository.save(cart);
             }
@@ -59,6 +61,19 @@ public class CartService {
             tempCart.setCartItems(cartItems);
             return tempCart;
         }
+    }
+
+    @Transactional
+    public void clearCart(Cart cart) {
+        if (cart != null && cart.getCartItems() != null) {
+            cart.getCartItems().clear(); // Xóa khỏi danh sách trong Java
+            cartItemRepository.deleteByCart(cart); // Xóa trong DB
+        }
+    }
+
+    public Cart getCartByUserId(Long userId) {
+        return cartRepository.findByUserId(userId);
+
     }
 
     @Transactional
@@ -138,6 +153,29 @@ public class CartService {
         return cartItemDTOs;
     }
 
+    public List<CartItem> getCartItemsEntity(Cart cart) {
+        if (cart != null && cart.getCartItems() != null) {
+            return new ArrayList<>(cart.getCartItems());
+        }
+        return new ArrayList<>();
+    }
+
+    public CartItem convertToEntity(CartItemDTO dto) {
+        CartItem cartItem = new CartItem();
+
+        // Set quantity directly
+        cartItem.setQuantity(dto.getQuantity());
+
+        // For product detail, you can use the one already in the DTO
+        // or fetch a fresh copy from the database if needed
+        cartItem.setProductDetail(dto.getProductDetail());
+
+        // The cart would need to be set separately, likely from the current context
+        // cartItem.setCart(cart);
+
+        return cartItem;
+    }
+
     public List<CartItemResponse> getCartbyClientId(Long userID) {
         try {
             User user = userRepository.findById(userID).orElse(null);
@@ -200,6 +238,31 @@ public class CartService {
                 return;
             }
         }
+    }
+
+    @Transactional
+    public void updateCartItemQuantity(String code, Integer quantity, User user) {
+        Cart cart = getCartByUserId(user.getId());
+
+        if (cart == null || cart.getCartItems() == null) {
+            throw new IllegalStateException("Giỏ hàng không tồn tại hoặc chưa có sản phẩm nào.");
+        }
+
+        boolean found = false;
+        for (CartItem item : cart.getCartItems()) {
+            ProductDetail pd = item.getProductDetail();
+            if (pd != null && pd.getCode().equals(code)) {
+                item.setQuantity(quantity);
+                found = true;
+                break;
+            }
+        }
+
+        if (!found) {
+            throw new IllegalArgumentException("Không tìm thấy sản phẩm với mã: " + code);
+        }
+
+        cartRepository.save(cart); 
     }
 
     public void pos_removeFromCart(List<CartItem> cart, String code) {

@@ -18,7 +18,6 @@ import java.util.Optional;
 import java.util.Random;
 import java.util.TimeZone;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -27,6 +26,7 @@ import com.example.tshirt_luxury_datn.config.Config;
 import com.example.tshirt_luxury_datn.dto.CartItemDTO;
 import com.example.tshirt_luxury_datn.dto.OrderDTO;
 import com.example.tshirt_luxury_datn.dto.ProductDetailDTO;
+import com.example.tshirt_luxury_datn.entity.Cart;
 import com.example.tshirt_luxury_datn.entity.CartItem;
 import com.example.tshirt_luxury_datn.entity.Order;
 import com.example.tshirt_luxury_datn.entity.OrderItem;
@@ -60,6 +60,9 @@ public class CheckoutService {
   @Autowired
   private OrderItemRepository orderItemRepository;
 
+  @Autowired
+  private CartService cartService;
+
   public static String generateOrderCode() {
     LocalTime now = LocalTime.now();
 
@@ -71,9 +74,18 @@ public class CheckoutService {
   @Transactional
   public String processCheckout(OrderDTO orderDTO, HttpSession session) throws UnsupportedEncodingException {
     try {
-      // Lấy giỏ hàng từ session
-      @SuppressWarnings("unchecked")
-      List<CartItem> cartItems = (List<CartItem>) session.getAttribute("userCart");
+      User loggedInUser = (User) session.getAttribute("loggedInUser");
+      List<CartItemDTO> cartItems;
+      if (loggedInUser != null) {
+        Cart cart = cartService.getCartByUserId(loggedInUser.getId());
+        cartItems = cartService.getCartItems(cart);
+      } else {
+        // Lấy giỏ hàng từ session
+        @SuppressWarnings("unchecked")
+        List<CartItemDTO> sessionCart = (List<CartItemDTO>) session.getAttribute("userCart");
+        cartItems = sessionCart;
+      }
+
       if (cartItems == null || cartItems.isEmpty()) {
         throw new IllegalStateException("Giỏ hàng trống");
       }
@@ -99,9 +111,6 @@ public class CheckoutService {
       order = orderRepository.save(order);
       System.out.println("Order saved with ID: " + order.getId());
 
-      List<CartItemDTO> cartItemDTOs = cartItems.stream()
-          .map(CartItemDTO::new) // Dùng constructor chuyển từ CartItem sang CartItemDTO
-          .collect(Collectors.toList());
       // Tạo và lưu OrderItem
       List<OrderItem> orderItems = createOrderItems(order, cartItems);
       for (OrderItem orderItem : orderItems) {
@@ -143,6 +152,10 @@ public class CheckoutService {
       // Xóa giỏ hàng chỉ khi tất cả thành công
       session.removeAttribute("userCart");
       System.out.println("Cart cleared from session");
+      if (loggedInUser != null) {
+        Cart cart = cartService.getCartByUserId(loggedInUser.getId());
+        cartService.clearCart(cart);
+    }
 
       return paymentUrl;
 
@@ -153,9 +166,8 @@ public class CheckoutService {
     }
   }
 
-  private double calculateTotalAmount(List<CartItem> cartItems) {
+  private double calculateTotalAmount(List<CartItemDTO> cartItems) {
     return cartItems.stream()
-        .map(CartItemDTO::new)
         .mapToDouble(item -> item.getPrice() * item.getQuantity())
         .sum();
   }
@@ -164,9 +176,9 @@ public class CheckoutService {
     return "TXN-" + UUID.randomUUID().toString().substring(0, 8).toUpperCase();
   }
 
-  private List<OrderItem> createOrderItems(Order order, List<CartItem> cartItems) {
+  private List<OrderItem> createOrderItems(Order order, List<CartItemDTO> cartItems) {
     List<OrderItem> orderItems = new ArrayList<>();
-    for (CartItem cartItem : cartItems) {
+    for (CartItemDTO cartItem : cartItems) {
 
       OrderItem orderItem = new OrderItem();
       orderItem.setOrder(order);

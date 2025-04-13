@@ -55,7 +55,7 @@ public class ImageService {
     public List<ProductImage> getImagesByProductDetailId(Long productDetailId) {
         return productImageRepository.findByProductDetailId(productDetailId);
     }
-
+ 
     public List<String> getImageUrlsByProductId(Long productId) {
         List<ProductImage> images = productImageRepository.findByProductDetail_Product_Id(productId);
         return images.stream().map(ProductImage::getImageUrl).toList();

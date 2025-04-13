@@ -22,22 +22,35 @@ public class CartItemDTO {
     private String imageUrl;
     private ProductDetail productDetail;
 
-    // No-args constructor
     public CartItemDTO() {
     }
 
-    // Constructor with CartItem
     public CartItemDTO(CartItem item) {
         if (item != null && item.getProductDetail() != null) {
             ProductDetail pd = item.getProductDetail();
+            this.productDetail = pd;
             this.productDetailCode = pd.getCode();
             this.productDetailId = pd.getId();
-            this.productName = pd.getProduct().getName();
-            this.sizeName = pd.getSize().getName();
-            this.colorName = pd.getColor().getName();
-            this.price = pd.getProduct().getPrice();
+
+            if (pd.getProduct() != null) {
+                this.productName = pd.getProduct().getName();
+                this.price = pd.getProduct().getPrice();
+                this.productID = pd.getProduct().getId();
+            }
+
+            if (pd.getSize() != null) {
+                this.sizeName = pd.getSize().getName();
+                this.sizeID = pd.getSize().getId();
+            }
+
+            if (pd.getColor() != null) {
+                this.colorName = pd.getColor().getName();
+                this.colorID = pd.getColor().getId();
+            }
+
             this.quantity = item.getQuantity();
             this.imageUrl = pd.getFirstImageUrl();
         }
     }
+    
 }

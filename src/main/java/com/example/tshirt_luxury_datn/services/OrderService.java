@@ -43,8 +43,7 @@ public class OrderService {
         Pageable sortedPageable = PageRequest.of(
                 pageable.getPageNumber(),
                 pageable.getPageSize(),
-                Sort.by("createdAt").ascending() 
-        );
+                Sort.by("createdAt").ascending());
         return orderRepository.findAll(sortedPageable);
     }
 
