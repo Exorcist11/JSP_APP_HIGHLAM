@@ -1,8 +1,10 @@
 package com.example.tshirt_luxury_datn.controller;
 
-import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -26,17 +28,25 @@ public class OrderController {
     public String listOrders(
             @RequestParam(required = false) String code,
             @RequestParam(required = false) String status,
-            @RequestParam(required = false) Long id, // Thêm tham số id
+            @RequestParam(required = false) Long id,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "5") int size,
             Model model) {
+                
+        Pageable pageable = PageRequest.of(page, size);
 
         // Hiển thị danh sách hóa đơn
-        List<Order> orders = (code != null || status != null)
-                ? orderService.searchOrder(code, status)
-                : orderService.getListOrders();
+        Page<Order> orders = (code != null || status != null)
+                ? orderService.searchOrder(code, status, pageable)
+                : orderService.getListOrders(pageable);
 
         model.addAttribute("code", code);
         model.addAttribute("status", status);
-        model.addAttribute("listOrders", orders);
+        model.addAttribute("listOrders", orders.getContent());
+        model.addAttribute("currentPage", orders.getNumber());
+        model.addAttribute("totalPages", orders.getTotalPages());
+        model.addAttribute("totalItems", orders.getTotalElements());
+        model.addAttribute("pageSize", size);
 
         // Nếu có id thì thêm thông tin chi tiết hóa đơn
         if (id != null) {
@@ -76,19 +86,19 @@ public class OrderController {
         }
     }
 
-    @GetMapping("/search")
-    public String searchOrder(@RequestParam(required = false) String code,
-            @RequestParam(required = false) String status, Model model) {
+    // @GetMapping("/search")
+    // public String searchOrder(@RequestParam(required = false) String code,
+    //         @RequestParam(required = false) String status, Model model) {
 
-        try {
-            List<Order> orders = orderService.searchOrder(code, status);
-            model.addAttribute("code", code);
-            model.addAttribute("status", status);
-            model.addAttribute("listOrders", orders);
-            return "HoaDon/hoa-don-admin";
-        } catch (Exception e) {
-            throw new RuntimeException("Failed to fetch order detail for code: " + code, e);
-        }
-    }
+    //     try {
+    //         List<Order> orders = orderService.searchOrder(code, status);
+    //         model.addAttribute("code", code);
+    //         model.addAttribute("status", status);
+    //         model.addAttribute("listOrders", orders);
+    //         return "HoaDon/hoa-don-admin";
+    //     } catch (Exception e) {
+    //         throw new RuntimeException("Failed to fetch order detail for code: " + code, e);
+    //     }
+    // }
 
 }

@@ -52,17 +52,13 @@
       aria-hidden="true"
       id="iconSidenav"
     ></i>
-    <a
-      class="navbar-brand m-0"
-      href=" https://demos.creative-tim.com/soft-ui-dashboard/pages/dashboard.html "
-      target="_blank"
-    >
+    <a class="navbar-brand m-0" href="" target="_blank">
       <!-- <img
             src="../assets/img/logo-ct-dark.png"
             class="navbar-brand-img h-100"
             alt="main_logo"
           /> -->
-      <span class="ms-1 font-weight-bold">T-Luxury Dashboard</span>
+      <h3 class="ms-1 font-weight-bold font-italic">T-Luxury</h3>
     </a>
   </div>
   <hr class="horizontal dark mt-0" />
@@ -324,7 +320,7 @@
         </a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="/admin/order">
+        <a class="nav-link" href="/admin/order?code=&status=&page=1&size=5">
           <div
             class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center"
           >
@@ -785,9 +781,10 @@
     const navLinks = document.querySelectorAll(".nav-link");
 
     navLinks.forEach((link) => {
-      const linkPath = link.getAttribute("href");
+      const linkHref = link.getAttribute("href");
+      const linkPath = new URL(linkHref, window.location.origin).pathname;
 
-      // So sánh path hiện tại với href của menu item
+      // So sánh path hiện tại với href của menu item (bỏ qua query string)
       if (
         currentPath === linkPath ||
         (linkPath !== "/" && currentPath.startsWith(linkPath))

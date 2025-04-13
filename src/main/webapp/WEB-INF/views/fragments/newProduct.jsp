@@ -3,6 +3,14 @@
 <%@ taglib
 uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
+<style>
+    .card-img-top {
+        height: 288px;
+        object-fit: cover;
+        object-position: center;
+    }
+</style>
+
 <div class="text-center mt-5" style="padding-left:2rem">
     <H1 class="text-center" style="font-size: 30px;">SẢN PHẨM MỚI</H1>
 </div>

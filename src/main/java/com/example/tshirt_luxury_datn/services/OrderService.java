@@ -9,6 +9,10 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import com.example.tshirt_luxury_datn.dto.OrderDTO;
@@ -35,8 +39,13 @@ public class OrderService {
     @Autowired
     private ProductDetailService productDetailService;
 
-    public List<Order> getListOrders() {
-        return orderRepository.findAll();
+    public Page<Order> getListOrders(Pageable pageable) {
+        Pageable sortedPageable = PageRequest.of(
+                pageable.getPageNumber(),
+                pageable.getPageSize(),
+                Sort.by("createdAt").ascending() 
+        );
+        return orderRepository.findAll(sortedPageable);
     }
 
     public List<Order> getOrderByUser(Long userID) {
@@ -78,9 +87,9 @@ public class OrderService {
         }
     }
 
-    public List<Order> searchOrder(String status, String code) {
+    public Page<Order> searchOrder(String status, String code, Pageable pageable) {
         try {
-            return orderRepository.findByCodeIgnoreCaseStartingWithOrStatusIgnoreCase(status, code);
+            return orderRepository.findByCodeIgnoreCaseStartingWithOrStatusIgnoreCase(status, code, pageable);
         } catch (Exception e) {
             throw new RuntimeException("Failed to searcg order detail for orderId: " + e);
         }

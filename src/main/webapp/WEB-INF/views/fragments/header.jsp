@@ -33,8 +33,6 @@ uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
         z-index: 50; /* Đảm bảo navbar ở trên cùng */
       }
 
-      /* Thêm margin-top cho nội dung chính để tránh bị navbar che */
-
       .navbar-brand img {
         width: 50px;
         height: 50px;
