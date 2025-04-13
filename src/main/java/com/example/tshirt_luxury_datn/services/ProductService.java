@@ -8,6 +8,8 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.example.tshirt_luxury_datn.dto.ProductDTO;
@@ -50,12 +52,12 @@ public class ProductService {
     return uniqueCode;
   }
 
-  public List<Product> getAllProduct() {
-    return productRepository.findAll();
+  public Page<Product> getAllProduct(Pageable pageable) {
+    return productRepository.findAll(pageable);
   }
 
-  public List<Product> searchProducts(String timKiemSanPham, Boolean trangThai) {
-    return productRepository.searchProducts(timKiemSanPham, trangThai);
+  public Page<Product> searchProducts(String timKiemSanPham, Boolean trangThai, Pageable pageable) {
+    return productRepository.searchProducts(timKiemSanPham, trangThai, pageable);
   }
 
   public List<Product> searchProductByName(String name) {

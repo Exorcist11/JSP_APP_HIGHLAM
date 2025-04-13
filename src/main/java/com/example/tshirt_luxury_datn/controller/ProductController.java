@@ -3,6 +3,9 @@ package com.example.tshirt_luxury_datn.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -46,7 +49,10 @@ public class ProductController {
       @RequestParam(value = "timKiemSanPham", required = false) String timKiemSanPham,
       @RequestParam(value = "trangThai", required = false) Boolean trangThai,
       @RequestParam(value = "productID", required = false) Long productID,
+      @RequestParam(defaultValue = "0") int page,
+      @RequestParam(defaultValue = "10") int size,
       Model model) {
+    Pageable pageable = PageRequest.of(page, size);
 
     if (productID != null) {
       // Hiển thị chi tiết sản phẩm
@@ -64,11 +70,15 @@ public class ProductController {
     }
 
     // Hiển thị danh sách sản phẩm
-    List<Product> products = (timKiemSanPham == null && trangThai == null)
-        ? productService.getAllProduct()
-        : productService.searchProducts(timKiemSanPham, trangThai);
+    Page<Product> products = (timKiemSanPham == null && trangThai == null)
+        ? productService.getAllProduct(pageable)
+        : productService.searchProducts(timKiemSanPham, trangThai, pageable);
 
-    model.addAttribute("products", products);
+    model.addAttribute("products", products.getContent());
+    model.addAttribute("currentPage", products.getNumber());
+    model.addAttribute("totalPages", products.getTotalPages());
+    model.addAttribute("totalItems", products.getTotalElements());
+    model.addAttribute("pageSize", size);
     model.addAttribute("categories", categoryService.getAllCategoryDetail());
     model.addAttribute("timKiemSanPham", timKiemSanPham);
     model.addAttribute("trangThai", trangThai);

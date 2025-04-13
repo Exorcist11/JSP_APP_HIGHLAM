@@ -2,6 +2,8 @@ package com.example.tshirt_luxury_datn.repository;
 
 import java.util.List;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -15,8 +17,8 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
                         "(:timKiemSanPham IS NULL OR LOWER(p.name) LIKE LOWER(CONCAT('%', :timKiemSanPham, '%'))) AND "
                         +
                         "(:trangThai IS NULL OR p.status = :trangThai)")
-        List<Product> searchProducts(@Param("timKiemSanPham") String timKiemSanPham,
-                        @Param("trangThai") Boolean trangThai);
+        Page<Product> searchProducts(@Param("timKiemSanPham") String timKiemSanPham,
+                        @Param("trangThai") Boolean trangThai, Pageable pageable);
 
         List<Product> findTop4ByOrderByCreatedAtDesc();
 
@@ -25,4 +27,6 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
         List<Product> findByCategoryDetailId(Long categoryDetailId);
 
         List<Product> findByCategoryDetail_CategoryId(Long categoryId);
+
+        Page<Product> findAll(Pageable pageable);
 }
