@@ -26,6 +26,19 @@
           .w-70 {
             width: 70%;
           }
+          .pagination .page-link {
+              color: #007bff;
+          }
+
+          .pagination .page-item.active .page-link {
+              background-color: #007bff;
+              border-color: #007bff;
+          }
+
+          .pagination .page-item.disabled .page-link {
+              cursor: not-allowed;
+              opacity: 0.6;
+          }
         </style>
       </head>
 
@@ -97,12 +110,40 @@
                         </div>
                       </div>
                     </c:forEach>
+                    <!-- Pagination -->
+           
 
                     <!-- Thêm các sản phẩm khác ở đây -->
+                  </div>
+                  <div class="d-flex justify-content-between align-items-center mt-4">
+             
+                    <nav aria-label="Page navigation">
+                        <ul class="pagination mb-0">
+                            <!-- Previous Button -->
+                            <li class="page-item ${currentPage == 0 ? 'disabled' : ''}">
+                                <a class="page-link" href="?code=${code}&page=${currentPage - 1}&size=${pageSize}" aria-label="Previous">
+                                    <span aria-hidden="true">&laquo;</span>
+                                </a>
+                            </li>
+                            <!-- Page Numbers -->
+                            <c:forEach begin="0" end="${totalPages - 1}" var="i">
+                                <li class="page-item ${currentPage == i ? 'active' : ''}">
+                                    <a class="page-link" href="?code=${code}&page=${i}&size=${pageSize}">${i + 1}</a>
+                                </li>
+                            </c:forEach>
+                            <!-- Next Button -->
+                            <li class="page-item ${currentPage == totalPages - 1 ? 'disabled' : ''}">
+                                <a class="page-link" href="?code=${code}&page=${currentPage + 1}&size=${pageSize}" aria-label="Next">
+                                    <span aria-hidden="true">&raquo;</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </nav>
                   </div>
                 </div>
               </div>
             </div>
+            
 
             <!-- Cart Panel -->
             <div class="col-lg-4">

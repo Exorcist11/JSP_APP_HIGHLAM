@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -43,21 +45,20 @@ public class ProductDetailService {
     return details;
   }
 
-  public List<ProductDetail> getAllProductDetail() {
+  public Page<ProductDetail> getAllProductDetail(Pageable pageable) {
     try {
-      return detailRepository.findAll();
+        return detailRepository.findAll(pageable);
     } catch (Exception e) {
-      throw new RuntimeException("ERROR WHEN GET ALL PRODUCT DETAIL: " + e.getMessage());
+        throw new RuntimeException("ERROR WHEN GET ALL PRODUCT DETAIL: " + e.getMessage());
     }
-  }
-
-  public List<ProductDetail> searchProductDetail(String code) {
+}
+  public Page<ProductDetail> searchProductDetail(String code, Pageable pageable) {
     try {
-      return detailRepository.findByCodeContainingIgnoreCase(code);
+        return detailRepository.findByCodeContainingIgnoreCase(code, pageable);
     } catch (Exception e) {
-      throw new RuntimeException("ERROR WHEN SEARCH PRODUCT DETAIL: " + e.getMessage());
+        throw new RuntimeException("ERROR WHEN SEARCH PRODUCT DETAIL: " + e.getMessage());
     }
-  }
+}
 
   public ProductDetail getProductDetailById(Long id) {
     return detailRepository.findById(id).orElse(null);

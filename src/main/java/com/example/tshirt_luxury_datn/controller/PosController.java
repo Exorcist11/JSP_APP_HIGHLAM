@@ -5,6 +5,9 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -39,11 +42,19 @@ public class PosController {
     private OrderService orderService;
 
     @GetMapping
-    public String PointOfSale(Model model, @RequestParam(required = false) String code, HttpSession session) {
-        // List<Product> list = (code != null && !code.isEmpty()) ? productService.searchProductByName(code)
-        //         : productService.getAllProduct();
-        List<ProductDetail> list = (code != null && !code.isEmpty()) ? productDetailService.searchProductDetail(code)
-                : productDetailService.getAllProductDetail();
+    public String PointOfSale(Model model, @RequestParam(required = false) String code, HttpSession session,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "6") int size) {
+        // List<Product> list = (code != null && !code.isEmpty()) ?
+        // productService.searchProductByName(code)
+        // : productService.getAllProduct();
+        Pageable pageable = PageRequest.of(page, size);
+        Page<ProductDetail> productPage;
+        if (code != null && !code.isEmpty()) {
+            productPage = productDetailService.searchProductDetail(code, pageable);
+        } else {
+            productPage = productDetailService.getAllProductDetail(pageable);
+        }
         @SuppressWarnings("unchecked")
         List<CartItem> cart = (List<CartItem>) session.getAttribute("cart");
 
@@ -51,10 +62,15 @@ public class PosController {
             cart = new ArrayList<>();
             session.setAttribute("cart", cart);
         }
+        
         List<CartItemDTO> cartItems = cartService.pos_cartItem(cart);
-        model.addAttribute("products", list);
+        model.addAttribute("products", productPage.getContent());
         model.addAttribute("cart", cartItems);
         model.addAttribute("total", cartService.pos_caculateTotal(cart));
+        model.addAttribute("currentPage", page);
+        model.addAttribute("totalPages", productPage.getTotalPages());
+        model.addAttribute("pageSize", size);
+        model.addAttribute("code", code);
         return "admin/Pos/pos";
     }
 

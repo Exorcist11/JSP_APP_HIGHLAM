@@ -3,6 +3,8 @@ package com.example.tshirt_luxury_datn.repository;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
@@ -16,7 +18,7 @@ public interface ProductDetailRepository extends JpaRepository<ProductDetail, Lo
 
   Optional<ProductDetail> findByProductIdAndSizeIdAndColorId(Long productId, Long sizeId, Long colorId);
 
-  List<ProductDetail> findByCodeContainingIgnoreCase(String code);
+  Page<ProductDetail> findByCodeContainingIgnoreCase(String code, Pageable pageable);
 
   Optional<ProductDetail> findByCode(String code);
 }
