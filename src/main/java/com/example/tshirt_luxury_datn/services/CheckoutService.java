@@ -27,7 +27,6 @@ import com.example.tshirt_luxury_datn.dto.CartItemDTO;
 import com.example.tshirt_luxury_datn.dto.OrderDTO;
 import com.example.tshirt_luxury_datn.dto.ProductDetailDTO;
 import com.example.tshirt_luxury_datn.entity.Cart;
-import com.example.tshirt_luxury_datn.entity.CartItem;
 import com.example.tshirt_luxury_datn.entity.Order;
 import com.example.tshirt_luxury_datn.entity.OrderItem;
 import com.example.tshirt_luxury_datn.entity.Payment;
@@ -106,6 +105,7 @@ public class CheckoutService {
       order.setRecipientName(orderDTO.getRecipientName());
       order.setNotes(orderDTO.getNote());
       order.setOrderItems(new ArrayList<>()); // Khởi tạo danh sách orderItems
+      order.setUser(loggedInUser);
 
       // Lưu Order
       order = orderRepository.save(order);

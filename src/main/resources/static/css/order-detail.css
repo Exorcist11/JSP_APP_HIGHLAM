@@ -1,0 +1,119 @@
+/* Order Detail Styles */
+
+/* Card Styles */
+.product-card {
+  transition: all 0.2s ease;
+  border-left: 4px solid #f8f9fa;
+}
+
+.product-card:hover {
+  border-left: 4px solid #0d6efd;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+}
+
+/* Product Image */
+.product-thumbnail {
+  width: 100%;
+  height: 80px;
+  object-fit: cover;
+}
+
+/* Product Badges */
+.product-specs .badge {
+  font-weight: 500;
+  padding: 5px 10px;
+}
+
+/* Order Header */
+.order-header-card {
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+/* Information Sections */
+.info-section {
+  padding: 0 10px;
+}
+
+.info-label {
+  width: 120px;
+  color: #6c757d;
+  font-weight: 500;
+}
+
+.info-value {
+  flex: 1;
+}
+
+/* Order Status Labels */
+.order-status {
+  padding: 6px 12px;
+  border-radius: 50px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  display: inline-flex;
+  align-items: center;
+}
+
+.status-pending {
+  background-color: #fff8e1;
+  color: #f57c00;
+}
+
+.status-completed {
+  background-color: #e8f5e9;
+  color: #2e7d32;
+}
+
+.status-cancelled {
+  background-color: #ffebee;
+  color: #c62828;
+}
+
+.status-processing {
+  background-color: #e3f2fd;
+  color: #1565c0;
+}
+
+.status-shipped {
+  background-color: #e0f7fa;
+  color: #00838f;
+}
+
+/* Summary Card */
+.summary-card {
+  border-left: 4px solid #0d6efd;
+  background-color: #f8f9fa;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 992px) {
+  .order-details-container {
+    flex-direction: column-reverse;
+  }
+
+  .order-products,
+  .order-summary {
+    width: 100% !important;
+  }
+}
+
+@media (max-width: 767.98px) {
+  .info-section {
+    padding: 0;
+  }
+
+  .info-label {
+    width: 110px;
+    font-size: 0.9rem;
+  }
+
+  .info-value {
+    font-size: 0.9rem;
+  }
+
+  .product-card .col-sm-3.text-end {
+    text-align: left !important;
+    margin-top: 10px;
+  }
+}

@@ -32,7 +32,7 @@ contentType="text/html;charset=UTF-8" language="java" %>
 
     <div class="container-fluid" style="margin-top: 90px">
       <div class="row flex-nowrap">
-        <div class="col-auto col-md-3 col-xl-2 px-sm-2 px-0 bg-primary">
+        <div class="col-auto col-md-3 col-xl-2  px-0">
           <jsp:include page="/WEB-INF/views/Profile/fragments/sideBar.jsp" />
         </div>
 

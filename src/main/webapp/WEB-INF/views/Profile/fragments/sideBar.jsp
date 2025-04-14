@@ -1,44 +1,77 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <div
-  class="d-flex flex-column align-items-center align-items-sm-start px-3 pt-2 text-white"
-  style="min-height: 600px"
+  class="d-flex flex-column align-items-stretch px-3 pt-3 text-white bg-dark"
+  style="min-height: 600px; width: 250px; height: 100%"
 >
+  <!-- Brand/Logo -->
   <a
     href="/"
-    class="d-flex align-items-center pb-3 mb-md-0 me-md-auto text-white text-decoration-none"
+    class="d-flex align-items-center px-3 py-2 mb-3 text-white text-decoration-none"
   >
-    <span class="fs-5 d-none d-sm-inline">Menu</span>
+    <span class="fs-4 fw-bold">LUXURY</span>
   </a>
-  <ul
-    class="nav nav-pills flex-column mb-sm-auto mb-0 align-items-center align-items-sm-start text-white"
-    id="menu"
-  >
+
+  <!-- Menu Items -->
+  <ul class="nav nav-pills flex-column mb-auto" id="sidebarMenu">
     <li class="nav-item">
-      <a href="/profile" class="nav-link align-middle px-0 text-white">
-        <i class="fs-4 bi-house"></i>
-        <span class="ms-1 d-none d-sm-inline">Thông tin cá nhân</span>
+      <a href="/profile" class="nav-link text-white py-2 px-3 rounded">
+        <i class="bi bi-person me-2"></i>
+        <span>Thông tin cá nhân</span>
       </a>
     </li>
-    <li>
-      <a
-        href="/history"
-        data-bs-toggle="collapse"
-        class="nav-link px-0 align-middle text-white"
-      >
-        <i class="fs-4 bi-speedometer2"></i>
-        <span class="ms-1 d-none d-sm-inline">Lịch sử mua hàng</span>
+    <li class="nav-item">
+      <a href="/history" class="nav-link text-white py-2 px-3 rounded">
+        <i class="bi bi-clock-history me-2"></i>
+        <span>Lịch sử mua hàng</span>
       </a>
     </li>
   </ul>
-  <hr />
-  <div class="dropdown pb-4 w-100">
-    <a
-      href="/logout"
-      class="d-flex align-items-center text-white text-decoration-none"
-      id="dropdownUser1"
-      aria-expanded="false"
-    >
-      <span class="d-none d-sm-inline mx-1 btn btn-light w-100">Đăng xuất</span>
+
+  <!-- Logout -->
+  <hr class="my-3" />
+  <div class="px-3 pb-3">
+    <a href="/logout" class="btn btn-outline-light w-100">
+      <i class="bi bi-box-arrow-right me-2"></i>
+      Đăng xuất
     </a>
   </div>
 </div>
+
+<!-- JavaScript for Active Menu -->
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const currentPath = window.location.pathname;
+    const menuLinks = document.querySelectorAll("#sidebarMenu .nav-link");
+
+    menuLinks.forEach((link) => {
+      if (link.getAttribute("href") === currentPath) {
+        link.classList.add("active");
+      } else {
+        link.classList.remove("active");
+      }
+    });
+  });
+</script>
+
+<style>
+  /* Custom styles for better appearance */
+  .nav-link {
+    transition: background-color 0.2s ease;
+  }
+
+  .nav-link:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+  }
+
+  .nav-link.active {
+    background-color: #0d6efd !important;
+    color: white !important;
+  }
+
+  /* Responsive adjustments */
+  @media (max-width: 576px) {
+    .d-flex {
+      width: 100% !important;
+    }
+  }
+</style>
