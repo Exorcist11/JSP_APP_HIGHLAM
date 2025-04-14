@@ -41,5 +41,5 @@ uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 </div>
 
 <div class="text-center mt-4" style="padding-left:2rem">
-    <a class="btn btn-outline-dark" href="/t-shirt-luxury/xem-them">Xem Thêm</a>
+    <a class="btn btn-outline-dark" href="/all-products">Xem Thêm</a>
 </div>
