@@ -271,7 +271,13 @@ uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
         <c:forEach items="${products}" var="p">
           <div class="col-md-3">
             <div class="card product-card">
-              <img alt="Anh1" src="${p.imgUrl}" width="600" />
+              <img
+                alt="Anh1"
+                src="${p.imgUrl}"
+                width="600"
+                height="288"
+                style="object-fit: cover; object-position: center"
+              />
               <div class="product-info">
                 <div class="colors">
                   <img

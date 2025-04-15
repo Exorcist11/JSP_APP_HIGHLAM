@@ -244,7 +244,7 @@
                               <c:choose>
                                 <c:when test="${order.status == 'COMPLETED'}">Hoàn thành</c:when>
                                 <c:when test="${order.status == 'CANCELLED'}">Đã hủy</c:when>
-                                <c:when test="${order.status == 'SHIPPED'}">Đang giao</c:when>
+                                <c:when test="${order.status == 'CONFIRMED'}">Đang giao</c:when>
                                 <c:otherwise>Chờ xử lý</c:otherwise>
                               </c:choose>
                             </span>
