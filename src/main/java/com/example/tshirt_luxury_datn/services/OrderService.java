@@ -43,7 +43,7 @@ public class OrderService {
         Pageable sortedPageable = PageRequest.of(
                 pageable.getPageNumber(),
                 pageable.getPageSize(),
-                Sort.by("createdAt").ascending());
+                Sort.by(Sort.Direction.DESC, "updatedAt"));
         return orderRepository.findAll(sortedPageable);
     }
 
@@ -88,9 +88,13 @@ public class OrderService {
 
     public Page<Order> searchOrder(String status, String code, Pageable pageable) {
         try {
-            return orderRepository.findByCodeIgnoreCaseStartingWithOrStatusIgnoreCase(status, code, pageable);
+            Pageable sortedPageable = PageRequest.of(
+                    pageable.getPageNumber(),
+                    pageable.getPageSize(),
+                    Sort.by(Sort.Direction.DESC, "updatedAt")); 
+            return orderRepository.findByCodeIgnoreCaseStartingWithOrStatusIgnoreCase(status, code, sortedPageable);
         } catch (Exception e) {
-            throw new RuntimeException("Failed to searcg order detail for orderId: " + e);
+            throw new RuntimeException("Failed to search order detail for orderId: " + e.getMessage());
         }
     }
 
