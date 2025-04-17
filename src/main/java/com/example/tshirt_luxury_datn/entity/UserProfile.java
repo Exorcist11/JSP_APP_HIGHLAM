@@ -16,14 +16,35 @@ public class UserProfile {
     private Long id;
 
     @Column(nullable = false, columnDefinition = "NVARCHAR(50)")
-    private String fullName;
+    private String fullName; // Tên người nhận
+
+    @Column(columnDefinition = "NVARCHAR(255)")
+    private String detail; // Số nhà, tên đường
+
+    private String phoneNumber; // Số điện thoại người nhận
+
+    @Column(nullable = false)
+    private Long provinceCode; // Mã tỉnh từ API
 
     @Column(nullable = false, columnDefinition = "NVARCHAR(50)")
-    private String address;
+    private String provinceName; // Tên tỉnh
 
-    private String phoneNumber;
+    @Column(nullable = false)
+    private Long districtCode; // Mã quận/huyện
 
-    @OneToOne
-    @JoinColumn(name = "user_id")
+    @Column(nullable = false, columnDefinition = "NVARCHAR(50)")
+    private String districtName; // Tên quận/huyện
+
+    @Column(nullable = false)
+    private Long wardCode; // Mã phường/xã
+
+    @Column(nullable = false, columnDefinition = "NVARCHAR(50)")
+    private String wardName; // Tên phường/xã
+
+    @Column(columnDefinition = "BIT DEFAULT 0")
+    private Boolean isDefault = false; // Địa chỉ mặc định
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", nullable = false)
     private User user;
 }

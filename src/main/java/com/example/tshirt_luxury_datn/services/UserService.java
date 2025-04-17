@@ -131,10 +131,10 @@ public class UserService {
         throw new IllegalArgumentException("User không tồn tạo!");
       }
       UserProfile userProfile = new UserProfile();
-      userProfile.setUser(user.get());
-      userProfile.setAddress(userProfileDTP.getAddress());
-      userProfile.setFullName(userProfileDTP.getFullName());
-      userProfile.setPhoneNumber(userProfileDTP.getPhoneNumber());
+      // userProfile.setUser(user.get());
+      // userProfile.setAddress(userProfileDTP.getAddress());
+      // userProfile.setFullName(userProfileDTP.getFullName());
+      // userProfile.setPhoneNumber(userProfileDTP.getPhoneNumber());
 
       return userProfileRepository.save(userProfile);
     } catch (Exception e) {

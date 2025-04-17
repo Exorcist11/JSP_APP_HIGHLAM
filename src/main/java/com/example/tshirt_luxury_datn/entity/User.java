@@ -1,5 +1,8 @@
 package com.example.tshirt_luxury_datn.entity;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -30,6 +33,6 @@ public class User {
     @Column(nullable = false, columnDefinition = "BIT DEFAULT 1")
     private Boolean status = true;
 
-    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
-    private UserProfile profile;
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<UserProfile> profiles = new ArrayList<>();
 }

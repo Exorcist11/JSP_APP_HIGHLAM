@@ -6,8 +6,15 @@ import lombok.Setter;
 @Getter
 @Setter
 public class UserProfileDTP {
-  private String address;
-  private String fullName;
-  private String phoneNumber;
-  private Long userID;
+  private Long id;
+    private String fullName;
+    private String detail;
+    private String phoneNumber;
+    private Long provinceCode;
+    private String provinceName;
+    private Long districtCode;
+    private String districtName;
+    private Long wardCode;
+    private String wardName;
+    private Boolean isDefault;
 }

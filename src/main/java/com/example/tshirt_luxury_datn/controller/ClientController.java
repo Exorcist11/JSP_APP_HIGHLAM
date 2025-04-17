@@ -31,6 +31,7 @@ import com.example.tshirt_luxury_datn.services.CartService;
 import com.example.tshirt_luxury_datn.services.ImageService;
 import com.example.tshirt_luxury_datn.services.OrderService;
 import com.example.tshirt_luxury_datn.services.ProductService;
+import com.example.tshirt_luxury_datn.services.UserProfileService;
 import com.example.tshirt_luxury_datn.services.UserService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -52,6 +53,9 @@ public class ClientController {
 
   @Autowired
   private ImageService imageService;
+
+  @Autowired
+  private UserProfileService userProfileService;
 
   @GetMapping
   public String homepage(Model model, HttpSession session) {
@@ -195,7 +199,8 @@ public class ClientController {
     if (loggedInUser == null) {
       return "redirect:/login";
     }
-    model.addAttribute("profile", userService.getProfile(loggedInUser.getId()));
+    List<UserProfileDTP> profiles = userProfileService.getUserProfiles(session);
+    model.addAttribute("profiles", profiles);
     return "Profile/profile";
   }
 
