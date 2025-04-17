@@ -262,7 +262,7 @@ public class CartService {
             throw new IllegalArgumentException("Không tìm thấy sản phẩm với mã: " + code);
         }
 
-        cartRepository.save(cart); 
+        cartRepository.save(cart);
     }
 
     public void pos_removeFromCart(List<CartItem> cart, String code) {
