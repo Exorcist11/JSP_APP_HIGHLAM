@@ -150,47 +150,71 @@
 
                                                         <!-- Dropdown Actions -->
                                                         <div class="dropdown">
-                                                            <button
-                                                                class="btn btn-sm btn-outline-secondary dropdown-toggle"
-                                                                type="button" id="dropdownMenuButton_${hd.id}"
-                                                                data-bs-toggle="dropdown" aria-expanded="false"
-                                                                title="Cập Nhật">
+                                                            <button class="btn btn-sm btn-outline-secondary dropdown-toggle"
+                                                                    type="button" id="dropdownMenuButton_${hd.id}"
+                                                                    data-bs-toggle="dropdown" aria-expanded="false"
+                                                                    title="Cập Nhật">
                                                                 <i class="fa-solid fa-ellipsis-vertical"></i>
                                                             </button>
-
+                                                        
                                                             <ul class="dropdown-menu dropdown-menu-end"
                                                                 aria-labelledby="dropdownMenuButton_${hd.id}"
                                                                 style="min-width: 200px; max-width: 90vw">
                                                                 <li>
                                                                     <a class="dropdown-item"
-                                                                        href="/admin/order/edit/${hd.id}">
-                                                                        <i class="fas fa-edit me-2"></i>Chỉnh sửa đơn
-                                                                        hàng
+                                                                       href="/admin/order/edit/${hd.id}">
+                                                                        <i class="fas fa-edit me-2"></i>Chỉnh sửa đơn hàng
                                                                     </a>
                                                                 </li>
                                                                 <li>
                                                                     <a class="dropdown-item"
-                                                                        href="/admin/order/print/${hd.id}">
+                                                                       href="/admin/order/print/${hd.id}">
                                                                         <i class="fas fa-print me-2"></i>In hóa đơn
                                                                     </a>
                                                                 </li>
-                                                                <li>
-                                                                    <hr class="dropdown-divider">
-                                                                </li>
-                                                                <li>
-                                                                    <a class="dropdown-item text-success" href="#"
-                                                                        onclick="updateOrderStatus('${hd.id}', 'CONFIRMED')">
-                                                                        <i class="fas fa-check-circle me-2"></i>Xác nhận
-                                                                        đơn hàng
-                                                                    </a>
-                                                                </li>
-                                                                <li>
-                                                                    <a class="dropdown-item text-danger" href="#"
-                                                                        onclick="return confirm('Bạn chắc chắn muốn hủy?') && updateOrderStatus('${hd.id}', 'CANCELLED')">
-                                                                        <i class="fas fa-times-circle me-2"></i>Hủy đơn
-                                                                        hàng
-                                                                    </a>
-                                                                </li>
+                                                                
+                                                                <!-- Chỉ hiển thị các action phù hợp với trạng thái hiện tại -->
+                                                                <c:if test="${hd.status == 'PENDING'}">
+                                                                    <li><hr class="dropdown-divider"></li>
+                                                                    <li>
+                                                                        <a class="dropdown-item text-success" href="#"
+                                                                           onclick="updateOrderStatus('${hd.id}', 'CONFIRMED')">
+                                                                            <i class="fas fa-check-circle me-2"></i>Xác nhận đơn hàng
+                                                                        </a>
+                                                                    </li>
+                                                                    <li>
+                                                                        <a class="dropdown-item text-danger" href="#"
+                                                                           onclick="updateOrderStatus('${hd.id}', 'CANCELLED')">
+                                                                            <i class="fas fa-times-circle me-2"></i>Hủy đơn hàng
+                                                                        </a>
+                                                                    </li>
+                                                                </c:if>
+                                                                
+                                                                <c:if test="${hd.status == 'CONFIRMED'}">
+                                                                    <li><hr class="dropdown-divider"></li>
+                                                                    <li>
+                                                                        <a class="dropdown-item text-info" href="#"
+                                                                           onclick="updateOrderStatus('${hd.id}', 'DELIVERING')">
+                                                                            <i class="fas fa-truck me-2"></i>Bắt đầu giao hàng
+                                                                        </a>
+                                                                    </li>
+                                                                </c:if>
+                                                                
+                                                                <c:if test="${hd.status == 'DELIVERING'}">
+                                                                    <li><hr class="dropdown-divider"></li>
+                                                                    <li>
+                                                                        <a class="dropdown-item text-success" href="#"
+                                                                           onclick="updateOrderStatus('${hd.id}', 'SUCCESS')">
+                                                                            <i class="fas fa-check-double me-2"></i>Xác nhận giao thành công
+                                                                        </a>
+                                                                    </li>
+                                                                    <li>
+                                                                        <a class="dropdown-item text-warning" href="#"
+                                                                           onclick="updateOrderStatus('${hd.id}', 'RETURNED')">
+                                                                            <i class="fas fa-undo me-2"></i>Xác nhận trả hàng
+                                                                        </a>
+                                                                    </li>
+                                                                </c:if>
                                                             </ul>
                                                         </div>
                                                     </div>
@@ -383,27 +407,42 @@
                             alert("Không tìm thấy mã đơn hàng!");
                             return;
                         }
+                        
+                        // Xác nhận trước khi hủy đơn hàng
+                        if (status === 'CANCELLED') {
+                            const confirmed = confirm("Bạn có chắc chắn muốn hủy đơn hàng này?");
+                            if (!confirmed) return;
+                        }
+                        
+                        // Xác nhận trước khi xác nhận đơn hàng
+                        if (status === 'CONFIRMED') {
+                            const confirmed = confirm("Xác nhận đơn hàng này?");
+                            if (!confirmed) return;
+                        }
+                        
                         const url = `/admin/order/changeStatus/` + orderId;
-                        fetch(url, {
-                            method: "PATCH",
-                            headers: {
-                                "Content-Type": "application/x-www-form-urlencoded",
-                            },
-                            body: new URLSearchParams({ order: status }),
-                        })
-                            .then((response) => {
-                                if (response.ok) {
-                                    alert("Cập nhật trạng thái thành công!");
-                                    location.reload();
-                                } else {
-                                    response
-                                        .text()
-                                        .then((text) => console.log("Cập nhật thất bại: " + text));
-                                }
-                            })
-                            .catch((error) => console.error("Lỗi kết nối:", error));
+                        try {
+                            const response = await fetch(url, {
+                                method: "PATCH",
+                                headers: {
+                                    "Content-Type": "application/x-www-form-urlencoded",
+                                },
+                                body: new URLSearchParams({ order: status }),
+                            });
+                            
+                            if (response.ok) {
+                                alert("Cập nhật trạng thái thành công!");
+                                location.reload();
+                            } else {
+                                const errorText = await response.text();
+                                alert("Cập nhật thất bại: " + errorText);
+                            }
+                        } catch (error) {
+                            console.error("Lỗi kết nối:", error);
+                            alert("Có lỗi xảy ra khi kết nối đến server");
+                        }
                     }
-
+                
                     // Hàm đóng modal chi tiết
                     function closeModal() {
                         // Xóa tham số id từ URL và reload trang
@@ -411,13 +450,13 @@
                         url.searchParams.delete('id');
                         window.location.href = url.toString();
                     }
-
+                
                     // Đóng modal khi nhấn phím ESC
                     document.addEventListener('keydown', function (event) {
-                        if (event.key === 'Escape' && ${not empty selectedOrder }) {
-                        closeModal();
-                    }
-        });
+                        if (event.key === 'Escape' && ${not empty selectedOrder}) {
+                            closeModal();
+                        }
+                    });
                 </script>
             </body>
 
