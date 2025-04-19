@@ -8,9 +8,9 @@ prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
     <title>Sổ địa chỉ - T-SHIRT LUXURY</title>
     <link rel="stylesheet" href="../css/style.css" />
     <link
-      href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
       rel="stylesheet"
-      integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
+      integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
       crossorigin="anonymous"
     />
     <link
@@ -22,9 +22,11 @@ prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
       href="../images/favicon.png"
       type="image/x-icon"
     />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css"
+    />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="../js/script.js"></script>
     <style>
       button {
         width: fit-content;
@@ -93,23 +95,23 @@ prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
         grid-template-columns: repeat(2, 1fr);
         grid-gap: 20px;
       }
-      
+
       .address-content {
         flex-grow: 1;
       }
-      
+
       .address-info {
         color: #495057;
         margin-bottom: 3px;
         font-size: 15px;
       }
-      
+
       .address-info strong {
         color: #212529;
         min-width: 105px;
         display: inline-block;
       }
-      
+
       .address-badge {
         display: inline-block;
         padding: 2px 8px;
@@ -118,26 +120,26 @@ prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
         font-weight: 600;
         margin-right: 10px;
       }
-      
+
       .default-badge {
         background-color: #d1e7dd;
         color: #0f5132;
       }
-      
+
       .full-address {
         margin-top: 8px;
         font-size: 14px;
         color: #6c757d;
         line-height: 1.5;
       }
-      
+
       .address-actions {
         display: flex;
         flex-direction: column;
         justify-content: center;
         gap: 8px;
       }
-      
+
       .btn-action {
         width: 38px;
         height: 38px;
@@ -148,52 +150,52 @@ prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
         border-radius: 50%;
         transition: all 0.2s;
       }
-      
+
       .btn-default {
         color: #198754;
         border-color: #198754;
       }
-      
+
       .btn-default:hover {
         background-color: #198754;
         color: white;
       }
-      
+
       .btn-edit {
         color: #fd7e14;
         border-color: #fd7e14;
       }
-      
+
       .btn-edit:hover {
         background-color: #fd7e14;
         color: white;
       }
-      
+
       .btn-delete {
         color: #dc3545;
         border-color: #dc3545;
       }
-      
+
       .btn-delete:hover {
         background-color: #dc3545;
         color: white;
       }
-      
+
       .btn-add {
         border-radius: 50px;
         padding: 10px 20px;
         font-weight: 500;
       }
-      
+
       @media (max-width: 767px) {
         .address-card {
           padding: 15px;
         }
-        
+
         .address-content {
           margin-bottom: 15px;
         }
-        
+
         .address-actions {
           flex-direction: row;
           justify-content: flex-start;
@@ -206,7 +208,7 @@ prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
     <div class="container-fluid" style="margin-top: 90px">
       <div class="row flex-nowrap">
-        <div class="col-auto col-md-3 col-xl-2 px-0">
+        <div class="col-auto px-0">
           <jsp:include page="/WEB-INF/views/Profile/fragments/sideBar.jsp" />
         </div>
 
@@ -227,7 +229,9 @@ prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
           <div class="address-list">
             <c:forEach items="${profiles}" var="profile">
               <div class="address-card ${profile.isDefault ? 'default' : ''}">
-                <div class="d-flex flex-column flex-md-row justify-content-between">
+                <div
+                  class="d-flex flex-column flex-md-row justify-content-between"
+                >
                   <div class="address-content">
                     <div class="d-flex align-items-center mb-2">
                       <h5 class="mb-0 me-2">${profile.fullName}</h5>

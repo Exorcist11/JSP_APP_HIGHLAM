@@ -191,7 +191,7 @@ uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
     <div class="container-fluid" style="margin-top: 90px">
       <div class="row flex-nowrap">
-        <div class="col-auto col-md-3 col-xl-2 px-0 position-relative">
+        <div class="col-auto  px-0 position-relative">
           <jsp:include page="/WEB-INF/views/Profile/fragments/sideBar.jsp" />
         </div>
 

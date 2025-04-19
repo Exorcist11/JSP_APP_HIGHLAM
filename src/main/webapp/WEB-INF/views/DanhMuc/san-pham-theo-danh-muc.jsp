@@ -7,19 +7,30 @@ uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Áo Nam</title>
+    <!-- Combined CSS links -->
+    link rel="stylesheet" href="../css/style.css" />
     <link
-      href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
       rel="stylesheet"
-      integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
+      integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
       crossorigin="anonymous"
     />
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
     />
+    <link
+      rel="shortcut icon"
+      href="../images/favicon.png"
+      type="image/x-icon"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css"
+    />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-    <script src="../js/script.js"></script>
-    <link href="../css/danhMucAoNam.css" rel="stylesheet" />
+
+    <link rel="stylesheet" href="../css/danhMucAoNam.css" />
   </head>
   <body>
     <header>
@@ -41,196 +52,92 @@ uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
         <div class="collapse navbar-collapse" id="navbarNavDarkDropdown">
           <h4 class="mt-text">Bộ Lọc</h4>
           <ul class="navbar-nav">
+            <!-- Color Filter -->
             <li class="nav-item dropdown">
               <button
                 class="btn btn-light dropdown-toggle"
-                href="#"
-                id="navbarDarkDropdownMenuLink"
-                role="button"
+                data-bs-toggle="dropdown"
                 aria-expanded="false"
               >
                 Màu Sắc
               </button>
-              <ul
-                class="dropdown-menu p-3"
-                aria-labelledby="dropdownMenuButton1"
-              >
+              <ul class="dropdown-menu p-3">
                 <div class="d-flex flex-wrap">
-                  <label>
-                    <input
-                      type="checkbox"
-                      class="color-checkbox"
-                      id="colorRed"
-                    />
-                    <div class="color-box" style="background-color: red"></div>
-                  </label>
-                  <label>
-                    <input
-                      type="checkbox"
-                      class="color-checkbox"
-                      id="colorBrown"
-                    />
-                    <div
-                      class="color-box"
-                      style="background-color: brown"
-                    ></div>
-                  </label>
-                  <label>
-                    <input
-                      type="checkbox"
-                      class="color-checkbox"
-                      id="colorPink"
-                    />
-                    <div class="color-box" style="background-color: pink"></div>
-                  </label>
-                  <label>
-                    <input
-                      type="checkbox"
-                      class="color-checkbox"
-                      id="colorBlack"
-                    />
-                    <div
-                      class="color-box"
-                      style="background-color: black"
-                    ></div>
-                  </label>
-                  <label>
-                    <input
-                      type="checkbox"
-                      class="color-checkbox"
-                      id="colorBlue"
-                    />
-                    <div class="color-box" style="background-color: blue"></div>
-                  </label>
-                  <label>
-                    <input
-                      type="checkbox"
-                      class="color-checkbox"
-                      id="colorYellow"
-                    />
-                    <div
-                      class="color-box"
-                      style="background-color: yellow"
-                    ></div>
-                  </label>
+                  <c:forEach
+                    var="color"
+                    items="${['Red', 'Brown', 'Pink', 'Black', 'Blue', 'Yellow']}"
+                  >
+                    <label class="color-option">
+                      <input
+                        type="checkbox"
+                        class="color-checkbox"
+                        id="color${color}"
+                      />
+                      <div
+                        class="color-box"
+                        style="background-color: ${color.toLowerCase()}"
+                      ></div>
+                    </label>
+                  </c:forEach>
                 </div>
               </ul>
             </li>
+
+            <!-- Size Filter -->
             <li class="nav-item dropdown">
               <button
                 class="btn btn-light dropdown-toggle"
-                href="#"
-                id="2"
-                role="button"
+                data-bs-toggle="dropdown"
                 aria-expanded="false"
               >
                 Kích Cỡ
               </button>
-              <ul
-                class="dropdown-menu p-3"
-                aria-labelledby="dropdownMenuButton2"
-              >
-                <div class="form-check">
-                  <input
-                    class="form-check-input"
-                    type="checkbox"
-                    value=""
-                    id="sizeS"
-                  />
-                  <label class="form-check-label" for="sizeS">S</label>
-                </div>
-                <div class="form-check">
-                  <input
-                    class="form-check-input"
-                    type="checkbox"
-                    value=""
-                    id="sizeM"
-                  />
-                  <label class="form-check-label" for="sizeM">M</label>
-                </div>
-                <div class="form-check">
-                  <input
-                    class="form-check-input"
-                    type="checkbox"
-                    value=""
-                    id="sizeL"
-                  />
-                  <label class="form-check-label" for="sizeL">L</label>
-                </div>
-                <div class="form-check">
-                  <input
-                    class="form-check-input"
-                    type="checkbox"
-                    value=""
-                    id="sizeXL"
-                  />
-                  <label class="form-check-label" for="sizeXL">XL</label>
-                </div>
-                <div class="form-check">
-                  <input
-                    class="form-check-input"
-                    type="checkbox"
-                    value=""
-                    id="size2XL"
-                  />
-                  <label class="form-check-label" for="size2XL">2XL</label>
-                </div>
+              <ul class="dropdown-menu p-3">
+                <c:forEach var="size" items="${['S', 'M', 'L', 'XL', '2XL']}">
+                  <div class="form-check">
+                    <input
+                      class="form-check-input"
+                      type="checkbox"
+                      id="size${size}"
+                    />
+                    <label class="form-check-label" for="size${size}"
+                      >${size}</label
+                    >
+                  </div>
+                </c:forEach>
               </ul>
             </li>
+
+            <!-- Price Filter -->
             <li class="nav-item dropdown">
               <button
                 class="btn btn-light dropdown-toggle"
-                href="#"
-                id="1"
-                role="button"
+                data-bs-toggle="dropdown"
                 aria-expanded="false"
               >
                 Khoảng Giá
               </button>
-              <ul
-                class="dropdown-menu p-3"
-                aria-labelledby="dropdownMenuButton3"
-              >
+              <ul class="dropdown-menu p-3">
                 <div class="form-check">
-                  <input
-                    class="form-check-input"
-                    type="checkbox"
-                    value=""
-                    id="price1"
-                  />
+                  <input class="form-check-input" type="checkbox" id="price1" />
                   <label class="form-check-label" for="price1"
                     >Dưới 200,000</label
                   >
                 </div>
                 <div class="form-check">
-                  <input
-                    class="form-check-input"
-                    type="checkbox"
-                    value=""
-                    id="price2"
-                  />
+                  <input class="form-check-input" type="checkbox" id="price2" />
                   <label class="form-check-label" for="price2"
                     >Từ 200,000 - 500,000</label
                   >
                 </div>
                 <div class="form-check">
-                  <input
-                    class="form-check-input"
-                    type="checkbox"
-                    value=""
-                    id="price3"
-                  />
+                  <input class="form-check-input" type="checkbox" id="price3" />
                   <label class="form-check-label" for="price3"
                     >Từ 500,000 - 1,000,000</label
                   >
                 </div>
                 <div class="form-check">
-                  <input
-                    class="form-check-input"
-                    type="checkbox"
-                    value=""
-                    id="price4"
-                  />
+                  <input class="form-check-input" type="checkbox" id="price4" />
                   <label class="form-check-label" for="price4"
                     >Trên 1,000,000</label
                   >
@@ -239,55 +146,38 @@ uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
             </li>
           </ul>
 
+          <!-- Sorting -->
           <div class="sort-container">
-            <span class="sort-label" style="width: 100%">Sắp xếp theo:</span>
-            <select
-              class="form-select dropdown"
-              aria-label="Default select example"
-            >
-              <option
-                class="btn btn-secondary dropdown-toggle"
-                type="button"
-                id="dropdownMenuButton"
-                data-bs-toggle="dropdown"
-                aria-expanded="false"
-                selected
-              >
-                Mới nhất
-              </option>
-              <option class="dropdown-item" href="#" value="1">Mới nhất</option>
-              <option class="dropdown-item" href="#" value="2">
-                Giá giảm dần
-              </option>
-              <option class="dropdown-item" href="#" value="3">
-                Giá tăng dần
-              </option>
+            <span class="sort-label">Sắp xếp theo:</span>
+            <select class="form-select">
+              <option value="1" selected>Mới nhất</option>
+              <option value="2">Giá giảm dần</option>
+              <option value="3">Giá tăng dần</option>
             </select>
           </div>
         </div>
       </nav>
 
+      <!-- Product Listing -->
       <div class="row">
         <c:forEach items="${products}" var="p">
-          <div class="col-md-3">
-            <div class="card product-card">
+          <div class="col-md-3 mb-4">
+            <div class="card product-card h-100">
               <img
-                alt="Anh1"
                 src="${p.imgUrl}"
-                width="600"
-                height="288"
-                style="object-fit: cover; object-position: center"
+                alt="${p.name}"
+                class="card-img-top product-image"
               />
-              <div class="product-info">
+              <div class="card-body product-info">
                 <div class="colors">
                   <img
-                    alt="option 1"
-                    height="20"
                     src="../images/ao_phong_boxy/DEVOTUS/black.webp"
+                    alt="color option"
                     width="20"
+                    height="20"
                   />
                 </div>
-                <p>${p.name}</p>
+                <h5 class="product-name">${p.name}</h5>
                 <p class="price">
                   <fmt:formatNumber
                     value="${p.price}"
@@ -297,29 +187,35 @@ uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
                   VND
                 </p>
               </div>
-              <div class="product-actions">
-                <button class="btn btn-dark">
+              <div class="card-footer product-actions">
+                <button class="btn btn-dark btn-sm">
                   <i class="fas fa-shopping-cart"></i> Mua nhanh
                 </button>
-                <a href="/product?id=${p.id}" class="btn btn-outline-dark"
-                  ><i class="fas fa-eye"></i> Xem chi tiết</a
+                <a
+                  href="/product?id=${p.id}"
+                  class="btn btn-outline-dark btn-sm"
                 >
+                  <i class="fas fa-eye"></i> Xem chi tiết
+                </a>
               </div>
             </div>
           </div>
         </c:forEach>
       </div>
 
-      <nav aria-label="Page navigation example">
-        <ul class="pagination">
+      <!-- Pagination -->
+      <nav aria-label="Page navigation">
+        <ul class="pagination justify-content-center">
           <li class="page-item">
             <a class="page-link" href="#" aria-label="Previous">
               <span aria-hidden="true">&laquo;</span>
             </a>
           </li>
-          <li class="page-item"><a class="page-link" href="#">1</a></li>
-          <li class="page-item"><a class="page-link" href="#">2</a></li>
-          <li class="page-item"><a class="page-link" href="#">3</a></li>
+          <c:forEach begin="1" end="${totalPages}" var="i">
+            <li class="page-item ${currentPage == i ? 'active' : ''}">
+              <a class="page-link" href="?page=${i}">${i}</a>
+            </li>
+          </c:forEach>
           <li class="page-item">
             <a class="page-link" href="#" aria-label="Next">
               <span aria-hidden="true">&raquo;</span>
@@ -328,11 +224,15 @@ uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
         </ul>
       </nav>
 
-      <div class="row mt-5" style="padding-left: 2rem">
-        <img
-          src="https://pos.nvncdn.com/be3159-662/bn/20240921_h3xCoY0r.gif"
-          alt=""
-        />
+      <!-- Banner -->
+      <div class="row mt-5">
+        <div class="col-12">
+          <img
+            src="https://pos.nvncdn.com/be3159-662/bn/20240921_h3xCoY0r.gif"
+            alt="Promotional banner"
+            class="img-fluid"
+          />
+        </div>
       </div>
     </div>
 
@@ -340,11 +240,12 @@ uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
       <jsp:include page="/WEB-INF/views/fragments/footer.jsp" />
     </footer>
 
+    <!-- Combined JS at bottom -->
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <script
       src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
       integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
       crossorigin="anonymous"
     ></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js"></script>
   </body>
 </html>

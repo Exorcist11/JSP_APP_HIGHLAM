@@ -1,7 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <div
   class="d-flex flex-column align-items-stretch px-3 pt-3 text-white bg-dark"
-  style="min-height: 600px; width: 250px; height: 100%"
+  style="min-height: 600px; width: 300px; height: 100%"
 >
   <!-- Brand/Logo -->
   <a

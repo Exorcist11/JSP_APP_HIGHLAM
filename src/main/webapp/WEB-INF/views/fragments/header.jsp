@@ -268,10 +268,11 @@ uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
     <div class="drawer">
       <div
-        class="offcanvas offcanvas-end"
+        class="offcanvas offcanvas-end "
         tabindex="-1"
         id="cartDrawer"
         aria-labelledby="cartDrawerLabel"
+   
       >
         <div class="offcanvas-header">
           <h5 class="offcanvas-title" id="cartDrawerLabel">Giỏ hàng</h5>
