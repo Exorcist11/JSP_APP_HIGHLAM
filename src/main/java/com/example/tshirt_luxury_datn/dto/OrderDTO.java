@@ -10,7 +10,7 @@ import lombok.Setter;
 public class OrderDTO {
   private String guestEmail;
   private String status;
- 
+  private String statusDisplay;
   private Long userID;
   private String note;
   private String recipientName;
@@ -18,7 +18,7 @@ public class OrderDTO {
   private String recipientPhone;
   private List<OrderItemDTO> orderItems;
   private List<ProductDetailDTO> productItems;
-  
+
   private String paymentMethod;
   public String orderType;
 
@@ -27,4 +27,5 @@ public class OrderDTO {
   private String ward;
   private String addressDetail;
   private String trangThai;
+
 }

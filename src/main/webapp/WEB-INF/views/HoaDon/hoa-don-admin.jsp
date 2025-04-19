@@ -71,13 +71,10 @@
                                 <!-- Dropdown trạng thái -->
                                 <div class="col-2">
                                     <select class="form-select" name="status" id="trangThai" style="font-size: 14px">
-                                        <option value="">Trạng Thái</option>
-                                        <option value="PENDING" ${status eq 'PENDING' ? 'selected' : '' }>Chờ Xác Nhận
-                                        </option>
-                                        <option value="CONFIRMED" ${status eq 'CONFIRMED' ? 'selected' : '' }>Xác Nhận
-                                        </option>
-                                        <option value="CANCELLED" ${status eq 'CANCELLED' ? 'selected' : '' }>Đã Huỷ
-                                        </option>
+                                        <option value="">Tất cả trạng thái</option>
+                                        <c:forEach items="${allStatus}" var="st">
+                                            <option value="${st}" ${status eq st ? 'selected' : ''}>${st.getDisplayName()}</option>
+                                        </c:forEach>
                                     </select>
                                 </div>
 
@@ -131,10 +128,14 @@
                                                     VND
                                                 </td>
                                                 <td>
-                                                    <span class="badge 
-                                            ${hd.status == 'PENDING' ? 'bg-warning' : 
-                                             hd.status == 'CONFIRMED' ? 'bg-success' : 'bg-danger'}">
-                                                        ${hd.status}
+                                                    <span class="badge
+                                                        ${hd.status == 'PENDING' ? 'bg-warning' :
+                                                         hd.status == 'CONFIRMED' ? 'bg-primary' :
+                                                         hd.status == 'DELIVERING' ? 'bg-info' :
+                                                         hd.status == 'SUCCESS' ? 'bg-success' :
+                                                         hd.status == 'CANCELLED' ? 'bg-danger' :
+                                                         hd.status == 'RETURNED' ? 'bg-secondary' : 'bg-dark'}">
+                                                        ${hd.vietnameseStatus}
                                                     </span>
                                                 </td>
                                                 <td class="text-end">
@@ -240,12 +241,18 @@
                             aria-labelledby="orderDetailModalLabel" style="display: block;">
                             <div class="modal-dialog modal-lg modal-dialog-centered">
                                 <div class="modal-content">
-                                    <div class="modal-header bg-primary text-white">
+                                    <div class="modal-header text-white">
                                         <h5 class="modal-title" id="orderDetailModalLabel">
                                             Chi tiết hóa đơn #${selectedOrder.code}
-                                            <span class="badge ${selectedOrder.status == 'PENDING' ? 'bg-warning' : 
-                                             selectedOrder.status == 'CONFIRMED' ? 'bg-success' : 'bg-danger'} ms-2">
-                                                ${selectedOrder.status}
+                                            <span class="badge
+                                                ${selectedOrder.status == 'PENDING' ? 'bg-warning' :
+                                                selectedOrder.status == 'CONFIRMED' ? 'bg-primary' :
+                                                selectedOrder.status == 'DELIVERING' ? 'bg-info' :
+                                                selectedOrder.status == 'SUCCESS' ? 'bg-success' :
+                                                selectedOrder.status == 'CANCELLED' ? 'bg-secondary' :
+                                                selectedOrder.status == 'RETURNED' ? 'bg-danger' :
+                                                'bg-dark'} ms-2">
+                                                ${selectedOrder.vietnameseStatus}
                                             </span>
                                         </h5>
                                         <button type="button" class="btn-close btn-close-white" onclick="closeModal()"

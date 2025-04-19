@@ -55,29 +55,34 @@
   align-items: center;
 }
 
-.status-pending {
+.status-PENDING {
   background-color: #fff8e1;
   color: #f57c00;
 }
 
-.status-completed {
-  background-color: #e8f5e9;
-  color: #2e7d32;
-}
-
-.status-cancelled {
-  background-color: #ffebee;
-  color: #c62828;
-}
-
-.status-processing {
+.status-CONFIRMED {
   background-color: #e3f2fd;
   color: #1565c0;
 }
 
-.status-shipped {
+.status-DELIVERING {
   background-color: #e0f7fa;
   color: #00838f;
+}
+
+.status-SUCCESS {
+  background-color: #e8f5e9;
+  color: #2e7d32;
+}
+
+.status-CANCELLED {
+  background-color: #ffebee;
+  color: #c62828;
+}
+
+.status-RETURNED {
+  background-color: #f3f3f3;
+  color: #6c757d;
 }
 
 /* Summary Card */

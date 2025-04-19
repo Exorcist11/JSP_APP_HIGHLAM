@@ -1,4 +1,5 @@
 package com.example.tshirt_luxury_datn.entity;
+import com.example.tshirt_luxury_datn.enums.OrderStatus;
 
 import jakarta.persistence.*;
 import lombok.*;
@@ -8,6 +9,7 @@ import java.util.List;
 
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
+
 
 @Entity
 @Data
@@ -26,7 +28,8 @@ public class Order {
     private Timestamp orderDate;
 
     @Column(nullable = false)
-    private String status;
+    @Enumerated(EnumType.STRING)
+    private OrderStatus status;
 
     @Column(nullable = false, unique = false, length = 50)
     private String guestEmail;
@@ -69,4 +72,9 @@ public class Order {
 
     @Column(nullable = false)
     private String orderType;
+
+    @Transient
+    public String getVietnameseStatus() {
+        return status != null ? status.getDisplayName() : "";
+    }
 }

@@ -34,6 +34,7 @@ import com.example.tshirt_luxury_datn.entity.Payment;
 import com.example.tshirt_luxury_datn.entity.Product;
 import com.example.tshirt_luxury_datn.entity.ProductDetail;
 import com.example.tshirt_luxury_datn.entity.User;
+import com.example.tshirt_luxury_datn.enums.OrderStatus;
 import com.example.tshirt_luxury_datn.repository.OrderItemRepository;
 import com.example.tshirt_luxury_datn.repository.OrderRepository;
 import com.example.tshirt_luxury_datn.repository.PaymentRepository;
@@ -98,7 +99,7 @@ public class CheckoutService {
 
       // Tạo Order
       Order order = new Order();
-      order.setStatus("PENDING");
+      order.setStatus(OrderStatus.PENDING);
       order.setOrderType(orderDTO.getTrangThai().equals("1") ? "COD" : "ONLINE");
       order.setTotalAmount(totalAmount);
       order.setCode(generateOrderCode());
@@ -278,7 +279,7 @@ public class CheckoutService {
 
       Order order = new Order();
       order.setGuestEmail(orderDTO.getGuestEmail());
-      order.setStatus("PENDING");
+      order.setStatus(OrderStatus.PENDING);
       order.setOrderType("ONLINE");
       order.setNotes(orderDTO.getNote());
       order.setRecipientAddress(orderDTO.getRecipientAddress());

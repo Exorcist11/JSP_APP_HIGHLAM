@@ -197,7 +197,6 @@
           <div class="container">
             <div class="d-flex justify-content-between align-items-center mb-4">
               <h2 class="mb-0">Lịch sử đơn hàng</h2>
-              
             </div>
         
             
@@ -234,20 +233,24 @@
                             <fmt:formatDate value="${order.orderDate}" pattern="dd/MM/yyyy HH:mm" />
                           </td>
                           <td>
-                            <span class="status-badge 
+                            <span class="badge 
+                              ${order.status == 'PENDING' ? 'bg-warning' :
+                                order.status == 'CONFIRMED' ? 'bg-primary' :
+                                order.status == 'DELIVERING' ? 'bg-info' :
+                                order.status == 'SUCCESS' ? 'bg-success' :
+                                order.status == 'CANCELLED' ? 'bg-danger' :
+                                order.status == 'RETURNED' ? 'bg-secondary' : 'bg-dark'}">
+                                
                               <c:choose>
-                                <c:when test="${order.status == 'COMPLETED'}">status-completed</c:when>
-                                <c:when test="${order.status == 'CANCELLED'}">status-cancelled</c:when>
-                                <c:when test="${order.status == 'SHIPPED'}">status-shipped</c:when>
-                                <c:otherwise>status-pending</c:otherwise>
-                              </c:choose>">
-                              <c:choose>
-                                <c:when test="${order.status == 'COMPLETED'}">Hoàn thành</c:when>
+                                <c:when test="${order.status == 'PENDING'}">Chờ xử lý</c:when>
+                                <c:when test="${order.status == 'CONFIRMED'}">Đã xác nhận</c:when>
+                                <c:when test="${order.status == 'DELIVERING'}">Đang giao</c:when>
+                                <c:when test="${order.status == 'SUCCESS'}">Thành công</c:when>
                                 <c:when test="${order.status == 'CANCELLED'}">Đã hủy</c:when>
-                                <c:when test="${order.status == 'CONFIRMED'}">Đang giao</c:when>
-                                <c:otherwise>Chờ xử lý</c:otherwise>
+                                <c:when test="${order.status == 'RETURNED'}">Đã trả hàng</c:when>
+                                <c:otherwise>Không xác định</c:otherwise>
                               </c:choose>
-                            </span>
+                          </span>                        
                           </td>
                           <td>${order.recipientName}</td>
                           <td>

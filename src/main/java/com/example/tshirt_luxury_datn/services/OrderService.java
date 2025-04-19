@@ -21,6 +21,7 @@ import com.example.tshirt_luxury_datn.entity.Order;
 import com.example.tshirt_luxury_datn.entity.OrderItem;
 import com.example.tshirt_luxury_datn.entity.Payment;
 import com.example.tshirt_luxury_datn.entity.ProductDetail;
+import com.example.tshirt_luxury_datn.enums.OrderStatus;
 import com.example.tshirt_luxury_datn.repository.OrderItemRepository;
 import com.example.tshirt_luxury_datn.repository.OrderRepository;
 import com.example.tshirt_luxury_datn.repository.PaymentRepository;
@@ -72,7 +73,7 @@ public class OrderService {
         }
     }
 
-    public Order changeStatusOrder(Long orderId, String status) {
+    public Order changeStatusOrder(Long orderId, OrderStatus status) {
         try {
             Optional<Order> orderOpt = orderRepository.findById(orderId);
             if (orderOpt.isEmpty()) {
@@ -86,15 +87,24 @@ public class OrderService {
         }
     }
 
-    public Page<Order> searchOrder(String status, String code, Pageable pageable) {
+    public Page<Order> searchOrder(String code, OrderStatus status, Pageable pageable) {
         try {
             Pageable sortedPageable = PageRequest.of(
                     pageable.getPageNumber(),
                     pageable.getPageSize(),
-                    Sort.by(Sort.Direction.DESC, "updatedAt")); 
-            return orderRepository.findByCodeIgnoreCaseStartingWithOrStatusIgnoreCase(status, code, sortedPageable);
+                    Sort.by(Sort.Direction.DESC, "updatedAt"));
+
+            if (code != null && !code.isEmpty() && status != null) {
+                return orderRepository.findByCodeIgnoreCaseStartingWithAndStatus(code, status, sortedPageable);
+            } else if (code != null && !code.isEmpty()) {
+                return orderRepository.findByCodeIgnoreCaseStartingWith(code, sortedPageable);
+            } else if (status != null) {
+                return orderRepository.findByStatus(status, sortedPageable);
+            } else {
+                return orderRepository.findAll(sortedPageable);
+            }
         } catch (Exception e) {
-            throw new RuntimeException("Failed to search order detail for orderId: " + e.getMessage());
+            throw new RuntimeException("Failed to search order: " + e.getMessage());
         }
     }
 
@@ -138,7 +148,7 @@ public class OrderService {
 
             Order order = new Order();
             order.setOrderType("POS");
-            order.setStatus("SUCCCESS");
+            order.setStatus(OrderStatus.SUCCESS);
             order.setTotalAmount(cart.stream()
                     .mapToDouble(item -> item.getProductDetail().getProduct().getPrice() * item.getQuantity()).sum());
             order.setCode(generateOrderCode());

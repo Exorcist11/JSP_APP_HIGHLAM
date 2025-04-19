@@ -9,6 +9,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import com.example.tshirt_luxury_datn.entity.Order;
+import com.example.tshirt_luxury_datn.enums.OrderStatus;
 
 @Repository
 public interface OrderRepository extends JpaRepository<Order, Long> {
@@ -16,11 +17,11 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
 
     List<Order> findByUserId(Long userId);
 
-    Page<Order> findByCodeIgnoreCaseStartingWithOrStatusIgnoreCase(String status, String code, Pageable pageable);
+    Page<Order> findByCodeIgnoreCaseStartingWithAndStatus(String code, OrderStatus status, Pageable pageable);
 
-    List<Order> findByCodeIgnoreCaseStartingWith(String code);
+    Page<Order> findByCodeIgnoreCaseStartingWith(String code, Pageable pageable);
 
-    List<Order> findByStatusIgnoreCase(String status);
+    Page<Order> findByStatus(OrderStatus status, Pageable pageable);
 
     Optional<Order> findByCode(String code);
 }

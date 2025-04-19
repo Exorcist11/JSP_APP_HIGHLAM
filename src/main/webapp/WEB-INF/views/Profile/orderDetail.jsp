@@ -51,8 +51,8 @@
                   </p>
                 </div>
                 <div class="ms-auto">
-                  <span class="order-status status-${order.status.toLowerCase()}">
-                    <i class="fas fa-circle me-1 small"></i>${order.status}
+                  <span class="order-status status-${order.getStatus()}">
+                    <i class="fas fa-circle me-1 small"></i>${order.getVietnameseStatus()}
                   </span>
                 </div>
               </div>

@@ -1,5 +1,7 @@
 package com.example.tshirt_luxury_datn.controller;
 
+import java.util.Arrays;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -16,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.example.tshirt_luxury_datn.entity.Order;
+import com.example.tshirt_luxury_datn.enums.OrderStatus;
 import com.example.tshirt_luxury_datn.services.OrderService;
 
 @Controller
@@ -32,14 +35,25 @@ public class OrderController {
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "5") int size,
             Model model) {
-                
-        Pageable pageable = PageRequest.of(page, size);
 
-        // Hiển thị danh sách hóa đơn
-        Page<Order> orders = (code != null || status != null)
-                ? orderService.searchOrder(code, status, pageable)
+        Pageable pageable = PageRequest.of(page, size);
+        OrderStatus orderStatus = null;
+        if (status != null && !status.isEmpty()) {
+            try {
+                orderStatus = OrderStatus.valueOf(status.toUpperCase());
+            } catch (IllegalArgumentException e) {
+                model.addAttribute("error", "Trạng thái đơn hàng không hợp lệ: " + status);
+            }
+        }
+
+        // Kiểm tra xem có đang tìm kiếm không
+        boolean isSearching = (code != null && !code.isEmpty()) || (status != null && !status.isEmpty());
+
+        Page<Order> orders = isSearching
+                ? orderService.searchOrder(code, orderStatus, pageable)
                 : orderService.getListOrders(pageable);
 
+        model.addAttribute("allStatus", OrderStatus.values());
         model.addAttribute("code", code);
         model.addAttribute("status", status);
         model.addAttribute("listOrders", orders.getContent());
@@ -48,7 +62,6 @@ public class OrderController {
         model.addAttribute("totalItems", orders.getTotalElements());
         model.addAttribute("pageSize", size);
 
-        // Nếu có id thì thêm thông tin chi tiết hóa đơn
         if (id != null) {
             try {
                 model.addAttribute("selectedOrder", orderService.getOrderDetail(id));
@@ -76,7 +89,7 @@ public class OrderController {
     @PatchMapping("/changeStatus/{orderId}")
     public ResponseEntity<String> updateOrderStatus(
             @PathVariable Long orderId,
-            @RequestParam("order") String status) {
+            @RequestParam("order") OrderStatus status) {
         try {
             orderService.changeStatusOrder(orderId, status);
             return ResponseEntity.ok("Cập nhật thành công");
@@ -88,17 +101,18 @@ public class OrderController {
 
     // @GetMapping("/search")
     // public String searchOrder(@RequestParam(required = false) String code,
-    //         @RequestParam(required = false) String status, Model model) {
+    // @RequestParam(required = false) String status, Model model) {
 
-    //     try {
-    //         List<Order> orders = orderService.searchOrder(code, status);
-    //         model.addAttribute("code", code);
-    //         model.addAttribute("status", status);
-    //         model.addAttribute("listOrders", orders);
-    //         return "HoaDon/hoa-don-admin";
-    //     } catch (Exception e) {
-    //         throw new RuntimeException("Failed to fetch order detail for code: " + code, e);
-    //     }
+    // try {
+    // List<Order> orders = orderService.searchOrder(code, status);
+    // model.addAttribute("code", code);
+    // model.addAttribute("status", status);
+    // model.addAttribute("listOrders", orders);
+    // return "HoaDon/hoa-don-admin";
+    // } catch (Exception e) {
+    // throw new RuntimeException("Failed to fetch order detail for code: " + code,
+    // e);
+    // }
     // }
 
 }
