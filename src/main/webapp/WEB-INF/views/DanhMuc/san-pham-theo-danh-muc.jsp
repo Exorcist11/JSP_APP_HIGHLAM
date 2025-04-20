@@ -6,7 +6,7 @@ uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Áo Nam</title>
+    <title>${categoryName}</title>
     <!-- Combined CSS links -->
     link rel="stylesheet" href="../css/style.css" />
     <link
@@ -43,10 +43,12 @@ uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
           <li class="breadcrumb-item">
             <a class="home" href="/"><i class="fas fa-home"></i> Trang chủ</a>
           </li>
-          <li class="breadcrumb-item active" aria-current="page">Áo Nam</li>
+          <li class="breadcrumb-item active" aria-current="page">
+            ${categoryName}
+          </li>
         </ol>
       </nav>
-      <h1 class="mt-3">Áo Nam</h1>
+      <h1 class="mt-3">${categoryName}</h1>
 
       <nav class="navbar-expand-lg">
         <div class="collapse navbar-collapse" id="navbarNavDarkDropdown">

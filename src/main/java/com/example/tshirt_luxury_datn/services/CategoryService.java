@@ -112,4 +112,13 @@ public class CategoryService {
       return categoryDTO;
     }).collect(Collectors.toList());
   }
+
+  public String getCategoryNameById(Long id) {
+    Optional<CategoryDetail> categoryDetail = categoryDetailRepository.findById(id);
+    if (categoryDetail.isPresent()) {
+      return categoryDetail.get().getName();
+    } else {
+      throw new RuntimeException("Không tìm thấy category detail với ID: " + id);
+    }
+  }
 }

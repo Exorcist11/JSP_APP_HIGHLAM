@@ -6,7 +6,7 @@
 <head>
     <meta charset="UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>Áo Nam</title>
+    <title>Tất cả sản phẩm</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous"/>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"/>
@@ -50,10 +50,10 @@
             <li class="breadcrumb-item">
                 <a class="home" href="/"><i class="fas fa-home"></i> Trang chủ</a>
             </li>
-            <li class="breadcrumb-item active" aria-current="page">Áo Nam</li>
+            <li class="breadcrumb-item active" aria-current="page">Tất cả sản phẩm</li>
         </ol>
     </nav>
-    <h1 class="mt-3">Áo Nam</h1>
+    <h1 class="mt-3">Tất cả sản phẩm</h1>
 
     <nav class="navbar-expand-lg">
         <div class="collapse navbar-collapse" id="navbarNavDarkDropdown">
