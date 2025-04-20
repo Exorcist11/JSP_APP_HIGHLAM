@@ -21,7 +21,7 @@
 
   <div class="container-fluid" style="margin-top: 90px">
     <div class="row flex-nowrap">
-      <div class="col-auto col-md-3 col-xl-2 px-0">
+      <div class="col-auto  px-0">
         <jsp:include page="/WEB-INF/views/Profile/fragments/sideBar.jsp" />
       </div>
 
@@ -192,6 +192,11 @@
                 </div>
               </c:forEach>
             </div>
+            <c:if test="${order.getStatus() == 'PENDING'}">
+              <button 
+                class="btn btn-danger btn-sm"
+                onclick="cancelOrder(${order.id})" style="width: fit-content;">Huỷ đơn hàng</button>
+            </c:if>
           </div>
 
           <!-- Order Summary -->
@@ -226,7 +231,12 @@
 
                 <div class="d-flex justify-content-between small text-muted">
                   <span>Phương thức thanh toán:</span>
-                  <span>Thanh toán khi nhận hàng</span>
+                  <c:choose>
+                    <c:when test="${order.orderType == 'POS'}">Bán tại quầy (POS)</c:when>
+                    <c:when test="${order.orderType == 'COD'}">Giao hàng thu tiền (COD)</c:when>
+                    <c:when test="${order.orderType == 'ONLINE'}">Đặt hàng online</c:when>
+                    <c:otherwise>Không xác định</c:otherwise>
+                  </c:choose>
                 </div>
               </div>
             </div>
@@ -261,6 +271,29 @@
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
   <script src="../js/script.js"></script>
+  <script>
+    function cancelOrder(orderId) {
+      console.log(orderId);
+          if (confirm("Bạn có chắc muốn huỷ đơn hàng này không?")) {
+              fetch(`/admin/order/changeStatus/` + orderId, {
+                  method: 'PATCH',
+                  headers: {
+                      'Content-Type': 'application/x-www-form-urlencoded'
+                  },
+                  body: new URLSearchParams({ order: 'CANCELLED' }),
+              })
+              .then(response => response.text())
+              .then(message => {
+                  alert(message);
+                  // Reload trang hoặc update trạng thái đơn trên UI
+                  location.reload();
+              })
+              .catch(error => {
+                  alert("Lỗi khi huỷ đơn hàng: " + error);
+              });
+          }
+      }
+  </script>
 </body>
 
 </html>

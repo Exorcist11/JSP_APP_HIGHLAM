@@ -258,7 +258,7 @@ public class ClientController {
   @GetMapping("/orderDetail")
   public String getOrderDetail(@RequestParam String code, Model model) {
     Order order = orderService.getOrderByCode(code);
-    System.out.println("ORDER " + order.getStatus());
+    
     model.addAttribute("order", order);
     model.addAttribute("orderItems",
         orderService.getOrderItemsByOrderId(order.getId()));

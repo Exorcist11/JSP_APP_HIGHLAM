@@ -556,7 +556,7 @@ prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
             };
 
             const url = profileId
-              ? `/api/profiles/${profileId}?userId=${userId}`
+              ? `/api/profiles/` + profileId + `?userId=` + userId
               : `/api/profiles`;
             const method = profileId ? "PUT" : "POST";
 
@@ -579,7 +579,7 @@ prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
       });
 
       function editProfile(profileId, title) {
-        fetch(`/api/profiles?userId=${userId}`)
+        fetch(`/api/profiles?userId=` + userId)
           .then((response) => response.json())
           .then((profiles) => {
             const profile = profiles.find((p) => p.id == profileId);
@@ -620,7 +620,7 @@ prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
       function deleteProfile(profileId) {
         if (confirm("Bạn có chắc muốn xóa địa chỉ này?")) {
-          fetch(`/api/profiles/${profileId}?userId=${userId}`, {
+          fetch(`/api/profiles/` + profileId + `?userId=` + userId, {
             method: "DELETE",
           })
             .then(() => window.location.reload())
@@ -632,7 +632,8 @@ prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
       }
 
       function setDefault(profileId) {
-        fetch(`/api/profiles/${profileId}/default?userId=${userId}`, {
+        console.log("Setting default profile:", profileId);
+        fetch(`/api/profiles/` + profileId + `/default?userId=` + userId, {
           method: "POST",
         })
           .then(() => window.location.reload())
