@@ -239,10 +239,11 @@ uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
             </c:forEach>
           </ul>
           <!-- Search form -->
-          <form class="d-flex search-form">
+          <form class="d-flex search-form" action="/search" method="get">
             <input
               class="form-control"
               type="search"
+              name="keyword"
               placeholder="Tìm kiếm sản phẩm..."
               aria-label="Search"
             />
@@ -269,11 +270,10 @@ uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
     <div class="drawer">
       <div
-        class="offcanvas offcanvas-end "
+        class="offcanvas offcanvas-end"
         tabindex="-1"
         id="cartDrawer"
         aria-labelledby="cartDrawerLabel"
-   
       >
         <div class="offcanvas-header">
           <h5 class="offcanvas-title" id="cartDrawerLabel">Giỏ hàng</h5>

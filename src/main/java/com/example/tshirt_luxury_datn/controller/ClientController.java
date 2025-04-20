@@ -270,4 +270,14 @@ public class ClientController {
         orderService.getOrderItemsByOrderId(order.getId()));
     return "Profile/orderDetail";
   }
+
+  @GetMapping("/search")
+  public String searchProducts(@RequestParam(required = false) String keyword, Model model) {
+    if (keyword != null && !keyword.trim().isEmpty()) {
+      List<ProductDTO> products = productService.searchProductsByName(keyword);
+      model.addAttribute("products", products);
+      model.addAttribute("keyword", keyword);
+    }
+    return "Other/searchResults";
+  }
 }

@@ -37,7 +37,7 @@ uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
       <jsp:include page="/WEB-INF/views/fragments/header.jsp" />
     </header>
 
-    <div class="container" style="margin-top: 90px;">
+    <div class="container" style="margin-top: 90px">
       <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
           <li class="breadcrumb-item">
@@ -167,6 +167,11 @@ uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
                 src="${p.imgUrl}"
                 alt="${p.name}"
                 class="card-img-top product-image"
+                style="
+                  height: 288px;
+                  object-fit: cover;
+                  object-position: center;
+                "
               />
               <div class="card-body product-info">
                 <div class="colors">

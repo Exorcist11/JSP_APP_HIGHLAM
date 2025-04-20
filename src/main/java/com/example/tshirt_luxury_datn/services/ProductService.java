@@ -155,4 +155,11 @@ public class ProductService {
     List<Product> products = productRepository.findByCategoryDetail_CategoryId(categoryId);
     return products.stream().map(ProductDTO::new).collect(Collectors.toList());
   }
+
+  public List<ProductDTO> searchProductsByName(String keyword) {
+    List<Product> products = productRepository.findByNameContainingAndStatusTrue(keyword);
+    return products.stream()
+        .map(ProductDTO::new)
+        .collect(Collectors.toList());
+  }
 }

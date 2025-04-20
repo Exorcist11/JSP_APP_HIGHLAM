@@ -37,4 +37,6 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
                         "GROUP BY p " +
                         "ORDER BY SUM(oi.quantity) DESC")
         Page<Product> findBestSellingProductsSimple(Pageable pageable);
+
+        List<Product> findByNameContainingAndStatusTrue(String keyword);
 }
