@@ -27,5 +27,5 @@ public class OrderDTO {
   private String ward;
   private String addressDetail;
   private String trangThai;
-
+  private Long profileId;
 }

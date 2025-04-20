@@ -34,12 +34,14 @@ import com.example.tshirt_luxury_datn.entity.Payment;
 import com.example.tshirt_luxury_datn.entity.Product;
 import com.example.tshirt_luxury_datn.entity.ProductDetail;
 import com.example.tshirt_luxury_datn.entity.User;
+import com.example.tshirt_luxury_datn.entity.UserProfile;
 import com.example.tshirt_luxury_datn.enums.OrderStatus;
 import com.example.tshirt_luxury_datn.repository.OrderItemRepository;
 import com.example.tshirt_luxury_datn.repository.OrderRepository;
 import com.example.tshirt_luxury_datn.repository.PaymentRepository;
 import com.example.tshirt_luxury_datn.repository.ProductDetailRepository;
 import com.example.tshirt_luxury_datn.repository.ProductRepository;
+import com.example.tshirt_luxury_datn.repository.UserProfileRepository;
 
 import jakarta.servlet.http.HttpSession;
 import jakarta.transaction.Transactional;
@@ -60,6 +62,9 @@ public class CheckoutService {
 
   @Autowired
   private OrderItemRepository orderItemRepository;
+
+  @Autowired
+  private UserProfileRepository userProfileRepository;
 
   @Autowired
   private CartService cartService;
@@ -103,13 +108,28 @@ public class CheckoutService {
       order.setOrderType(orderDTO.getTrangThai().equals("1") ? "COD" : "ONLINE");
       order.setTotalAmount(totalAmount);
       order.setCode(generateOrderCode());
-      order.setGuestEmail(orderDTO.getGuestEmail());
-      order.setRecipientAddress(orderDTO.getRecipientAddress());
-      order.setRecipientPhone(orderDTO.getRecipientPhone());
-      order.setRecipientName(orderDTO.getRecipientName());
+
       order.setNotes(orderDTO.getNote());
       order.setOrderItems(new ArrayList<>()); // Khởi tạo danh sách orderItems
       order.setUser(loggedInUser); // Liên kết với người dùng nếu đã đăng nhập
+
+      if (loggedInUser != null && orderDTO.getProfileId() != null) {
+        UserProfile profile = userProfileRepository.findById(orderDTO.getProfileId())
+            .orElseThrow(() -> new IllegalArgumentException("ID địa chỉ không hợp lệ"));
+        order.setRecipientName(profile.getFullName());
+        order.setRecipientPhone(profile.getPhoneNumber());
+        order.setGuestEmail(loggedInUser.getEmail());
+        order.setRecipientAddress(String.join(", ",
+            profile.getDetail(),
+            profile.getWardName(),
+            profile.getDistrictName(),
+            profile.getProvinceName()));
+      } else {
+        order.setGuestEmail(orderDTO.getGuestEmail());
+        order.setRecipientAddress(orderDTO.getRecipientAddress());
+        order.setRecipientPhone(orderDTO.getRecipientPhone());
+        order.setRecipientName(orderDTO.getRecipientName());
+      }
 
       // Lưu Order
       order = orderRepository.save(order);

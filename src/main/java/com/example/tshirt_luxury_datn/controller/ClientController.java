@@ -27,6 +27,8 @@ import com.example.tshirt_luxury_datn.entity.Product;
 import com.example.tshirt_luxury_datn.entity.ProductDetail;
 import com.example.tshirt_luxury_datn.entity.Size;
 import com.example.tshirt_luxury_datn.entity.User;
+import com.example.tshirt_luxury_datn.entity.UserProfile;
+import com.example.tshirt_luxury_datn.repository.UserProfileRepository;
 import com.example.tshirt_luxury_datn.services.CartService;
 import com.example.tshirt_luxury_datn.services.ImageService;
 import com.example.tshirt_luxury_datn.services.OrderService;
@@ -56,6 +58,9 @@ public class ClientController {
 
   @Autowired
   private UserProfileService userProfileService;
+
+  @Autowired
+  private UserProfileRepository userProfileRepository;
 
   @GetMapping
   public String homepage(Model model, HttpSession session) {
@@ -119,8 +124,9 @@ public class ClientController {
 
     if (loggedInUser != null) {
       Cart cart = cartService.getCartByUserId(loggedInUser.getId());
-
       cartItems = cartService.getCartItems(cart);
+      List<UserProfile> userProfiles = userProfileRepository.findByUserId(loggedInUser.getId());
+      model.addAttribute("userProfiles", userProfiles);
     } else {
       Cart cart = cartService.getOrCreateCart(session);
       cartItems = cartService.getCartItems(cart);
@@ -135,7 +141,7 @@ public class ClientController {
 
       model.addAttribute("cartItems", cartItems);
       model.addAttribute("totalPrice", totalPrice);
-
+      model.addAttribute("loggedInUser", loggedInUser);
     }
     return "BanHang/ban-hang-onl";
   }
@@ -258,7 +264,7 @@ public class ClientController {
   @GetMapping("/orderDetail")
   public String getOrderDetail(@RequestParam String code, Model model) {
     Order order = orderService.getOrderByCode(code);
-    
+
     model.addAttribute("order", order);
     model.addAttribute("orderItems",
         orderService.getOrderItemsByOrderId(order.getId()));

@@ -14,7 +14,7 @@ import com.example.tshirt_luxury_datn.entity.UserProfile;
 @Repository
 public interface UserProfileRepository extends JpaRepository<UserProfile, Long> {
     List<UserProfile> findByUserId(Long userId);
-
+  
     Optional<UserProfile> findByIdAndUserId(Long id, Long userId);
 
     @Modifying
