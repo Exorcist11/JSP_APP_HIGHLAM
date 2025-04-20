@@ -250,7 +250,7 @@ uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
               <i class="fas fa-search"></i>
             </button>
           </form>
-          <a href="/login" class="icon-link">
+          <a href="/login" class="icon-link" title="Đăng nhập">
             <i class="fa-regular fa-user"></i>
           </a>
           <a
@@ -259,6 +259,7 @@ uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
             data-bs-toggle="offcanvas"
             data-bs-target="#cartDrawer"
             aria-controls="cartDrawer"
+            title="Giỏ hàng"
           >
             <i class="fa-solid fa-cart-shopping"></i>
           </a>

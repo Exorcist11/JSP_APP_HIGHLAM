@@ -37,7 +37,7 @@ uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
       <jsp:include page="/WEB-INF/views/fragments/header.jsp" />
     </header>
 
-    <div class="container">
+    <div class="container" style="margin-top: 90px;">
       <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
           <li class="breadcrumb-item">

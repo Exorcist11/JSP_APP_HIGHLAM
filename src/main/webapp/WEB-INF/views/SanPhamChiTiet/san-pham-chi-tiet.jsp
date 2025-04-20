@@ -354,32 +354,6 @@ uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
         </div>
       </div>
     </div>
-    <div class="comment" style="margin-top: 100px">
-      <p style="margin-left: 80px"><b>0 bình luận</b></p>
-      <div
-        class="cmt"
-        style="display: flex; align-items: center; gap: 10px; margin: 20px"
-      >
-        <!-- Hình ảnh đại diện -->
-        <img
-          src="/images/linhtinh/avt.jpg"
-          alt="Avatar"
-          style="width: 50px; height: 50px; margin-top: 0"
-        />
-
-        <!-- Dòng nhập liệu với chiều rộng lớn hơn (gấp đôi) -->
-        <input
-          type="text"
-          placeholder="Nhập nội dung tại đây"
-          style="flex-grow: 1; width: 400px; padding: 10px"
-        />
-      </div>
-      <div>
-        <a class="btn btn-primary" type="button" style="margin-left: 80px"
-          >Gửi</a
-        >
-      </div>
-    </div>
 
     <jsp:include page="/WEB-INF/views/fragments/productForYou.jsp" />
 
