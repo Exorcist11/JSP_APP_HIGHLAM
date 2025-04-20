@@ -9,6 +9,7 @@ import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
@@ -134,6 +135,13 @@ public class ProductService {
   public List<ProductDTO> getLastestProducts() {
     List<Product> products = productRepository.findTop4ByOrderByCreatedAtDesc();
     return products.stream()
+        .map(ProductDTO::new)
+        .collect(Collectors.toList());
+  }
+
+  public List<ProductDTO> getBestSellingProducts(int limit) {
+    return productRepository.findBestSellingProductsSimple(PageRequest.of(0, limit))
+        .stream()
         .map(ProductDTO::new)
         .collect(Collectors.toList());
   }

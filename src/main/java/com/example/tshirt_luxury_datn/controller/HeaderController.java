@@ -8,9 +8,11 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 
 import com.example.tshirt_luxury_datn.dto.CartItemDTO;
 import com.example.tshirt_luxury_datn.dto.CategoryDTO;
+import com.example.tshirt_luxury_datn.dto.ProductDTO;
 import com.example.tshirt_luxury_datn.entity.Cart;
 import com.example.tshirt_luxury_datn.services.CartService;
 import com.example.tshirt_luxury_datn.services.CategoryService;
+import com.example.tshirt_luxury_datn.services.ProductService;
 
 import jakarta.servlet.http.HttpSession;
 
@@ -20,6 +22,9 @@ public class HeaderController {
     private CategoryService categoryService;
     @Autowired
     private CartService cartService;
+
+    @Autowired
+    private ProductService productService;
 
     @ModelAttribute("lst_categories")
     public List<CategoryDTO> getCategories() {
@@ -36,6 +41,11 @@ public class HeaderController {
     public double getTotalPrice(HttpSession session) {
         Cart cart = cartService.getOrCreateCart(session);
         return cartService.caculateTotalUserCart(cart);
+    }
+
+    @ModelAttribute("bestSeller")
+    public List<ProductDTO> getBestSeller() {
+        return productService.getBestSellingProducts(4);
     }
 
 }

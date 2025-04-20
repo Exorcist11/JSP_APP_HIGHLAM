@@ -29,4 +29,12 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
         List<Product> findByCategoryDetail_CategoryId(Long categoryId);
 
         Page<Product> findAll(Pageable pageable);
+
+        @Query("SELECT p FROM Product p " +
+                        "JOIN p.productDetails pd " +
+                        "JOIN OrderItem oi ON oi.productDetail = pd " +
+                        "WHERE p.status = true AND pd.status = true " +
+                        "GROUP BY p " +
+                        "ORDER BY SUM(oi.quantity) DESC")
+        Page<Product> findBestSellingProductsSimple(Pageable pageable);
 }
