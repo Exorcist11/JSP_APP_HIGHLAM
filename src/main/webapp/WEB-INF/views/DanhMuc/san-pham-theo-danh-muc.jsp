@@ -31,6 +31,90 @@ uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 
     <link rel="stylesheet" href="../css/danhMucAoNam.css" />
+    <style>
+      .image-product {
+        min-height: 288px;
+        height: 288px;
+        object-fit: cover;
+        object-position: center;
+      }
+      .product-card {
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        border-radius: 8px;
+        overflow: hidden;
+        margin-bottom: 20px;
+        border: none;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
+      }
+
+      .product-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+      }
+
+      .product-info {
+        padding: 15px;
+        text-align: center;
+      }
+
+      .product-info p:first-child {
+        font-size: 14px;
+        font-weight: 500;
+        height: 40px;
+        overflow: hidden;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        margin-bottom: 10px;
+      }
+      .price {
+        font-size: 16px;
+        font-weight: 700;
+        color: black;
+        margin-bottom: 15px;
+      }
+
+      .product-actions {
+        display: flex;
+        flex-direction: row;
+        gap: 8px;
+        padding: 0 15px 15px;
+      }
+
+      .product-actions .btn {
+        font-size: 14px;
+        padding: 8px 0;
+        text-align: center;
+        transition: all 0.3s ease;
+        border-radius: 4px;
+      }
+
+      .product-actions .btn-dark {
+        background-color: black;
+        border-color: black;
+      }
+
+      .product-actions .btn-dark:hover {
+        background-color: #c0392b;
+        border-color: #c0392b;
+        transform: scale(1.02);
+      }
+
+      .product-actions .btn-outline-dark {
+        color: #343a40;
+        border-color: #dee2e6;
+      }
+
+      .product-actions .btn-outline-dark:hover {
+        background-color: #f8f9fa;
+        color: #343a40;
+        transform: scale(1.02);
+      }
+
+      .product-actions i {
+        margin-right: 5px;
+      }
+    </style>
   </head>
   <body>
     <header>
@@ -163,28 +247,13 @@ uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
       <!-- Product Listing -->
       <div class="row">
         <c:forEach items="${products}" var="p">
-          <div class="col-md-3 mb-4">
-            <div class="card product-card h-100">
-              <img
-                src="${p.imgUrl}"
-                alt="${p.name}"
-                class="card-img-top product-image"
-                style="
-                  height: 288px;
-                  object-fit: cover;
-                  object-position: center;
-                "
-              />
-              <div class="card-body product-info">
-                <div class="colors">
-                  <img
-                    src="../images/ao_phong_boxy/DEVOTUS/black.webp"
-                    alt="color option"
-                    width="20"
-                    height="20"
-                  />
-                </div>
-                <h5 class="product-name">${p.name}</h5>
+          <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
+            <div class="product-card">
+              <div class="position-relative">
+                <img alt="${p.name}" src="${p.imgUrl}" class="image-product" />
+              </div>
+              <div class="product-info">
+                <p>${p.name}</p>
                 <p class="price">
                   <fmt:formatNumber
                     value="${p.price}"
@@ -194,14 +263,11 @@ uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
                   VND
                 </p>
               </div>
-              <div class="card-footer product-actions">
-                <button class="btn btn-dark btn-sm">
+              <div class="product-actions">
+                <a href="/add-to-cart?id=${p.id}" class="btn btn-dark">
                   <i class="fas fa-shopping-cart"></i> Mua nhanh
-                </button>
-                <a
-                  href="/product?id=${p.id}"
-                  class="btn btn-outline-dark btn-sm"
-                >
+                </a>
+                <a href="/product?id=${p.id}" class="btn btn-outline-dark">
                   <i class="fas fa-eye"></i> Xem chi tiết
                 </a>
               </div>
