@@ -43,19 +43,26 @@ public class PosController {
     private OrderService orderService;
 
     @GetMapping
-    public String PointOfSale(Model model, @RequestParam(required = false) String code, HttpSession session,
+    public String PointOfSale(Model model,
+            @RequestParam(required = false) String code,
+            HttpSession session,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "6") int size) {
-        // List<Product> list = (code != null && !code.isEmpty()) ?
-        // productService.searchProductByName(code)
-        // : productService.getAllProduct();
+
         Pageable pageable = PageRequest.of(page, size);
         Page<ProductDetail> productPage;
+
         if (code != null && !code.isEmpty()) {
             productPage = productDetailService.searchProductDetail(code, pageable);
+            if (productPage.isEmpty()) {
+                model.addAttribute("message", "Không tìm thấy sản phẩm nào với mã: " + code);
+                // Optionally, you could get all products instead of showing empty page
+                productPage = productDetailService.getAllProductDetail(pageable);
+            }
         } else {
             productPage = productDetailService.getAllProductDetail(pageable);
         }
+
         @SuppressWarnings("unchecked")
         List<CartItem> cart = (List<CartItem>) session.getAttribute("cart");
 
@@ -68,10 +75,11 @@ public class PosController {
         model.addAttribute("products", productPage.getContent());
         model.addAttribute("cart", cartItems);
         model.addAttribute("total", cartService.pos_caculateTotal(cart));
-        model.addAttribute("currentPage", page);
+        model.addAttribute("currentPage", productPage.getNumber());
         model.addAttribute("totalPages", productPage.getTotalPages());
         model.addAttribute("pageSize", size);
         model.addAttribute("code", code);
+
         return "admin/Pos/pos";
     }
 

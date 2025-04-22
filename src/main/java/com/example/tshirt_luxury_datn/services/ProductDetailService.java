@@ -1,6 +1,7 @@
 package com.example.tshirt_luxury_datn.services;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,18 +48,19 @@ public class ProductDetailService {
 
   public Page<ProductDetail> getAllProductDetail(Pageable pageable) {
     try {
-        return detailRepository.findAll(pageable);
+      return detailRepository.findAll(pageable);
     } catch (Exception e) {
-        throw new RuntimeException("ERROR WHEN GET ALL PRODUCT DETAIL: " + e.getMessage());
+      throw new RuntimeException("ERROR WHEN GET ALL PRODUCT DETAIL: " + e.getMessage());
     }
-}
+  }
+
   public Page<ProductDetail> searchProductDetail(String code, Pageable pageable) {
     try {
-        return detailRepository.findByCodeContainingIgnoreCase(code, pageable);
+      return detailRepository.findByCodeContainingIgnoreCase(code, pageable);
     } catch (Exception e) {
-        throw new RuntimeException("ERROR WHEN SEARCH PRODUCT DETAIL: " + e.getMessage());
+      throw new RuntimeException("ERROR WHEN SEARCH PRODUCT DETAIL: " + e.getMessage());
     }
-}
+  }
 
   public ProductDetail getProductDetailById(Long id) {
     return detailRepository.findById(id).orElse(null);
