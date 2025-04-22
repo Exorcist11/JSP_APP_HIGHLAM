@@ -229,6 +229,10 @@ public class CartService {
     }
 
     public void pos_updateQuantity(List<CartItem> cart, String code, int quantity) {
+        ProductDetail productDetail = productDetailService.getProductDetailByCode(code);
+        if (productDetail.getQuantity() < quantity) {
+            throw new IllegalArgumentException("Số lượng sản phẩm không đủ trong kho.");
+        }
         for (CartItem item : cart) {
             if (item.getProductDetail().getCode().equals(code)) {
                 item.setQuantity(quantity);

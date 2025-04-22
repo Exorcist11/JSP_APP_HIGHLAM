@@ -13,6 +13,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.example.tshirt_luxury_datn.dto.CartItemDTO;
 import com.example.tshirt_luxury_datn.dto.OrderDTO;
@@ -62,7 +63,7 @@ public class PosController {
             cart = new ArrayList<>();
             session.setAttribute("cart", cart);
         }
-        
+
         List<CartItemDTO> cartItems = cartService.pos_cartItem(cart);
         model.addAttribute("products", productPage.getContent());
         model.addAttribute("cart", cartItems);
@@ -87,7 +88,7 @@ public class PosController {
     public String handlePOSAction(@RequestParam String action, @RequestParam(required = false) String productCode,
             @RequestParam(required = false) Integer quantity, @RequestParam(required = false) String code,
             OrderDTO orderDTO,
-            HttpSession session, Model model) {
+            HttpSession session, Model model, RedirectAttributes redirectAttributes) {
         @SuppressWarnings("unchecked")
         List<CartItem> cart = (List<CartItem>) session.getAttribute("cart");
 
@@ -99,7 +100,11 @@ public class PosController {
                 }
                 break;
             case "update":
-                cartService.pos_updateQuantity(cart, code, quantity);
+                try {
+                    cartService.pos_updateQuantity(cart, code, quantity);
+                } catch (IllegalArgumentException e) {
+                    redirectAttributes.addFlashAttribute("error", e.getMessage());
+                }
                 break;
             case "remove":
                 cartService.pos_removeFromCart(cart, code);

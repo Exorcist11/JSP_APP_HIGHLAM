@@ -78,37 +78,39 @@
                   <div class="row row-cols-2 row-cols-md-3 row-cols-lg-3 g-3">
                     <!-- Product Card 1 -->
                     <c:forEach var="p" items="${products}">
-                      <div class="col">
-                        <div class="card product-card h-100">
-                          <div class="product-img">
-                            <img src="${p.firstImageUrl}" alt="Ảnh sản phẩm" width="100%" height="auto"
-                              style="height: 200px; object-position: center" />
-                          </div>
-                          <div class="card-body">
-                            <h5 class="card-title product-name">
-                              ${p.product.name} - ${p.size.name} - ${p.color.name}
-                            </h5>
-                            <div class="d-flex justify-content-between align-items-center">
-                              <span class="text-danger fw-bold">
-                                <fmt:formatNumber value="${p.product.price}" groupingUsed="true"
-                                  maxFractionDigits="0" />
-                                VND
-                              </span>
-                              <span class="badge bg-success">Còn: ${p.quantity}</span>
+                      <c:if test="${p.quantity > 0}">
+                        <div class="col">
+                          <div class="card product-card h-100">
+                            <div class="product-img">
+                              <img src="${p.firstImageUrl}" alt="Ảnh sản phẩm" width="100%" height="auto"
+                                style="height: 200px; object-position: center" />
                             </div>
-                            <div class="small text-muted mt-1">Mã: ${p.code}</div>
-                          </div>
-                          <div class="card-footer bg-transparent">
-                            <form method="post" action="/admin/pos">
-                              <input type="hidden" name="action" value="add">
-                              <input type="hidden" name="code" value="${p.code}">
-                              <button class="btn btn-sm btn-primary w-100" type="submit">
-                                <i class="fas fa-cart-plus"></i> Thêm vào giỏ
-                              </button>
-                            </form>
+                            <div class="card-body">
+                              <h5 class="card-title product-name">
+                                ${p.product.name} - ${p.size.name} - ${p.color.name}
+                              </h5>
+                              <div class="d-flex justify-content-between align-items-center">
+                                <span class="text-danger fw-bold">
+                                  <fmt:formatNumber value="${p.product.price}" groupingUsed="true"
+                                    maxFractionDigits="0" />
+                                  VND
+                                </span>
+                                <span class="badge bg-success">Còn: ${p.quantity}</span>
+                              </div>
+                              <div class="small text-muted mt-1">Mã: ${p.code}</div>
+                            </div>
+                            <div class="card-footer bg-transparent">
+                              <form method="post" action="/admin/pos">
+                                <input type="hidden" name="action" value="add">
+                                <input type="hidden" name="code" value="${p.code}">
+                                <button class="btn btn-sm btn-primary w-100" type="submit">
+                                  <i class="fas fa-cart-plus"></i> Thêm vào giỏ
+                                </button>
+                              </form>
+                            </div>
                           </div>
                         </div>
-                      </div>
+                      </c:if>
                     </c:forEach>
                     <!-- Pagination -->
            
@@ -148,6 +150,12 @@
             <!-- Cart Panel -->
             <div class="col-lg-4">
               <div class="cart-panel p-3 sticky-top" style="top: 20px">
+                <c:if test="${not empty error}">
+                  <div class="alert alert-danger alert-dismissible fade show" style="color: white;" role="alert">
+                    ${error}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                  </div>
+                </c:if>
                 <div class="d-flex justify-content-between align-items-center mb-3">
                   <h4 class="mb-0">Đơn hàng hiện tại</h4>
                   <span class="badge bg-secondary"></span>
@@ -176,14 +184,24 @@
                         </form>
                         <input type="text" class="form-control form-control-sm text-center border-0"
                           value="${item.quantity}" readonly>
-                        <form method="POST" action="/admin/pos" class="d-inline">
-                          <input type="hidden" name="action" value="update">
-                          <input type="hidden" name="code" value="${item.productDetailCode}">
-                          <button type="submit" value="${item.quantity + 1}" name="quantity"
-                            class="btn btn-outline-secondary btn-sm mb-0 square-button">
-                            <i class="fas fa-plus"></i>
-                          </button>
-                        </form>
+                        <c:choose>
+                          <c:when test="${not empty error}">
+                            <button type="submit" value="${item.quantity + 1}" name="quantity"  disabled
+                              class="btn btn-outline-secondary btn-sm mb-0 square-button">
+                              <i class="fas fa-plus"></i>
+                            </button>
+                          </c:when>
+                          <c:otherwise>
+                            <form method="POST" action="/admin/pos" class="d-inline">
+                              <input type="hidden" name="action" value="update">
+                              <input type="hidden" name="code" value="${item.productDetailCode}">
+                              <button type="submit" value="${item.quantity + 1}" name="quantity" 
+                                class="btn btn-outline-secondary btn-sm mb-0 square-button">
+                                <i class="fas fa-plus"></i>
+                              </button>
+                            </form>
+                          </c:otherwise>
+                        </c:choose>
                       </div>
                     </div>
                   </c:forEach>
@@ -250,6 +268,7 @@
             </div>
           </div>
         </div>
-      </body>
+       
+        </body>
 
       </html>
