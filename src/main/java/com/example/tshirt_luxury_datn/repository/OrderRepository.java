@@ -13,6 +13,7 @@ import com.example.tshirt_luxury_datn.enums.OrderStatus;
 
 @Repository
 public interface OrderRepository extends JpaRepository<Order, Long> {
+
     Page<Order> findAll(Pageable pageable);
 
     List<Order> findByUserId(Long userId);

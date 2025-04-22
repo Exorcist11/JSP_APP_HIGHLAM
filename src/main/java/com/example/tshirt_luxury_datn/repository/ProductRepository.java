@@ -39,4 +39,5 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
         Page<Product> findBestSellingProductsSimple(Pageable pageable);
 
         List<Product> findByNameContainingAndStatusTrue(String keyword);
+
 }
