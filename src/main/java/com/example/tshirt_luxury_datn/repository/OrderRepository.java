@@ -13,6 +13,9 @@ import com.example.tshirt_luxury_datn.enums.OrderStatus;
 
 @Repository
 public interface OrderRepository extends JpaRepository<Order, Long> {
+    long countByStatus(OrderStatus status);
+
+    List<Order> findTop5ByOrderByOrderDateDesc();
 
     Page<Order> findAll(Pageable pageable);
 

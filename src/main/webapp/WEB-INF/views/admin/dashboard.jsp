@@ -244,7 +244,7 @@ uri="http://java.sun.com/jsp/jstl/fmt" %>
           <div class="col-12 col-sm-6 col-lg-3">
             <div class="card card-stat">
               <div class="card-title">Tổng sản phẩm</div>
-              <div class="card-value">1,256</div>
+              <div class="card-value">${totalProducts}</div>
               <!-- <div class="d-flex align-items-center trend-up">
                 <i class="fas fa-arrow-up me-1"></i>
                 <span>12% so với tháng trước</span>
@@ -255,7 +255,14 @@ uri="http://java.sun.com/jsp/jstl/fmt" %>
           <div class="col-12 col-sm-6 col-lg-3">
             <div class="card card-stat">
               <div class="card-title">Doanh số</div>
-              <div class="card-value">₫352,4M</div>
+              <div class="card-value">
+                <fmt:formatNumber
+                  value="${totalRevenue}"
+                  groupingUsed="true"
+                  maxFractionDigits="0"
+                />
+                VND
+              </div>
               <!-- <div class="d-flex align-items-center trend-up">
                 <i class="fas fa-arrow-up me-1"></i>
                 <span>8.3% so với tháng trước</span>
@@ -266,7 +273,7 @@ uri="http://java.sun.com/jsp/jstl/fmt" %>
           <div class="col-12 col-sm-6 col-lg-3">
             <div class="card card-stat">
               <div class="card-title">Số lượng khách hàng</div>
-              <div class="card-value">3,124</div>
+              <div class="card-value">${totalCustomers}</div>
               <!-- <div class="d-flex align-items-center trend-up">
                 <i class="fas fa-arrow-up me-1"></i>
                 <span>5.2% so với tháng trước</span>
@@ -277,7 +284,7 @@ uri="http://java.sun.com/jsp/jstl/fmt" %>
           <div class="col-12 col-sm-6 col-lg-3">
             <div class="card card-stat">
               <div class="card-title">Tổng đơn hàng</div>
-              <div class="card-value">845</div>
+              <div class="card-value">${totalOrders}</div>
               <!-- <div class="d-flex align-items-center trend-up">
                 <i class="fas fa-arrow-up me-1"></i>
                 <span>7.5% so với tháng trước</span>
@@ -295,35 +302,45 @@ uri="http://java.sun.com/jsp/jstl/fmt" %>
             <div class="row g-3">
               <div class="col-6 col-md-4 col-lg-2">
                 <div class="status-card pending">
-                  <div class="status-count">45</div>
+                  <div class="status-count">
+                    <c:out value="${orderStatusStats.PENDING}" />
+                  </div>
                   <div class="status-label">Chờ xác nhận</div>
                 </div>
               </div>
 
               <div class="col-6 col-md-4 col-lg-2">
                 <div class="status-card confirmed">
-                  <div class="status-count">72</div>
+                  <div class="status-count">
+                    <c:out value="${orderStatusStats.CONFIRMED}" />
+                  </div>
                   <div class="status-label">Đã xác nhận</div>
                 </div>
               </div>
 
               <div class="col-6 col-md-4 col-lg-2">
                 <div class="status-card delivering">
-                  <div class="status-count">124</div>
+                  <div class="status-count">
+                    <c:out value="${orderStatusStats.DELIVERING}" />
+                  </div>
                   <div class="status-label">Đang giao hàng</div>
                 </div>
               </div>
 
               <div class="col-6 col-md-4 col-lg-2">
                 <div class="status-card success">
-                  <div class="status-count">542</div>
+                  <div class="status-count">
+                    <c:out value="${orderStatusStats.SUCCESS}" />
+                  </div>
                   <div class="status-label">Giao hàng thành công</div>
                 </div>
               </div>
 
               <div class="col-6 col-md-4 col-lg-2">
                 <div class="status-card cancelled">
-                  <div class="status-count">38</div>
+                  <div class="status-count">
+                    <c:out value="${orderStatusStats.CANCELLED}" />
+                  </div>
                   <div class="status-label">Đã hủy</div>
                 </div>
               </div>
@@ -385,7 +402,7 @@ uri="http://java.sun.com/jsp/jstl/fmt" %>
                 class="card-header bg-white d-flex justify-content-between align-items-center"
               >
                 <h5 class="card-title mb-0">Đơn hàng gần đây</h5>
-                <a href="#" class="btn btn-sm btn-link">Xem tất cả</a>
+                <a href="/admin/order?code=&status=&page=1&size=5" class="btn btn-sm btn-link">Xem tất cả</a>
               </div>
               <div class="card-body p-0">
                 <div class="table-responsive">
@@ -397,84 +414,60 @@ uri="http://java.sun.com/jsp/jstl/fmt" %>
                         <th>Ngày đặt</th>
                         <th>Tổng tiền</th>
                         <th>Trạng thái</th>
-                        <th>Thao tác</th>
                       </tr>
                     </thead>
                     <tbody>
-                      <tr>
-                        <td>#ORD-7829</td>
-                        <td>Nguyễn Văn A</td>
-                        <td>22/04/2025</td>
-                        <td>₫1,250,000</td>
-                        <td>
-                          <span class="badge bg-warning text-dark"
-                            >Chờ xác nhận</span
-                          >
-                        </td>
-                        <td>
-                          <button class="btn btn-sm btn-outline-primary">
-                            <i class="fas fa-eye"></i>
-                          </button>
-                        </td>
-                      </tr>
-                      <tr>
-                        <td>#ORD-7828</td>
-                        <td>Trần Thị B</td>
-                        <td>22/04/2025</td>
-                        <td>₫2,780,000</td>
-                        <td>
-                          <span class="badge bg-primary">Đã xác nhận</span>
-                        </td>
-                        <td>
-                          <button class="btn btn-sm btn-outline-primary">
-                            <i class="fas fa-eye"></i>
-                          </button>
-                        </td>
-                      </tr>
-                      <tr>
-                        <td>#ORD-7827</td>
-                        <td>Lê Văn C</td>
-                        <td>21/04/2025</td>
-                        <td>₫850,000</td>
-                        <td>
-                          <span class="badge bg-info text-dark"
-                            >Đang giao hàng</span
-                          >
-                        </td>
-                        <td>
-                          <button class="btn btn-sm btn-outline-primary">
-                            <i class="fas fa-eye"></i>
-                          </button>
-                        </td>
-                      </tr>
-                      <tr>
-                        <td>#ORD-7826</td>
-                        <td>Phạm Thị D</td>
-                        <td>21/04/2025</td>
-                        <td>₫3,560,000</td>
-                        <td>
-                          <span class="badge bg-success"
-                            >Giao hàng thành công</span
-                          >
-                        </td>
-                        <td>
-                          <button class="btn btn-sm btn-outline-primary">
-                            <i class="fas fa-eye"></i>
-                          </button>
-                        </td>
-                      </tr>
-                      <tr>
-                        <td>#ORD-7825</td>
-                        <td>Hoàng Văn E</td>
-                        <td>20/04/2025</td>
-                        <td>₫1,890,000</td>
-                        <td><span class="badge bg-danger">Đã hủy</span></td>
-                        <td>
-                          <button class="btn btn-sm btn-outline-primary">
-                            <i class="fas fa-eye"></i>
-                          </button>
-                        </td>
-                      </tr>
+                      <c:forEach var="order" items="${recentOrders}">
+                        <tr>
+                          <td><c:out value="${order.code}" /></td>
+                          <td><c:out value="${order.recipientName}" /></td>
+                          <td>
+                            <fmt:formatDate
+                              value="${order.orderDate}"
+                              pattern="dd/MM/yyyy"
+                            />
+                          </td>
+                          <td>
+                            <fmt:formatNumber
+                              value="${order.totalAmount}"
+                              type="currency"
+                              currencySymbol="₫"
+                            />
+                          </td>
+                          <td>
+                            <c:choose>
+                              <c:when test="${order.status == 'PENDING'}">
+                                <span class="badge bg-warning text-dark"
+                                  >Chờ xác nhận</span
+                                >
+                              </c:when>
+                              <c:when test="${order.status == 'CONFIRMED'}">
+                                <span class="badge bg-primary"
+                                  >Đã xác nhận</span
+                                >
+                              </c:when>
+                              <c:when test="${order.status == 'DELIVERING'}">
+                                <span class="badge bg-info text-dark"
+                                  >Đang giao hàng</span
+                                >
+                              </c:when>
+                              <c:when test="${order.status == 'SUCCESS'}">
+                                <span class="badge bg-success"
+                                  >Giao hàng thành công</span
+                                >
+                              </c:when>
+                              <c:when test="${order.status == 'CANCELLED'}">
+                                <span class="badge bg-danger">Đã hủy</span>
+                              </c:when>
+                              <c:otherwise>
+                                <span class="badge bg-secondary"
+                                  >Đã trả hàng</span
+                                >
+                              </c:otherwise>
+                            </c:choose>
+                          </td>
+                        </tr>
+                      </c:forEach>
                     </tbody>
                   </table>
                 </div>

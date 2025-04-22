@@ -22,17 +22,17 @@ public class AdminController {
     @GetMapping("/dashboard")
     public String showDashboard(Model model) {
 
-        // model.addAttribute("totalProducts", dashboardService.getTotalProducts());
-        // model.addAttribute("totalRevenue", dashboardService.getTotalRevenue());
-        // model.addAttribute("totalCustomers", dashboardService.getTotalCustomers());
-        // model.addAttribute("totalOrders", dashboardService.getTotalOrders());
+        model.addAttribute("totalProducts", dashboardService.getTotalProducts());
+        model.addAttribute("totalRevenue", dashboardService.getTotalRevenue());
+        model.addAttribute("totalCustomers", dashboardService.getTotalCustomers());
+        model.addAttribute("totalOrders", dashboardService.getTotalOrders());
 
-        // Map<String, Long> orderStatusStats = dashboardService.getOrderStatusStats();
-        // model.addAttribute("orderStatusStats", orderStatusStats);
+        Map<String, Long> orderStatusStats = dashboardService.getOrderStatusStats();
+        model.addAttribute("orderStatusStats", orderStatusStats);
 
-        // // Đơn hàng gần đây
-        // List<Order> recentOrders = dashboardService.getRecentOrders();
-        // model.addAttribute("recentOrders", recentOrders);
+        // Đơn hàng gần đây
+        List<Order> recentOrders = dashboardService.getRecentOrders();
+        model.addAttribute("recentOrders", recentOrders);
 
         // Sản phẩm bán chạy
         // List<Product> topProducts = dashboardService.getTopSellingProducts();
