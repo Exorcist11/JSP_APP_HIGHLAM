@@ -92,7 +92,7 @@
           <div class="card-body">
             <form method="GET" action="/admin/pos">
               <div class="input-group mb-3">
-                <input type="text" name="code" class="form-control"
+                <input type="text" name="code" class="form-control" value="${code}"
                   placeholder="Tìm kiếm sản phẩm theo mã sản phẩm" />
                 <button class="btn btn-primary mb-0" type="submit">
                   <i class="fas fa-search"></i> Tìm kiếm

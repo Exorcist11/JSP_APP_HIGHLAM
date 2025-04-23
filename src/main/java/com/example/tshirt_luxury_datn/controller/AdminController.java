@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.example.tshirt_luxury_datn.entity.Order;
-import com.example.tshirt_luxury_datn.entity.Product;
 import com.example.tshirt_luxury_datn.services.DashboardService;
 
 @Controller

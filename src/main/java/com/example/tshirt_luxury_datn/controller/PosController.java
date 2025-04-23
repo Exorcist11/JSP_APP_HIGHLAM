@@ -56,19 +56,19 @@ public class PosController {
             @RequestParam(defaultValue = "6") int size) {
 
         Pageable pageable = PageRequest.of(page, size);
-        Page<Product> productPage = productService.getAllProduct(pageable);
-        Page<ProductDTO> productDTOPage = productPage.map(ProductDTO::new);
+        Page<Product> productPage;
 
-        // if (code != null && !code.isEmpty()) {
-        //     productPage = productDetailService.searchProductDetail(code, pageable);
-        //     if (productPage.isEmpty()) {
-        //         model.addAttribute("message", "Không tìm thấy sản phẩm nào với mã: " + code);
-        //         // Optionally, you could get all products instead of showing empty page
-        //         productPage = productDetailService.getAllProductDetail(pageable);
-        //     }
-        // } else {
-        //     productPage = productDetailService.getAllProductDetail(pageable);
-        // }
+        if (code != null && !code.isEmpty()) {
+            productPage = productService.searchProducts(code, true, pageable);
+            if (productPage.isEmpty()) {
+                model.addAttribute("message", "Không tìm thấy sản phẩm nào với mã: " + code);
+                // Optionally, you could get all products instead of showing empty page
+                productPage = productService.getAllProduct(pageable);
+            }
+        } else {
+            productPage = productService.getAllProduct(pageable);
+        }
+        Page<ProductDTO> productDTOPage = productPage.map(ProductDTO::new);
 
         @SuppressWarnings("unchecked")
         List<CartItem> cart = (List<CartItem>) session.getAttribute("cart");

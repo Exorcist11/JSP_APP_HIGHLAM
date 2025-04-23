@@ -40,6 +40,14 @@
     data-site="YOUR_DOMAIN_HERE"
     src="https://api.nepcha.com/js/nepcha-analytics.js"
   ></script>
+  <style>
+    .navbar-brand img {
+      width: 50px;
+      min-height: 50px;
+      background-color: #333;
+      margin-right: 20px;
+    }
+  </style>
 </head>
 
 <aside
@@ -52,13 +60,13 @@
       aria-hidden="true"
       id="iconSidenav"
     ></i>
-    <a class="navbar-brand m-0" href="" target="_blank">
-      <!-- <img
-            src="../assets/img/logo-ct-dark.png"
-            class="navbar-brand-img h-100"
-            alt="main_logo"
-          /> -->
-      <h3 class="ms-1 font-weight-bold font-italic">T-Luxury</h3>
+    <a class="navbar-brand" href="" target="_blank">
+      <img
+        src="../images/logo.png"
+        alt="T-Luxury Logo"
+        width="50"
+        height="50"
+      />
     </a>
   </div>
   <hr class="horizontal dark mt-0" />
