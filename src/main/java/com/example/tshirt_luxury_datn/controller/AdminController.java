@@ -18,11 +18,23 @@ public class AdminController {
     @Autowired
     private DashboardService dashboardService;
 
+    public static String formatCurrencyShort(long amount) {
+        if (amount >= 1_000_000_000) {
+            return String.format("%.1f B", amount / 1_000_000_000.0);
+        } else if (amount >= 1_000_000) {
+            return String.format("%.1f M", amount / 1_000_000.0);
+        } else if (amount >= 1_000) {
+            return String.format("%.1f K", amount / 1_000.0);
+        } else {
+            return String.valueOf(amount);
+        }
+    }
+
     @GetMapping("/dashboard")
     public String showDashboard(Model model) {
 
         model.addAttribute("totalProducts", dashboardService.getTotalProducts());
-        model.addAttribute("totalRevenue", dashboardService.getTotalRevenue());
+        model.addAttribute("totalRevenue", formatCurrencyShort((long) dashboardService.getTotalRevenue()));
         model.addAttribute("totalCustomers", dashboardService.getTotalCustomers());
         model.addAttribute("totalOrders", dashboardService.getTotalOrders());
 

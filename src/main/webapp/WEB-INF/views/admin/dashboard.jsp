@@ -255,14 +255,7 @@ uri="http://java.sun.com/jsp/jstl/fmt" %>
           <div class="col-12 col-sm-6 col-lg-3">
             <div class="card card-stat">
               <div class="card-title">Doanh số</div>
-              <div class="card-value">
-                <fmt:formatNumber
-                  value="${totalRevenue}"
-                  groupingUsed="true"
-                  maxFractionDigits="0"
-                />
-                VND
-              </div>
+              <div class="card-value">${totalRevenue} </div>
               <!-- <div class="d-flex align-items-center trend-up">
                 <i class="fas fa-arrow-up me-1"></i>
                 <span>8.3% so với tháng trước</span>
@@ -402,7 +395,11 @@ uri="http://java.sun.com/jsp/jstl/fmt" %>
                 class="card-header bg-white d-flex justify-content-between align-items-center"
               >
                 <h5 class="card-title mb-0">Đơn hàng gần đây</h5>
-                <a href="/admin/order?code=&status=&page=1&size=5" class="btn btn-sm btn-link">Xem tất cả</a>
+                <a
+                  href="/admin/order?code=&status=&page=1&size=5"
+                  class="btn btn-sm btn-link"
+                  >Xem tất cả</a
+                >
               </div>
               <div class="card-body p-0">
                 <div class="table-responsive">
