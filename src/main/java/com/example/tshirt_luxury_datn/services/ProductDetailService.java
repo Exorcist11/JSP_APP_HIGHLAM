@@ -1,8 +1,8 @@
 package com.example.tshirt_luxury_datn.services;
 
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -36,6 +36,13 @@ public class ProductDetailService {
 
   @Autowired
   private ImageService imageService;
+
+  public List<ProductDetailDTO> getProductDetailsByProductCode(String productCode) {
+    List<ProductDetail> productDetails = detailRepository.findByProductCode(productCode);
+    return productDetails.stream()
+        .map(ProductDetailDTO::new)
+        .collect(Collectors.toList());
+  }
 
   public List<ProductDetail> getProductDetailByProductId(Long productId) {
     List<ProductDetail> details = detailRepository.findByProduct_Id(productId);

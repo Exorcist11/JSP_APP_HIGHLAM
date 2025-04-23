@@ -117,7 +117,7 @@ contentType="text/html;charset=UTF-8" language="java" %>
             <!-- Success state - this is controlled by the vnp_ResponseCode -->
             <div id="successState" class="mb-4">
               <i class="fas fa-check-circle success-icon"></i>
-              <h2 class="result-title">Thanh toán thành công!</h2>
+              <h2 class="result-title">${orderType == "COD" ? "Đặt hàng thành công!" : "Thanh toán thành công!"}</h2>
               <p class="text-muted">
                 Cảm ơn bạn đã mua hàng tại cửa hàng chúng tôi. Đơn hàng của bạn
                 đã được xác nhận và đang được xử lý.

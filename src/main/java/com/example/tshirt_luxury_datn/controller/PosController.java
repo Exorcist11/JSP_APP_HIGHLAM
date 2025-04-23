@@ -17,13 +17,16 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.example.tshirt_luxury_datn.dto.CartItemDTO;
 import com.example.tshirt_luxury_datn.dto.OrderDTO;
+import com.example.tshirt_luxury_datn.dto.ProductDTO;
 import com.example.tshirt_luxury_datn.dto.ProductDetailDTO;
 import com.example.tshirt_luxury_datn.entity.CartItem;
 import com.example.tshirt_luxury_datn.entity.Order;
+import com.example.tshirt_luxury_datn.entity.Product;
 import com.example.tshirt_luxury_datn.entity.ProductDetail;
 import com.example.tshirt_luxury_datn.services.CartService;
 import com.example.tshirt_luxury_datn.services.OrderService;
 import com.example.tshirt_luxury_datn.services.ProductDetailService;
+import com.example.tshirt_luxury_datn.services.ProductService;
 
 import jakarta.servlet.http.HttpSession;
 
@@ -42,6 +45,9 @@ public class PosController {
     @Autowired
     private OrderService orderService;
 
+    @Autowired
+    private ProductService productService;
+
     @GetMapping
     public String PointOfSale(Model model,
             @RequestParam(required = false) String code,
@@ -50,18 +56,19 @@ public class PosController {
             @RequestParam(defaultValue = "6") int size) {
 
         Pageable pageable = PageRequest.of(page, size);
-        Page<ProductDetail> productPage;
+        Page<Product> productPage = productService.getAllProduct(pageable);
+        Page<ProductDTO> productDTOPage = productPage.map(ProductDTO::new);
 
-        if (code != null && !code.isEmpty()) {
-            productPage = productDetailService.searchProductDetail(code, pageable);
-            if (productPage.isEmpty()) {
-                model.addAttribute("message", "Không tìm thấy sản phẩm nào với mã: " + code);
-                // Optionally, you could get all products instead of showing empty page
-                productPage = productDetailService.getAllProductDetail(pageable);
-            }
-        } else {
-            productPage = productDetailService.getAllProductDetail(pageable);
-        }
+        // if (code != null && !code.isEmpty()) {
+        //     productPage = productDetailService.searchProductDetail(code, pageable);
+        //     if (productPage.isEmpty()) {
+        //         model.addAttribute("message", "Không tìm thấy sản phẩm nào với mã: " + code);
+        //         // Optionally, you could get all products instead of showing empty page
+        //         productPage = productDetailService.getAllProductDetail(pageable);
+        //     }
+        // } else {
+        //     productPage = productDetailService.getAllProductDetail(pageable);
+        // }
 
         @SuppressWarnings("unchecked")
         List<CartItem> cart = (List<CartItem>) session.getAttribute("cart");
@@ -72,11 +79,11 @@ public class PosController {
         }
 
         List<CartItemDTO> cartItems = cartService.pos_cartItem(cart);
-        model.addAttribute("products", productPage.getContent());
+        model.addAttribute("products", productDTOPage.getContent());
         model.addAttribute("cart", cartItems);
         model.addAttribute("total", cartService.pos_caculateTotal(cart));
-        model.addAttribute("currentPage", productPage.getNumber());
-        model.addAttribute("totalPages", productPage.getTotalPages());
+        model.addAttribute("currentPage", productDTOPage.getNumber());
+        model.addAttribute("totalPages", productDTOPage.getTotalPages());
         model.addAttribute("pageSize", size);
         model.addAttribute("code", code);
 

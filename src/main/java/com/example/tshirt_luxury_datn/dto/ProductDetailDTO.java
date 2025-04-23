@@ -20,6 +20,7 @@ public class ProductDetailDTO {
   private String colorName;
   private String imageUrl;
   private Long id;
+  
 
   public ProductDetailDTO(ProductDetail pd) {
     this.id = pd.getId();
