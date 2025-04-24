@@ -28,4 +28,5 @@ public class OrderDTO {
   private String addressDetail;
   private String trangThai;
   private Long profileId;
+  private String discountCode;
 }

@@ -1,4 +1,5 @@
 package com.example.tshirt_luxury_datn.entity;
+
 import com.example.tshirt_luxury_datn.enums.OrderStatus;
 
 import jakarta.persistence.*;
@@ -9,7 +10,6 @@ import java.util.List;
 
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
-
 
 @Entity
 @Data
@@ -58,6 +58,9 @@ public class Order {
     @UpdateTimestamp
     @Column(nullable = false)
     private Timestamp updatedAt;
+
+    @Column(name = "discount_code")
+    private String discountCode;
 
     @ManyToOne
     @JoinColumn(name = "discount_id", nullable = true)

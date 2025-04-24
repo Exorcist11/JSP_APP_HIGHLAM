@@ -365,6 +365,25 @@
               <span>Phí vận chuyển:</span>
               <span>35,000₫</span>
             </div>
+            <div class="d-flex justify-content-between mb-2" id="discountSection" style="display: none;">
+              <span>Giảm giá:</span>
+              <span class="text-success" id="discountAmount">-0₫</span>
+            </div>
+            <hr>
+            <div class="discount-code-section mb-3">
+              <div class="input-group">
+                <input
+                  type="text"
+                  id="couponCode"
+                  class="form-control"
+                  placeholder="Nhập mã giảm giá"
+                />
+                <button class="btn btn-outline-dark" type="button" id="applyCoupon">
+                  Áp dụng
+                </button>
+              </div>
+              <div id="couponMessage" class="small mt-1"></div>
+            </div>
             <hr>
             <div class="d-flex justify-content-between mb-2">
               <h5>Tổng cộng:</h5>
@@ -373,8 +392,9 @@
               </h5>
             </div>
             <div class="mt-3">
-              <button type="submit" class="btn btn-dark w-100 py-3">
-                <i class="fas fa-lock me-2"></i>Hoàn tất đơn hàng
+              <button type="submit" class="btn btn-dark w-100 py-3"
+                      ${empty cartItems ? 'disabled' : ''}>
+                  <i class="fas fa-lock me-2"></i>Hoàn tất đơn hàng
               </button>
             </div>
             <div class="text-center mt-3">
@@ -695,6 +715,7 @@
       });
     });
   </script>
+ 
 </body>
 
 </html>

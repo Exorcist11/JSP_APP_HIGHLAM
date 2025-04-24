@@ -64,6 +64,16 @@
         cursor: not-allowed;
         opacity: 0.6;
     }
+    input[type=number]::-webkit-inner-spin-button,
+    input[type=number]::-webkit-outer-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
+
+    /* Ẩn nút tăng/giảm trên Firefox */
+    input[type=number] {
+      -moz-appearance: textfield;
+    }
   </style>
 </head>
 
@@ -207,8 +217,14 @@
                       <i class="fas fa-minus"></i>
                     </button>
                   </form>
-                  <input type="text" class="form-control form-control-sm text-center border-0"
-                    value="${item.quantity}" readonly>
+                  <input type="number"
+                    class="form-control form-control-sm text-center border-0 quantity-input"
+                    value="${item.quantity}"
+                    min="1"
+                   
+                    data-code="${item.productDetail.code}"
+                    
+                  >
                   <c:choose>
                     <c:when test="${not empty error}">
                       <button type="submit" value="${item.quantity + 1}" name="quantity" disabled
@@ -248,7 +264,7 @@
                 <i class="fas fa-trash-alt"></i> Hủy đơn
               </button>
             </form>
-            <button type="button" class="btn btn-success col w-100" data-bs-toggle="modal" data-bs-target="#checkoutModal">
+            <button type="button" class="btn btn-success col w-100"  ${empty cart ? 'disabled' : ''} data-bs-toggle="modal" data-bs-target="#checkoutModal">
               <i class="fas fa-credit-card"></i> Thanh toán
             </button>
           
@@ -400,6 +416,59 @@
       });
     });
   </script>
+  
+  <script>
+    const debounceTimers = {};
+
+    function debounceUpdateQuantity(code, quantity, inputElement) {
+      if (debounceTimers[code]) {
+        clearTimeout(debounceTimers[code]);
+      }
+
+      // Đặt timer mới sau 1 giây
+      debounceTimers[code] = setTimeout(() => {
+        fetch('/admin/pos/update-quantity', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded'
+          },
+          body: "code=" + encodeURIComponent(code) + "&quantity=" + encodeURIComponent(quantity)
+        })
+        .then(response => {
+          if (!response.ok) {
+            return response.json().then(err => { throw err; });
+          }
+          return response.json();
+        })
+        .then(data => {
+          console.log("CART ", data.cart);
+          // Cập nhật lại giá trị trong input (nếu thành công)
+          inputElement.value = quantity;
+          location.reload();
+        })
+        .catch(error => {
+          console.error('Error updating quantity:', error);
+          alert(error.error)
+          // Không cập nhật giá trị input nếu có lỗi
+          inputElement.value = inputElement.dataset.previousValue;
+        });
+      }, 1000);
+    }
+
+    // Gắn sự kiện onchange cho tất cả input số lượng
+    document.querySelectorAll('.quantity-input').forEach(input => {
+      // Lưu giá trị ban đầu của input vào dataset để khôi phục nếu có lỗi
+      input.dataset.previousValue = input.value;
+
+      input.addEventListener('input', function () {
+        const code = this.dataset.code;
+        const quantity = this.value;
+        debounceUpdateQuantity(code, quantity, this);
+      });
+    });
+
+  </script>
+  
 
 </body>
 

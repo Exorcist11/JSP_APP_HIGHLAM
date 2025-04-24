@@ -1,13 +1,17 @@
 package com.example.tshirt_luxury_datn.controller;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -139,6 +143,31 @@ public class PosController {
         }
         session.setAttribute("cart", cart);
         return "redirect:/admin/pos";
+    }
+
+    @PostMapping("/update-quantity")
+    @ResponseBody
+    public ResponseEntity<?> updateQuantity(@RequestParam String code,
+            @RequestParam Integer quantity,
+            HttpSession session) {
+        List<CartItem> cart = (List<CartItem>) session.getAttribute("cart");
+        if (cart == null) {
+            cart = new ArrayList<>();
+            session.setAttribute("cart", cart);
+        }
+
+        Map<String, Object> response = new HashMap<>();
+
+        try {
+            // Cập nhật số lượng trong giỏ hàng
+            cartService.pos_updateQuantity(cart, code, quantity);
+            return ResponseEntity.ok(response);
+
+        } catch (IllegalArgumentException e) {
+            // Trả về lỗi nếu số lượng không hợp lệ
+            response.put("error", e.getMessage());
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+        }
     }
 
 }
