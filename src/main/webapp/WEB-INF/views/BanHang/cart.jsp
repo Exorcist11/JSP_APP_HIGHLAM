@@ -114,8 +114,8 @@ uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
                     </div>
                   </div>
                   <div class="col-md-2 quantity-control">
-                    <input type="hidden" name="code" id="code" value="${item.productDetailCode}">
-                    <span class="quantity-btn minus">-</span>
+                    <input type="hidden" name="code" class="code" id="code" value="${item.productDetailCode}">
+                    <span class="quantity-btn minus" >-</span>
                     <span>${item.quantity}</span>
                     <span class="quantity-btn plus">+</span>
                   </div>
@@ -197,7 +197,7 @@ uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
               "span:not(.quantity-btn)"
             );
             let quantity = parseInt(quantityElement.textContent);
-            let code = document.getElementById("code").value;
+            let code = this.parentElement.querySelector(".code").value;
             
             if (isPlus) {
               console.log(code);
@@ -206,15 +206,18 @@ uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
               quantity--;
             }
 
-            quantityElement.textContent = quantity;
+          
             // Here you would update the cart in localStorage and recalculate total
             await fetch("/api/updateCart?code=" + encodeURIComponent(code) + "&quantity=" + quantity, {
                 method: "POST"
               })
                 .then((response) => {
                   if (!response.ok) {
+                 
+                    alert("Số lượng sản phẩm vượt quá giới hạn!");
                     throw new Error("Lỗi khi cập nhật giỏ hàng");
                   }
+                  quantityElement.textContent = quantity;
                   return response.text();
                 })
                 .then((data) => {
