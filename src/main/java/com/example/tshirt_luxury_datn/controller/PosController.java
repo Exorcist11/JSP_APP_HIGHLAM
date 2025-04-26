@@ -129,7 +129,9 @@ public class PosController {
                 cartService.pos_removeFromCart(cart, code);
                 break;
             case "clear":
-                cart.clear();
+                if (cart != null) {
+                    cart.clear();
+                }
                 break;
             case "checkout":
                 if (cart != null && !cart.isEmpty()) {

@@ -33,6 +33,7 @@ import com.example.tshirt_luxury_datn.services.CartService;
 import com.example.tshirt_luxury_datn.services.CategoryService;
 import com.example.tshirt_luxury_datn.services.ImageService;
 import com.example.tshirt_luxury_datn.services.OrderService;
+import com.example.tshirt_luxury_datn.services.ProductDetailService;
 import com.example.tshirt_luxury_datn.services.ProductService;
 import com.example.tshirt_luxury_datn.services.UserProfileService;
 import com.example.tshirt_luxury_datn.services.UserService;
@@ -66,6 +67,9 @@ public class ClientController {
   @Autowired
   private CategoryService categoryService;
 
+  @Autowired
+  private ProductDetailService productDetailService;
+
   @GetMapping
   public String homepage(Model model, HttpSession session) {
 
@@ -93,28 +97,38 @@ public class ClientController {
   }
 
   @GetMapping("/product")
-  public String detailProduct(@RequestParam Long id, Model model, HttpSession session) {
+  public String detailProduct(@RequestParam Long id, Model model) {
     try {
-      Product product = productService.getProductByID(id);
-      Set<Size> uniqueSizes = product.getProductDetails().stream()
+      // Lấy thông tin sản phẩm
+      Product product = productService.getProductById(id);
+      model.addAttribute("product", product);
+
+      // Lấy danh sách sản phẩm chi tiết
+      List<ProductDetail> productDetails = productDetailService.getProductDetailsByProductId(id);
+      if (productDetails == null || productDetails.isEmpty()) {
+        throw new RuntimeException("Danh sách sản phẩm chi tiết rỗng hoặc null");
+      }
+
+      // Lấy danh sách kích thước duy nhất
+      Set<Size> uniqueSizes = productDetails.stream()
           .map(ProductDetail::getSize)
           .collect(Collectors.toSet());
+      model.addAttribute("sizes", uniqueSizes);
 
-      Set<Color> uniqueColors = product.getProductDetails().stream()
+      // Lấy danh sách màu sắc duy nhất
+      Set<Color> uniqueColors = productDetails.stream()
           .map(ProductDetail::getColor)
           .collect(Collectors.toSet());
-
-      model.addAttribute("product", productService.getProductByID(id));
-      model.addAttribute("sizes", uniqueSizes);
       model.addAttribute("colors", uniqueColors);
+
+      // Lấy danh sách URL hình ảnh
       model.addAttribute("images", imageService.getImageUrlsByProductId(id));
 
+      // Chuyển danh sách sản phẩm chi tiết thành JSON để sử dụng trong JavaScript
       ObjectMapper objectMapper = new ObjectMapper();
-      String productDetailsJson = objectMapper.writeValueAsString(product.getProductDetails());
-      if (product.getProductDetails() == null || product.getProductDetails().isEmpty()) {
-        throw new RuntimeException("Danh sách productDetails rỗng hoặc null");
-      }
+      String productDetailsJson = objectMapper.writeValueAsString(productDetails);
       model.addAttribute("productDetailsJson", productDetailsJson);
+
     } catch (Exception e) {
       model.addAttribute("error", e.getMessage());
     }

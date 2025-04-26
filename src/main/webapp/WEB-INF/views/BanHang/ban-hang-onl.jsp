@@ -59,7 +59,14 @@
     }
 
     .img-product {
-      max-height: 150px;
+      height: 100px;
+      object-position: center;
+      object-fit: cover;
+    }
+
+    .img-fluid-cart {
+      height: 70px;
+      width: 120px;
       object-position: center;
       object-fit: cover;
     }
@@ -321,11 +328,11 @@
           <h4 class="mb-3">Tóm tắt đơn hàng</h4>
           
           <c:if test="${not empty cartItems}">
-            <div class="cart-items-container" style="max-height: 350px; overflow-y: auto;">
+            <div class="cart-items-container" style="max-height: 350px;">
               <c:forEach var="item" items="${cartItems}">
                 <div class="cart-item row">
                   <div class="col-3">
-                    <img src="${item.imageUrl}" alt="${item.productName}" class="img-fluid rounded img-product">
+                    <img src="${item.imageUrl}" alt="${item.productName}" class="img-fluid-cart rounded img-product">
                   </div>
                   <div class="col-5">
                     <h6 class="mb-1">${item.productName}</h6>

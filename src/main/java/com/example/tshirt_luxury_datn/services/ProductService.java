@@ -37,6 +37,11 @@ public class ProductService {
   private static final String CHARACTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
   private static final Random random = new Random();
 
+  public Product getProductById(Long id) {
+    return productRepository.findById(id)
+        .orElseThrow(() -> new RuntimeException("Không tìm thấy sản phẩm với ID: " + id));
+  }
+
   public static String generateCode() {
     String randomPart;
     do {

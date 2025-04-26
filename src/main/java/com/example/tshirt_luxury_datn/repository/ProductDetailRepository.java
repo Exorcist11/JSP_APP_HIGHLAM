@@ -25,4 +25,8 @@ public interface ProductDetailRepository extends JpaRepository<ProductDetail, Lo
 
   @Query("SELECT pd FROM ProductDetail pd WHERE pd.product.code = :productCode")
   List<ProductDetail> findByProductCode(String productCode);
+
+  List<ProductDetail> findByProductId(Long productId);
+
+  List<ProductDetail> findByProductIdAndStatusTrue(Long productId);
 }

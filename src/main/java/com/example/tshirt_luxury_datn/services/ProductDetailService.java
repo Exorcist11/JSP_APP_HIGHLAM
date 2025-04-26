@@ -23,7 +23,7 @@ import com.example.tshirt_luxury_datn.repository.SizeRepository;
 @Service
 public class ProductDetailService {
   @Autowired
-  private ProductDetailRepository detailRepository;
+  private ProductDetailRepository productDetailRepository;
 
   @Autowired
   private ProductRepository productRepository;
@@ -38,14 +38,18 @@ public class ProductDetailService {
   private ImageService imageService;
 
   public List<ProductDetailDTO> getProductDetailsByProductCode(String productCode) {
-    List<ProductDetail> productDetails = detailRepository.findByProductCode(productCode);
+    List<ProductDetail> productDetails = productDetailRepository.findByProductCode(productCode);
     return productDetails.stream()
         .map(ProductDetailDTO::new)
         .collect(Collectors.toList());
   }
 
+  public List<ProductDetail> findByProductId(Long productId) {
+    return productDetailRepository.findByProductIdAndStatusTrue(productId);
+  }
+
   public List<ProductDetail> getProductDetailByProductId(Long productId) {
-    List<ProductDetail> details = detailRepository.findByProduct_Id(productId);
+    List<ProductDetail> details = productDetailRepository.findByProduct_Id(productId);
 
     if (details.isEmpty()) {
       throw new RuntimeException("Không tìm thấy ProductDetail cho product_id = " + productId);
@@ -53,9 +57,13 @@ public class ProductDetailService {
     return details;
   }
 
+  public List<ProductDetail> getProductDetailsByProductId(Long productId) {
+    return productDetailRepository.findByProductId(productId);
+  }
+
   public Page<ProductDetail> getAllProductDetail(Pageable pageable) {
     try {
-      return detailRepository.findAll(pageable);
+      return productDetailRepository.findAll(pageable);
     } catch (Exception e) {
       throw new RuntimeException("ERROR WHEN GET ALL PRODUCT DETAIL: " + e.getMessage());
     }
@@ -63,18 +71,18 @@ public class ProductDetailService {
 
   public Page<ProductDetail> searchProductDetail(String code, Pageable pageable) {
     try {
-      return detailRepository.findByCodeContainingIgnoreCase(code, pageable);
+      return productDetailRepository.findByCodeContainingIgnoreCase(code, pageable);
     } catch (Exception e) {
       throw new RuntimeException("ERROR WHEN SEARCH PRODUCT DETAIL: " + e.getMessage());
     }
   }
 
   public ProductDetail getProductDetailById(Long id) {
-    return detailRepository.findById(id).orElse(null);
+    return productDetailRepository.findById(id).orElse(null);
   }
 
   public ProductDetail getProductDetailByCode(String code) {
-    Optional<ProductDetail> productDetail = detailRepository.findByCode(code);
+    Optional<ProductDetail> productDetail = productDetailRepository.findByCode(code);
     return productDetail.orElse(null);
   }
 
@@ -86,7 +94,7 @@ public class ProductDetailService {
       if (productOpt.isEmpty() || sizeOpt.isEmpty() || colorOpt.isEmpty()) {
         throw new RuntimeException("Some field is misssing");
       }
-      Optional<ProductDetail> exitsingDetail = detailRepository.findByProductIdAndSizeIdAndColorId(
+      Optional<ProductDetail> exitsingDetail = productDetailRepository.findByProductIdAndSizeIdAndColorId(
           detailDTO.getProductID(), detailDTO.getSizeID(), detailDTO.getColorID());
 
       if (exitsingDetail.isPresent()) {
@@ -101,7 +109,7 @@ public class ProductDetailService {
       productDetail.setProduct(productOpt.get());
       productDetail.setCode(productOpt.get().getCode() + "S" + sizeOpt.get().getId() + "C" + colorOpt.get().getId());
 
-      ProductDetail savedProductDetail = detailRepository.save(productDetail);
+      ProductDetail savedProductDetail = productDetailRepository.save(productDetail);
 
       if (images != null && !images.isEmpty()) {
         for (MultipartFile file : images) {
@@ -117,7 +125,7 @@ public class ProductDetailService {
 
   public ProductDetail updateProductDetail(Long id, ProductDetailDTO detailDTO) {
     try {
-      Optional<ProductDetail> optProductDetail = detailRepository
+      Optional<ProductDetail> optProductDetail = productDetailRepository
           .findById(id);
       if (optProductDetail.isEmpty()) {
         throw new RuntimeException("Không tìm thấy product detail với ID: " + optProductDetail.get().getId());
@@ -126,27 +134,27 @@ public class ProductDetailService {
       productDetail.setQuantity(detailDTO.getQuantity());
       productDetail.setStatus(detailDTO.getStatus());
 
-      return detailRepository.save(productDetail);
+      return productDetailRepository.save(productDetail);
     } catch (Exception e) {
       throw new RuntimeException("Lỗi khi cập nhật product detail: " + e.getMessage());
     }
   }
 
   public void deleteProductDetail(Long id) {
-    ProductDetail productDetail = detailRepository.findById(id)
+    ProductDetail productDetail = productDetailRepository.findById(id)
         .orElseThrow(() -> new RuntimeException("Không tìm thấy sản phẩm chi tiết với ID: " + id));
 
     productDetail.setStatus(false);
 
-    detailRepository.save(productDetail);
+    productDetailRepository.save(productDetail);
   }
 
   public void _posUpdateProductDetail(ProductDetail pd) {
-    detailRepository.save(pd);
+    productDetailRepository.save(pd);
   }
 
   public ProductDetail getProductDetailByProductSizeColor(Long productId, Long sizeId, Long colorId) {
-    return detailRepository.findByProductIdAndSizeIdAndColorId(productId, sizeId, colorId).orElse(null);
+    return productDetailRepository.findByProductIdAndSizeIdAndColorId(productId, sizeId, colorId).orElse(null);
   }
 
 }

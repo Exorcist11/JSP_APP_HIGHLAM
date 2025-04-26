@@ -144,7 +144,7 @@ uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
                   value="${item.id}"
                   autocomplete="off"
                   data-name="${item.name}"
-                  checked
+                  <c:if test="${status.first}">checked</c:if>
                 />
 
                 <label
@@ -376,7 +376,9 @@ uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
       // Cập nhật colorId khi chọn màu
       $('input[name="color"]').change(function () {
-        $("#selectedColorId").val($(this).val());
+        const selectedColorId = $(this).val();
+        console.log("Selected Color ID:", selectedColorId);
+        $("#selectedColorId").val(selectedColorId);
       });
 
       // Cập nhật sizeId khi chọn kích thước

@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.tshirt_luxury_datn.dto.ProductDetailDTO;
 import com.example.tshirt_luxury_datn.entity.CartItem;
+import com.example.tshirt_luxury_datn.entity.ProductDetail;
 import com.example.tshirt_luxury_datn.entity.User;
 import com.example.tshirt_luxury_datn.services.CartService;
 import com.example.tshirt_luxury_datn.services.ProductDetailService;
@@ -56,6 +57,12 @@ public class SessionController {
         }
 
         return ResponseEntity.ok("ok");
+    }
+
+    @GetMapping("/api/products/{productId}/inventory")
+    public ResponseEntity<List<ProductDetail>> getProductInventory(@PathVariable Long productId) {
+        List<ProductDetail> inventory = productDetailService.findByProductId(productId);
+        return ResponseEntity.ok(inventory);
     }
 
 }
