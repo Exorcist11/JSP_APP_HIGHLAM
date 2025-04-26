@@ -1,8 +1,8 @@
 package com.example.tshirt_luxury_datn.controller;
 
+import java.util.HashMap;
 import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.example.tshirt_luxury_datn.dto.CartItemDTO;
@@ -21,24 +22,19 @@ import com.example.tshirt_luxury_datn.dto.ProductDTO;
 import com.example.tshirt_luxury_datn.dto.UserDTO;
 import com.example.tshirt_luxury_datn.dto.UserProfileDTP;
 import com.example.tshirt_luxury_datn.entity.Cart;
-import com.example.tshirt_luxury_datn.entity.Color;
 import com.example.tshirt_luxury_datn.entity.Order;
 import com.example.tshirt_luxury_datn.entity.Product;
 import com.example.tshirt_luxury_datn.entity.ProductDetail;
-import com.example.tshirt_luxury_datn.entity.Size;
 import com.example.tshirt_luxury_datn.entity.User;
 import com.example.tshirt_luxury_datn.entity.UserProfile;
+import com.example.tshirt_luxury_datn.repository.ProductDetailRepository;
 import com.example.tshirt_luxury_datn.repository.UserProfileRepository;
 import com.example.tshirt_luxury_datn.services.CartService;
 import com.example.tshirt_luxury_datn.services.CategoryService;
-import com.example.tshirt_luxury_datn.services.ImageService;
 import com.example.tshirt_luxury_datn.services.OrderService;
-import com.example.tshirt_luxury_datn.services.ProductDetailService;
 import com.example.tshirt_luxury_datn.services.ProductService;
 import com.example.tshirt_luxury_datn.services.UserProfileService;
 import com.example.tshirt_luxury_datn.services.UserService;
-import com.fasterxml.jackson.databind.ObjectMapper;
-
 import jakarta.servlet.http.HttpSession;
 
 @Controller
@@ -56,9 +52,6 @@ public class ClientController {
   private CartService cartService;
 
   @Autowired
-  private ImageService imageService;
-
-  @Autowired
   private UserProfileService userProfileService;
 
   @Autowired
@@ -68,7 +61,7 @@ public class ClientController {
   private CategoryService categoryService;
 
   @Autowired
-  private ProductDetailService productDetailService;
+  private ProductDetailRepository productDetailRepository;
 
   @GetMapping
   public String homepage(Model model, HttpSession session) {
@@ -98,41 +91,32 @@ public class ClientController {
 
   @GetMapping("/product")
   public String detailProduct(@RequestParam Long id, Model model) {
-    try {
-      // Lấy thông tin sản phẩm
-      Product product = productService.getProductById(id);
-      model.addAttribute("product", product);
+    Product productEntity = productService.getProductById(id);
+    ProductDTO product = new ProductDTO(productEntity);
+    model.addAttribute("product", product);
 
-      // Lấy danh sách sản phẩm chi tiết
-      List<ProductDetail> productDetails = productDetailService.getProductDetailsByProductId(id);
-      if (productDetails == null || productDetails.isEmpty()) {
-        throw new RuntimeException("Danh sách sản phẩm chi tiết rỗng hoặc null");
-      }
+    List<Map<String, Object>> availableSizes = productService.getAvailableSizes(id);
+    List<Map<String, Object>> availableColors = productService.getAvailableColors(id);
+    model.addAttribute("sizes", availableSizes);
+    model.addAttribute("colors", availableColors);
 
-      // Lấy danh sách kích thước duy nhất
-      Set<Size> uniqueSizes = productDetails.stream()
-          .map(ProductDetail::getSize)
-          .collect(Collectors.toSet());
-      model.addAttribute("sizes", uniqueSizes);
-
-      // Lấy danh sách màu sắc duy nhất
-      Set<Color> uniqueColors = productDetails.stream()
-          .map(ProductDetail::getColor)
-          .collect(Collectors.toSet());
-      model.addAttribute("colors", uniqueColors);
-
-      // Lấy danh sách URL hình ảnh
-      model.addAttribute("images", imageService.getImageUrlsByProductId(id));
-
-      // Chuyển danh sách sản phẩm chi tiết thành JSON để sử dụng trong JavaScript
-      ObjectMapper objectMapper = new ObjectMapper();
-      String productDetailsJson = objectMapper.writeValueAsString(productDetails);
-      model.addAttribute("productDetailsJson", productDetailsJson);
-
-    } catch (Exception e) {
-      model.addAttribute("error", e.getMessage());
-    }
+    List<String> images = productService.getProductImages(id);
+    model.addAttribute("images", images);
     return "SanPhamChiTiet/san-pham-chi-tiet";
+  }
+
+  @GetMapping("/product/quantity")
+  @ResponseBody
+  public Map<String, Integer> getQuantity(@RequestParam Long productId,
+      @RequestParam Long sizeId,
+      @RequestParam Long colorId) {
+    ProductDetail productDetail = productDetailRepository
+        .findByProductIdAndSizeIdAndColorIdAndStatusTrue(productId, sizeId, colorId)
+        .orElse(null);
+
+    Map<String, Integer> response = new HashMap<>();
+    response.put("quantity", productDetail != null ? productDetail.getQuantity() : 0);
+    return response;
   }
 
   @GetMapping("/cart/checkout")

@@ -51,6 +51,7 @@ public class SessionController {
         if (loggedInUser != null) {
             cartService.updateCartItemQuantity(code, quantity, loggedInUser);
         } else {
+            @SuppressWarnings("unchecked")
             List<CartItem> cart = (List<CartItem>) session.getAttribute("userCart");
             cartService.pos_updateQuantity(cart, code, quantity);
             session.setAttribute("userCart", cart);

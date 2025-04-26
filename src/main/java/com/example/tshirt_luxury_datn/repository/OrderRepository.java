@@ -17,6 +17,7 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
 
     List<Order> findTop5ByOrderByOrderDateDesc();
 
+    @SuppressWarnings("null")
     Page<Order> findAll(Pageable pageable);
 
     List<Order> findByUserId(Long userId);

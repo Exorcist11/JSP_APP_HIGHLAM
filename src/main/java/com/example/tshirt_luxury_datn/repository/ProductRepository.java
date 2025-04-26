@@ -28,6 +28,7 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
 
         List<Product> findByCategoryDetail_CategoryId(Long categoryId);
 
+        @SuppressWarnings("null")
         Page<Product> findAll(Pageable pageable);
 
         @Query("SELECT p FROM Product p " +

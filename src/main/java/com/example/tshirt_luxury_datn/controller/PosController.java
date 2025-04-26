@@ -152,6 +152,7 @@ public class PosController {
     public ResponseEntity<?> updateQuantity(@RequestParam String code,
             @RequestParam Integer quantity,
             HttpSession session) {
+        @SuppressWarnings("unchecked")
         List<CartItem> cart = (List<CartItem>) session.getAttribute("cart");
         if (cart == null) {
             cart = new ArrayList<>();
