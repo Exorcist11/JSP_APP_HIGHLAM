@@ -104,7 +104,12 @@ uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
                           ${item.productName} - ${item.colorName} -
                           ${item.sizeName}
                         </h5>
-                        <button class="remove-btn border">Xóa</button>
+                        <form method="POST" action="${pageContext.request.contextPath}/cart/remove" class="d-inline">
+                          <input type="hidden" name="productDetailId" value="${item.productDetailId}" />
+                          <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+                          <button type="submit" class="remove-btn border">Xóa</button>
+                        </form>
+                        
                       </div>
                     </div>
                   </div>
@@ -224,13 +229,37 @@ uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
         // Remove item handler
         document.querySelectorAll(".remove-btn").forEach((btn) => {
-          btn.addEventListener("click", function () {
-            const itemElement = this.closest(".cart-item");
-            // Here you would remove the item from localStorage
-            itemElement.remove();
-            // Update cart count and total
+          btn.addEventListener("click", async function (e) {
+            e.preventDefault(); // Ngăn không cho submit form tự động
+
+            const form = this.closest("form");
+            const productDetailId = form.querySelector('input[name="productDetailId"]').value;
+
+            // Nếu có CSRF token thì lấy thêm (nếu không dùng CSRF thì bỏ đoạn này)
+            const csrfParameterName = form.querySelector('input[type="hidden"]').name;
+            const csrfToken = form.querySelector('input[type="hidden"]').value;
+
+            const formData = new FormData();
+            formData.append("productDetailId", productDetailId);
+            formData.append(csrfParameterName, csrfToken); // thêm CSRF token vào nếu có
+
+            try {
+              const response = await fetch(form.action, {
+                method: "POST",
+                body: formData,
+              });
+
+              if (response.redirected) {
+                window.location.href = response.url; // Nếu server trả redirect thì chuyển hướng
+              } else {
+                window.location.reload(); // Hoặc reload trang
+              }
+            } catch (error) {
+              console.error("Error when removing item:", error);
+            }
           });
         });
+
       });
     </script>
   </body>

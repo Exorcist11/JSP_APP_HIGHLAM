@@ -132,7 +132,7 @@ public class CartController {
             Model model, @RequestHeader(value = "referer", required = false) String referer) {
         Cart cart = cartService.getOrCreateCart(session);
         cartService.removeFromCart(cart, productDetailId, session);
-
+     
         // Cập nhật lại dữ liệu cho giao diện
         model.addAttribute("cartItems", cartService.getCartItems(cart));
         model.addAttribute("totalPrice", cartService.caculateTotalUserCart(cart));
