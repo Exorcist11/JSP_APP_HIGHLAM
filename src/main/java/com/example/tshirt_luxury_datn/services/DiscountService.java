@@ -1,6 +1,7 @@
 package com.example.tshirt_luxury_datn.services;
 
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -15,6 +16,31 @@ import com.example.tshirt_luxury_datn.repository.DiscountRepository;
 public class DiscountService {
     @Autowired
     private DiscountRepository discountRepository;
+
+    public Discount getActiveDiscountByCode(String code) {
+        Timestamp currentTime = Timestamp.valueOf(LocalDateTime.now());
+        Optional<Discount> discountByCode = discountRepository.findByCode(code);
+
+        if (!discountByCode.isPresent()) {
+            throw new RuntimeException("Không tìm thấy mã giảm giá: " + code);
+        }
+
+        Discount discount = discountByCode.get();
+
+        if (currentTime.before(discount.getStartDate())) {
+            throw new RuntimeException("Mã giảm giá chưa có hiệu lực");
+        }
+
+        if (currentTime.after(discount.getEndDate())) {
+            throw new RuntimeException("Mã giảm giá đã hết hạn");
+        }
+
+        if (!discount.getStatus()) {
+            throw new RuntimeException("Mã giảm giá không còn hiệu lực");
+        }
+
+        return discount;
+    }
 
     public List<Discount> getAllDiscounts() {
         return discountRepository.findAll();

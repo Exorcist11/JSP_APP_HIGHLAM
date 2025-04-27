@@ -139,7 +139,7 @@ public class ClientController {
 
       double totalPrice = cartItems.stream()
           .mapToDouble(item -> item.getPrice() * item.getQuantity())
-          .sum() + 35000; // Phí vận chuyển
+          .sum();
 
       model.addAttribute("cartItems", cartItems);
       model.addAttribute("totalPrice", totalPrice);

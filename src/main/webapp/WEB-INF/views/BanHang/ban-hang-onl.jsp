@@ -366,7 +366,9 @@
           <div class="card-body p-0 mt-3">
             <div class="d-flex justify-content-between mb-2">
               <span>Tạm tính:</span>
-              <span><fmt:formatNumber value="${totalPrice}" groupingUsed="true" maxFractionDigits="0" />₫</span>
+              <span id="totalPrice" data-raw-value="${totalPrice}">
+                <fmt:formatNumber value="${totalPrice}" groupingUsed="true" maxFractionDigits="0" />₫
+              </span>
             </div>
             <div class="d-flex justify-content-between mb-2">
               <span>Phí vận chuyển:</span>
@@ -385,6 +387,7 @@
                   class="form-control"
                   placeholder="Nhập mã giảm giá"
                 />
+                <input type="hidden" name="couponCode" id="couponCodeHidden" value="">
                 <button class="btn btn-outline-dark" type="button" id="applyCoupon">
                   Áp dụng
                 </button>
@@ -394,8 +397,8 @@
             <hr>
             <div class="d-flex justify-content-between mb-2">
               <h5>Tổng cộng:</h5>
-              <h5 class="text-danger">
-                <fmt:formatNumber value="${totalPrice}" groupingUsed="true" maxFractionDigits="0" />₫
+              <h5 class="text-danger" id="finalPrice">
+                <fmt:formatNumber value="${totalPrice + 35000}" groupingUsed="true" maxFractionDigits="0" />₫
               </h5>
             </div>
             <div class="mt-3">
@@ -422,11 +425,8 @@
       const paymentMethods = document.querySelectorAll('.payment-method');
       paymentMethods.forEach(method => {
         method.addEventListener('click', function() {
-          // Bỏ chọn tất cả
           paymentMethods.forEach(m => m.classList.remove('selected'));
-          // Chọn phương thức hiện tại
           this.classList.add('selected');
-          // Check radio button
           const radio = this.querySelector('input[type="radio"]');
           radio.checked = true;
         });
@@ -439,15 +439,11 @@
         const provinceSelect = document.getElementById("province");
         const districtSelect = document.getElementById("district");
         const wardSelect = document.getElementById("ward");
-        const addressDetailInput = document.querySelector(
-          'input[name="addressDetail"]'
-        );
+        const addressDetailInput = document.querySelector('input[name="addressDetail"]');
         const fullAddressInput = document.getElementById("fullAddress");
 
-        // API URLs
         const API_BASE_URL = "https://vn-public-apis.fpo.vn";
 
-        // Fetch provinces
         await fetch(API_BASE_URL + `/provinces/getAll?limit=-1`)
           .then((response) => response.json())
           .then((data) => {
@@ -464,30 +460,16 @@
           })
           .catch((error) => console.error("Error fetching provinces:", error));
 
-        // Event listener for province selection
         provinceSelect.addEventListener("change", async function () {
-          // Clear district and ward selects
-          districtSelect.innerHTML =
-            '<option value="">-- Chọn Quận/Huyện --</option>';
+          districtSelect.innerHTML = '<option value="">-- Chọn Quận/Huyện --</option>';
           wardSelect.innerHTML = '<option value="">-- Chọn Phường/Xã --</option>';
-
-          // Reset disabled status
           districtSelect.disabled = true;
           wardSelect.disabled = true;
 
           const provinceCode = this.value;
           if (provinceCode) {
-            console.log("PROVINCE CODE: ", provinceCode);
-            // Enable district select
             districtSelect.disabled = false;
-
-            // Fetch districts for selected province
-            await fetch(
-              API_BASE_URL +
-              `/districts/getByProvince?provinceCode=` +
-              provinceCode +
-              `&limit=-1`
-            )
+            await fetch(API_BASE_URL + `/districts/getByProvince?provinceCode=` + provinceCode + `&limit=-1`)
               .then((response) => response.json())
               .then((data) => {
                 if (data.data && data.data.data && data.data.data.length > 0) {
@@ -501,33 +483,19 @@
                   console.error("Error fetching districts:", data);
                 }
               })
-              .catch((error) =>
-                console.error("Error fetching districts:", error)
-              );
+              .catch((error) => console.error("Error fetching districts:", error));
           }
-
           updateFullAddress();
         });
 
-        // Event listener for district selection
         districtSelect.addEventListener("change", async function () {
-          // Clear ward select
           wardSelect.innerHTML = '<option value="">-- Chọn Phường/Xã --</option>';
           wardSelect.disabled = true;
 
           const districtCode = this.value;
-
           if (districtCode) {
-            // Enable ward select
             wardSelect.disabled = false;
-
-            // Fetch wards for selected district
-            await fetch(
-              API_BASE_URL +
-              `/wards/getByDistrict?districtCode=` +
-              districtCode +
-              `&limit=-1`
-            )
+            await fetch(API_BASE_URL + `/wards/getByDistrict?districtCode=` + districtCode + `&limit=-1`)
               .then((response) => response.json())
               .then((data) => {
                 if (data.data && data.data.data && data.data.data.length > 0) {
@@ -543,39 +511,23 @@
               })
               .catch((error) => console.error("Error fetching wards:", error));
           }
-
           updateFullAddress();
         });
 
-        // Event listeners for updating full address
         wardSelect.addEventListener("change", updateFullAddress);
         addressDetailInput.addEventListener("input", updateFullAddress);
 
-        // Function to update full address
         function updateFullAddress() {
-          const provinceText =
-            provinceSelect.options[provinceSelect.selectedIndex]?.text || "";
-          const districtText =
-            districtSelect.options[districtSelect.selectedIndex]?.text || "";
-          const wardText =
-            wardSelect.options[wardSelect.selectedIndex]?.text || "";
+          const provinceText = provinceSelect.options[provinceSelect.selectedIndex]?.text || "";
+          const districtText = districtSelect.options[districtSelect.selectedIndex]?.text || "";
+          const wardText = wardSelect.options[wardSelect.selectedIndex]?.text || "";
           const addressDetail = addressDetailInput.value || "";
-
-          // Combine all parts to create full address
-          let parts = [
-            addressDetail,
-            wardText,
-            districtText,
-            provinceText,
-          ].filter(Boolean);
+          let parts = [addressDetail, wardText, districtText, provinceText].filter(Boolean);
           fullAddressInput.value = parts.join(", ");
         }
       } else {
-        // Xử lý cho người dùng đã đăng nhập
         const savedAddressesSelect = document.getElementById("savedAddresses");
         const selectedAddressInfo = document.getElementById("selectedAddressInfo");
-        
-        // Hidden fields
         const recipientNameInput = document.getElementById("recipientName");
         const recipientPhoneInput = document.getElementById("recipientPhone");
         const provinceInput = document.getElementById("province");
@@ -583,20 +535,14 @@
         const wardInput = document.getElementById("ward");
         const addressDetailInput = document.getElementById("addressDetail");
         const fullAddressInput = document.getElementById("fullAddress");
-        
-        // Info display elements
         const infoFullname = document.getElementById("info-fullname");
         const infoPhone = document.getElementById("info-phone");
         const infoAddress = document.getElementById("info-address");
-        
+
         savedAddressesSelect.addEventListener("change", function() {
           const selectedOption = this.options[this.selectedIndex];
-          
           if (this.value) {
-            // Show the address info card
             selectedAddressInfo.style.display = "block";
-            
-            // Extract data from the selected option
             const fullName = selectedOption.getAttribute("data-fullname");
             const phone = selectedOption.getAttribute("data-phone");
             const detail = selectedOption.getAttribute("data-detail");
@@ -606,17 +552,10 @@
             const districtName = selectedOption.getAttribute("data-district-name");
             const wardCode = selectedOption.getAttribute("data-ward-code");
             const wardName = selectedOption.getAttribute("data-ward-name");
-            console.log("DETAIL: ", detail);
-            console.log("WARD NAME: ", wardName);
-            console.log("DISTRICT NAME: ", districtName);
-            console.log("PROVINCE NAME: ", provinceName);
-            
-            // Set visible info
+
             infoFullname.textContent = fullName;
             infoPhone.textContent = phone;
             infoAddress.textContent = detail + ", " + wardName + ", " + districtName + ", " + provinceName;
-            
-            // Update hidden fields
             recipientNameInput.value = fullName;
             recipientPhoneInput.value = phone;
             provinceInput.value = provinceCode;
@@ -625,47 +564,52 @@
             addressDetailInput.value = detail;
             fullAddressInput.value = `${detail}, ${wardName}, ${districtName}, ${provinceName}`;
           } else {
-            // Hide the address info card if no address is selected
             selectedAddressInfo.style.display = "none";
           }
         });
       }
 
       // Form submission validation
-      document
-        .querySelector("form")
-        .addEventListener("submit", function (event) {
-          const isLoggedIn = document.getElementById("savedAddresses") !== null;
-          
-          if (isLoggedIn) {
-            // For logged-in users, check if an address is selected
-            const savedAddressesSelect = document.getElementById("savedAddresses");
-            if (!savedAddressesSelect.value) {
-              event.preventDefault();
-              alert("Vui lòng chọn địa chỉ giao hàng");
-            }
-          } else {
-            // For guests, validate address inputs
-            const province = document.getElementById("province").value;
-            const district = document.getElementById("district").value;
-            const ward = document.getElementById("ward").value;
-            const addressDetail = document.getElementById("addressDetail").value.trim();
-
-            if (!province || !district || !ward || !addressDetail) {
-              event.preventDefault();
-              alert("Vui lòng nhập đầy đủ thông tin địa chỉ");
-            }
+      document.querySelector("form").addEventListener("submit", function (event) {
+        const isLoggedIn = document.getElementById("savedAddresses") !== null;
+        if (isLoggedIn) {
+          const savedAddressesSelect = document.getElementById("savedAddresses");
+          if (!savedAddressesSelect.value) {
+            event.preventDefault();
+            alert("Vui lòng chọn địa chỉ giao hàng");
           }
-        });
+        } else {
+          const province = document.getElementById("province").value;
+          const district = document.getElementById("district").value;
+          const ward = document.getElementById("ward").value;
+          const addressDetail = document.getElementById("addressDetail").value.trim();
+          if (!province || !district || !ward || !addressDetail) {
+            event.preventDefault();
+            alert("Vui lòng nhập đầy đủ thông tin địa chỉ");
+          }
+        }
+      });
+
+      // Cập nhật finalPrice ban đầu để bao gồm phí vận chuyển
+      const totalPriceElement = document.getElementById("totalPrice");
+      const finalPriceElement = document.getElementById("finalPrice");
+      const shippingFee = 35000; // Phí vận chuyển cố định
+
+      const formattedPrice = totalPriceElement.textContent || totalPriceElement.innerText;
+      const totalPrice = parseInt(formattedPrice.replace(/[^\d]/g, ""));
+      
+      function formatCurrency(value) {
+        return value.toLocaleString('vi-VN', { maximumFractionDigits: 0 }) + '₫';
+      }
+
+      finalPriceElement.textContent = formatCurrency(totalPrice + shippingFee);
     });
 
     // Xử lý số lượng sản phẩm
     document.querySelectorAll(".quantity-btn").forEach((btn) => {
       btn.addEventListener("click", async function () {
         const isPlus = this.classList.contains("plus");
-        const quantityElement = this.parentElement.querySelector(
-          "span:not(.quantity-btn)"
-        );
+        const quantityElement = this.parentElement.querySelector("span:not(.quantity-btn)");
         let quantity = parseInt(quantityElement.textContent);
         let code = this.closest(".quantity-control").querySelector("input[name='code']").value;
 
@@ -721,8 +665,69 @@
         }
       });
     });
-  </script>
- 
-</body>
+  
+    // Xử lý áp dụng mã giảm giá
+    document.getElementById("applyCoupon").addEventListener("click", async function () {
+      const discountAmount = document.getElementById("discountAmount");
+      const discountSection = document.getElementById("discountSection");
+      const totalPriceElement = document.getElementById("totalPrice");
+      const finalPriceElement = document.getElementById("finalPrice");
+      const couponMessage = document.getElementById("couponMessage");
+      const couponCode = document.getElementById("couponCode").value.trim();
+      const couponCodeHidden = document.getElementById("couponCodeHidden");
+      const shippingFee = 35000; 
 
+      function formatCurrency(value) {
+        return value.toLocaleString('vi-VN', { maximumFractionDigits: 0 }) + '₫';
+      }
+
+      const formattedPrice = totalPriceElement.textContent || totalPriceElement.innerText;
+      const totalPrice = parseInt(formattedPrice.replace(/[^\d]/g, ""));
+
+      try {
+        if (!couponCode) {
+          couponMessage.textContent = "Vui lòng nhập mã giảm giá.";
+          couponMessage.classList.add("text-danger");
+          couponCodeHidden.value = "";
+          return;
+        }
+
+        const response = await fetch("/api/applyCoupon?code=" + encodeURIComponent(couponCode), {
+          method: "GET"
+        });
+
+        if (!response.ok) {
+          throw new Error(`Lỗi từ server: ${response.status} - ${response.statusText}`);
+        }
+
+        const data = await response.json();
+
+        if (data && typeof data.percentage === 'number') {
+          const discount = totalPrice * (data.percentage / 100);
+          discountAmount.textContent = "-" + formatCurrency(discount);
+          discountAmount.classList.add("text-success");
+          finalPriceElement.textContent = formatCurrency(totalPrice + shippingFee - discount);
+          discountSection.style.display = "block";
+          couponMessage.textContent = "Áp dụng mã giảm giá thành công!";
+          couponMessage.classList.remove("text-danger");
+          couponMessage.classList.add("text-success");
+          couponCodeHidden.value = couponCode;
+        } else {
+          discountAmount.textContent = "-0₫";
+          finalPriceElement.textContent = formatCurrency(totalPrice + shippingFee);
+          discountSection.style.display = "block";
+          couponMessage.textContent = "Mã giảm giá không hợp lệ.";
+          couponMessage.classList.add("text-danger");
+          couponCodeHidden.value = "";
+        }
+      } catch (error) {
+        console.error("Lỗi khi áp dụng mã giảm giá:", error);
+        couponMessage.textContent = "Có lỗi xảy ra khi áp dụng mã giảm giá. Vui lòng thử lại.";
+        couponMessage.classList.add("text-danger");
+        discountSection.style.display = "none";
+        couponCodeHidden.value = "";
+      }
+    });
+  </script>
+</body>
 </html>

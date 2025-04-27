@@ -62,6 +62,9 @@ public class Order {
     @Column(name = "discount_code")
     private String discountCode;
 
+    @Column(name = "discount_amount")
+    private double discountAmount;
+
     @ManyToOne
     @JoinColumn(name = "discount_id", nullable = true)
     private Discount discount;

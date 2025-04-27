@@ -28,6 +28,7 @@ import com.example.tshirt_luxury_datn.dto.OrderDTO;
 import com.example.tshirt_luxury_datn.dto.ProductDetailDTO;
 import com.example.tshirt_luxury_datn.entity.Cart;
 import com.example.tshirt_luxury_datn.entity.CartItem;
+import com.example.tshirt_luxury_datn.entity.Discount;
 import com.example.tshirt_luxury_datn.entity.Order;
 import com.example.tshirt_luxury_datn.entity.OrderItem;
 import com.example.tshirt_luxury_datn.entity.Payment;
@@ -69,6 +70,9 @@ public class CheckoutService {
   @Autowired
   private CartService cartService;
 
+  @Autowired
+  private DiscountService discountService;
+
   public static String generateOrderCode() {
     LocalTime now = LocalTime.now();
 
@@ -99,8 +103,19 @@ public class CheckoutService {
       }
 
       // Tính tổng tiền
-      double totalAmount = calculateTotalAmount(cartItems) + 35000;
-      System.out.println("Tổng tiền là: " + totalAmount);
+      double totalAmount = calculateTotalAmount(cartItems);
+      double shippingFee = 35000;
+      double discount = 0;
+
+      Discount coupon = discountService.getActiveDiscountByCode(orderDTO.getCouponCode());
+
+      if (orderDTO.getCouponCode() != null && !orderDTO.getCouponCode().isEmpty()) {
+        if (coupon != null) {
+          discount = totalAmount * (coupon.getPercentage() / 100.0);
+        }
+      }
+
+      totalAmount = totalAmount + shippingFee - discount;
 
       // Tạo Order
       Order order = new Order();
@@ -108,10 +123,14 @@ public class CheckoutService {
       order.setOrderType(orderDTO.getTrangThai().equals("1") ? "COD" : "ONLINE");
       order.setTotalAmount(totalAmount);
       order.setCode(generateOrderCode());
-
+      if (coupon != null) {
+        order.setDiscountCode(coupon.getCode());
+      }
+      order.setDiscountAmount(discount);
+      order.setDiscount(coupon);
       order.setNotes(orderDTO.getNote());
-      order.setOrderItems(new ArrayList<>()); // Khởi tạo danh sách orderItems
-      order.setUser(loggedInUser); // Liên kết với người dùng nếu đã đăng nhập
+      order.setOrderItems(new ArrayList<>());
+      order.setUser(loggedInUser);
 
       if (loggedInUser != null && orderDTO.getProfileId() != null) {
         UserProfile profile = userProfileRepository.findById(orderDTO.getProfileId())
@@ -119,6 +138,7 @@ public class CheckoutService {
         order.setRecipientName(profile.getFullName());
         order.setRecipientPhone(profile.getPhoneNumber());
         order.setGuestEmail(loggedInUser.getEmail());
+
         order.setRecipientAddress(String.join(", ",
             profile.getDetail(),
             profile.getWardName(),
@@ -129,6 +149,7 @@ public class CheckoutService {
         order.setRecipientAddress(orderDTO.getRecipientAddress());
         order.setRecipientPhone(orderDTO.getRecipientPhone());
         order.setRecipientName(orderDTO.getRecipientName());
+
       }
 
       // Lưu Order
