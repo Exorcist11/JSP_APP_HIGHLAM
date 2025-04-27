@@ -63,7 +63,7 @@ public class Order {
     private String discountCode;
 
     @Column(name = "discount_amount")
-    private double discountAmount;
+    private Double discountAmount;
 
     @ManyToOne
     @JoinColumn(name = "discount_id", nullable = true)
