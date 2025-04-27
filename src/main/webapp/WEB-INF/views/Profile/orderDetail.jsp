@@ -195,8 +195,15 @@
             <c:if test="${order.getStatus() == 'PENDING'}">
               <button 
                 class="btn btn-danger btn-sm"
-                onclick="cancelOrder(${order.id})" style="width: fit-content;">Huỷ đơn hàng</button>
+                onclick="changeStatus(${order.id}, 'CANCELLED')" style="width: fit-content;">Huỷ đơn hàng</button>
             </c:if>
+
+            <input type="hidden" value="${order.getStatus()}" id="orderStatus">
+            <input type="hidden" value="${order.createdAt}" id="orderTime">
+
+            <button id="returnButton" class="btn btn-primary btn-sm" onclick="changeStatus(${order.id}, 'RETURNED')" style="width: fit-content; display: none;">
+              Trả hàng
+          </button>
           </div>
 
           <!-- Order Summary -->
@@ -271,16 +278,29 @@
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
   <script src="../js/script.js"></script>
+  
+
   <script>
-    function cancelOrder(orderId) {
+    const status = document.getElementById('orderStatus').value;
+    const orderTime = document.getElementById('orderTime').value;
+    const orderCreatedAt = new Date(orderTime);
+    const currentTime = new Date().getTime();
+
+    if (status == 'SUCCESS' &&  (currentTime - orderCreatedAt) <= 3 * 24 * 60 * 60 * 1000) {
+        document.getElementById('returnButton').style.display = 'inline-block';
+    } else {
+        document.getElementById('returnButton').style.display = 'none';
+    }
+    function changeStatus(orderId, status) {
       console.log(orderId);
-          if (confirm("Bạn có chắc muốn huỷ đơn hàng này không?")) {
+      if (confirm(`Bạn có chắc muốn ${status == 'RETURNED' ? 'trả hàng' : 'huỷ'} đơn hàng này không?`)) {
+
               fetch(`/admin/order/changeStatus/` + orderId, {
                   method: 'PATCH',
                   headers: {
                       'Content-Type': 'application/x-www-form-urlencoded'
                   },
-                  body: new URLSearchParams({ order: 'CANCELLED' }),
+                  body: new URLSearchParams({ order: status == 'RETURNED' ? 'RETURNED' : 'CANCELLED' }),
               })
               .then(response => response.text())
               .then(message => {
