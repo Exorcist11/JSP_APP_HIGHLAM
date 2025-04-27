@@ -160,6 +160,8 @@ public class ProductService {
         .collect(Collectors.toList());
   }
 
+
+
   public List<ProductDTO> getProductsByCategoryDetail(Long categoryDetailId) {
     List<Product> products = productRepository.findByCategoryDetailId(categoryDetailId);
     return products.stream().map(ProductDTO::new).collect(Collectors.toList());

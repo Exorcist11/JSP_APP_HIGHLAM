@@ -9,6 +9,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.example.tshirt_luxury_datn.dto.ProductDTO;
 import com.example.tshirt_luxury_datn.entity.Order;
 import com.example.tshirt_luxury_datn.services.DashboardService;
 
@@ -46,8 +47,8 @@ public class AdminController {
         model.addAttribute("recentOrders", recentOrders);
 
         // Sản phẩm bán chạy
-        // List<Product> topProducts = dashboardService.getTopSellingProducts();
-        // model.addAttribute("topProducts", topProducts);
+        List<ProductDTO> topProducts = dashboardService.getBestSellingProductsSold(5);
+        model.addAttribute("topProducts", topProducts);
 
         return "admin/dashboard";
     }

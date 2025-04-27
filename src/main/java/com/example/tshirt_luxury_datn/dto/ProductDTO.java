@@ -17,6 +17,7 @@ public class ProductDTO {
   private String description;
   private String imgUrl;
   private Integer totalQuantity;
+  private Long totalQuantitySold;
 
   public ProductDTO(Product product) {
     this.id = product.getId();
@@ -29,7 +30,7 @@ public class ProductDTO {
     this.imgUrl = product.getProductDetails().isEmpty()
         ? null
         : product.getProductDetails().get(0).getFirstImageUrl();
-        
+
     this.totalQuantity = product.getProductDetails().stream()
         .mapToInt(pd -> pd.getQuantity() != null ? pd.getQuantity() : 0)
         .sum();

@@ -255,7 +255,7 @@ uri="http://java.sun.com/jsp/jstl/fmt" %>
           <div class="col-12 col-sm-6 col-lg-3">
             <div class="card card-stat">
               <div class="card-title">Doanh số</div>
-              <div class="card-value">${totalRevenue} </div>
+              <div class="card-value">${totalRevenue}</div>
               <!-- <div class="d-flex align-items-center trend-up">
                 <i class="fas fa-arrow-up me-1"></i>
                 <span>8.3% so với tháng trước</span>
@@ -351,7 +351,7 @@ uri="http://java.sun.com/jsp/jstl/fmt" %>
         <div class="row">
           <!-- Biểu đồ phân tích -->
           <div class="col-lg-8">
-            <div class="card">
+            <!-- <div class="card">
               <div
                 class="card-header bg-white d-flex justify-content-between align-items-center"
               >
@@ -387,7 +387,7 @@ uri="http://java.sun.com/jsp/jstl/fmt" %>
                   />
                 </div>
               </div>
-            </div>
+            </div> -->
 
             <!-- Đơn hàng gần đây -->
             <div class="card">
@@ -474,7 +474,7 @@ uri="http://java.sun.com/jsp/jstl/fmt" %>
 
           <div class="col-lg-4">
             <!-- Biểu đồ phân bố đơn hàng -->
-            <div class="card">
+            <!-- <div class="card">
               <div class="card-header bg-white">
                 <h5 class="card-title mb-0">Phân bố đơn hàng</h5>
               </div>
@@ -494,7 +494,7 @@ uri="http://java.sun.com/jsp/jstl/fmt" %>
                   />
                 </div>
               </div>
-            </div>
+            </div> -->
 
             <!-- Sản phẩm bán chạy nhất -->
             <div class="card">
@@ -502,108 +502,42 @@ uri="http://java.sun.com/jsp/jstl/fmt" %>
                 class="card-header bg-white d-flex justify-content-between align-items-center"
               >
                 <h5 class="card-title mb-0">Sản phẩm bán chạy</h5>
-                <a href="#" class="btn btn-sm btn-link">Xem tất cả</a>
+                <a href="/admin/products" class="btn btn-sm btn-link"
+                  >Xem tất cả</a
+                >
               </div>
               <div class="card-body p-0">
-                <div class="product-card">
-                  <div class="rank-number rank-1">1</div>
-                  <div class="product-img">
-                    <img src="/api/placeholder/60/60" alt="Áo thun unisex" />
-                  </div>
-                  <div class="product-info">
-                    <div class="product-title">
-                      Áo thun unisex basic form rộng
+                <c:forEach
+                  var="product"
+                  items="${topProducts}"
+                  varStatus="loop"
+                >
+                  <div class="product-card">
+                    <div
+                      class="rank-number <c:choose> <c:when test='${loop.index == 0}'>rank-1</c:when> <c:when test='${loop.index == 1}'>rank-2</c:when> <c:when test='${loop.index == 2}'>rank-3</c:when> </c:choose>"
+                    >
+                      ${loop.index + 1}
                     </div>
-                    <div class="product-stats">
-                      <div class="product-sales">
-                        Đã bán: <strong>487</strong>
+                    <div class="product-img">
+                      <img src="${product.imgUrl}" alt="${product.name}" />
+                    </div>
+                    <div class="product-info">
+                      <div class="product-title">${product.name}</div>
+                      <div class="product-stats">
+                        <div class="product-sales">
+                          Đã bán: <strong>${product.totalQuantitySold}</strong>
+                        </div>
+                        <div class="product-price">
+                          ₫<fmt:formatNumber
+                            value="${product.price}"
+                            type="number"
+                            groupingUsed="true"
+                          />
+                        </div>
                       </div>
-                      <div class="product-price">₫189,000</div>
                     </div>
                   </div>
-                </div>
-
-                <div class="product-card">
-                  <div class="rank-number rank-2">2</div>
-                  <div class="product-img">
-                    <img src="/api/placeholder/60/60" alt="Quần jean nam" />
-                  </div>
-                  <div class="product-info">
-                    <div class="product-title">Quần jean nam slim fit</div>
-                    <div class="product-stats">
-                      <div class="product-sales">
-                        Đã bán: <strong>356</strong>
-                      </div>
-                      <div class="product-price">₫450,000</div>
-                    </div>
-                  </div>
-                </div>
-
-                <div class="product-card">
-                  <div class="rank-number rank-3">3</div>
-                  <div class="product-img">
-                    <img src="/api/placeholder/60/60" alt="Váy liền nữ" />
-                  </div>
-                  <div class="product-info">
-                    <div class="product-title">
-                      Váy liền nữ dáng xòe họa tiết hoa
-                    </div>
-                    <div class="product-stats">
-                      <div class="product-sales">
-                        Đã bán: <strong>325</strong>
-                      </div>
-                      <div class="product-price">₫395,000</div>
-                    </div>
-                  </div>
-                </div>
-
-                <div class="product-card">
-                  <div class="rank-number">4</div>
-                  <div class="product-img">
-                    <img src="/api/placeholder/60/60" alt="Áo sơ mi nam" />
-                  </div>
-                  <div class="product-info">
-                    <div class="product-title">Áo sơ mi nam dài tay Oxford</div>
-                    <div class="product-stats">
-                      <div class="product-sales">
-                        Đã bán: <strong>284</strong>
-                      </div>
-                      <div class="product-price">₫320,000</div>
-                    </div>
-                  </div>
-                </div>
-
-                <div class="product-card">
-                  <div class="rank-number">5</div>
-                  <div class="product-img">
-                    <img src="/api/placeholder/60/60" alt="Áo khoác bomber" />
-                  </div>
-                  <div class="product-info">
-                    <div class="product-title">Áo khoác bomber unisex</div>
-                    <div class="product-stats">
-                      <div class="product-sales">
-                        Đã bán: <strong>267</strong>
-                      </div>
-                      <div class="product-price">₫550,000</div>
-                    </div>
-                  </div>
-                </div>
-
-                <div class="product-card">
-                  <div class="rank-number">6</div>
-                  <div class="product-img">
-                    <img src="/api/placeholder/60/60" alt="Quần short nữ" />
-                  </div>
-                  <div class="product-info">
-                    <div class="product-title">Quần short jean nữ lưng cao</div>
-                    <div class="product-stats">
-                      <div class="product-sales">
-                        Đã bán: <strong>245</strong>
-                      </div>
-                      <div class="product-price">₫280,000</div>
-                    </div>
-                  </div>
-                </div>
+                </c:forEach>
               </div>
             </div>
           </div>

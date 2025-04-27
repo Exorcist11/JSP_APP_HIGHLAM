@@ -39,6 +39,13 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
                         "ORDER BY SUM(oi.quantity) DESC")
         Page<Product> findBestSellingProductsSimple(Pageable pageable);
 
+        @Query("SELECT SUM(oi.quantity) " +
+                        "FROM Product p " +
+                        "JOIN p.productDetails pd " +
+                        "JOIN OrderItem oi ON oi.productDetail = pd " +
+                        "WHERE p.id = :productId AND p.status = true AND pd.status = true")
+        Long findTotalQuantitySoldByProductId(@Param("productId") Long productId);
+
         List<Product> findByNameContainingAndStatusTrue(String keyword);
 
 }

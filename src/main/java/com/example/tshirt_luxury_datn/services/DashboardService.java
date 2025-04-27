@@ -3,11 +3,15 @@ package com.example.tshirt_luxury_datn.services;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
+import com.example.tshirt_luxury_datn.dto.ProductDTO;
 import com.example.tshirt_luxury_datn.entity.Order;
+import com.example.tshirt_luxury_datn.entity.Product;
 import com.example.tshirt_luxury_datn.enums.OrderStatus;
 import com.example.tshirt_luxury_datn.repository.OrderRepository;
 import com.example.tshirt_luxury_datn.repository.ProductRepository;
@@ -56,6 +60,16 @@ public class DashboardService {
 
     public List<Order> getRecentOrders() {
         return orderRepository.findTop5ByOrderByOrderDateDesc();
+    }
+
+    public List<ProductDTO> getBestSellingProductsSold(int limit) {
+        List<Product> products = productRepository.findBestSellingProductsSimple(PageRequest.of(0, limit)).getContent();
+        return products.stream().map(product -> {
+            ProductDTO dto = new ProductDTO(product);
+            Long totalQuantitySold = productRepository.findTotalQuantitySoldByProductId(product.getId());
+            dto.setTotalQuantitySold(totalQuantitySold != null ? totalQuantitySold : 0L);
+            return dto;
+        }).collect(Collectors.toList());
     }
 
     // public List<Product> getTopSellingProducts() {
