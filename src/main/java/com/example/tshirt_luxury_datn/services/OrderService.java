@@ -40,7 +40,7 @@ public class OrderService {
 
     @Autowired
     private ProductDetailService productDetailService;
-    
+
     @Autowired
     private ProductDetailRepository productDetailRepository;
 
@@ -53,7 +53,7 @@ public class OrderService {
     }
 
     public List<Order> getOrderByUser(Long userID) {
-        return orderRepository.findByUserId(userID);
+        return orderRepository.findByUserIdOrderByCreatedAtDesc(userID);
     }
 
     public List<OrderItem> getOrderItemsByOrderId(Long orderId) {
