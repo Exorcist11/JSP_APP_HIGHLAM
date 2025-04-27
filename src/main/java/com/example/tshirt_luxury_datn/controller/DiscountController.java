@@ -9,6 +9,7 @@ import com.example.tshirt_luxury_datn.dto.DiscountDTO;
 import com.example.tshirt_luxury_datn.entity.Discount;
 import com.example.tshirt_luxury_datn.services.DiscountService;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -33,6 +34,12 @@ public class DiscountController {
             throw new RuntimeException("Error controller creating discount: " + e.getMessage());
         }
 
+        return "redirect:/admin/discount";
+    }
+
+    @PostMapping("/admin/discount/update")
+    public String updateDiscount(@ModelAttribute DiscountDTO discountDTO) {
+        discountService.updateDiscount(discountDTO);
         return "redirect:/admin/discount";
     }
 

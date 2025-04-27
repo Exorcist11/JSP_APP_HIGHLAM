@@ -78,4 +78,24 @@ public class DiscountService {
             throw new RuntimeException("Lỗi khi xóa size: " + e.getMessage());
         }
     }
+
+    public Discount updateDiscount(DiscountDTO discountDTO) {
+        try {
+            Optional<Discount> optionalDiscount = discountRepository.findById(discountDTO.getId());
+            if (optionalDiscount.isEmpty()) {
+                throw new RuntimeException("Discount with ID " + discountDTO.getId() + " not found.");
+            }
+
+            Discount discount = optionalDiscount.get();
+            discount.setCode(discountDTO.getCode());
+            discount.setPercentage(discountDTO.getPercentage());
+            discount.setStartDate(Timestamp.valueOf(discountDTO.getStartDate()));
+            discount.setEndDate(Timestamp.valueOf(discountDTO.getEndDate()));
+            discount.setStatus(discountDTO.getStatus());
+
+            return discountRepository.save(discount);
+        } catch (Exception e) {
+            throw new RuntimeException("Error updating discount: " + e.getMessage());
+        }
+    }
 }

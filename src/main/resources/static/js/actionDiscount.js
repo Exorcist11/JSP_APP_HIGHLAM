@@ -3,20 +3,24 @@ document.addEventListener("DOMContentLoaded", function () {
     // Lắng nghe sự kiện click vào nút "Chỉnh Sửa"
     document.querySelectorAll(".edit-btn").forEach(button => {
         button.addEventListener("click", function () {
-            let id = this.getAttribute("data-id");
-            let name = this.getAttribute("data-name");
-            let description = this.getAttribute("data-description");
-            let status = this.getAttribute("data-status")
+            const id = this.getAttribute("data-id");
+            const code = this.getAttribute("data-code");
+            const percentage = this.getAttribute("data-percentage");
+            const startDate = this.getAttribute("data-startdate");
+            const endDate = this.getAttribute("data-enddate");
+            const status = this.getAttribute("data-status") === "true";
 
-            // Gán giá trị vào modal
-            document.getElementById("editSizeId").value = id;
-            document.getElementById("editSizeName").value = name;
-            document.getElementById("editSizeDescription").value = description;
-            document.getElementById("flexSwitchCheckChecked").checked = status;
+            document.getElementById("editDiscountId").value = id;
+            document.getElementById("editCode").value = code;
+            document.getElementById("editPercentage").value = percentage;
 
-            form.action = "/admin/sizes/update/" + id;
+            document.getElementById("editStartDate").value = startDate.slice(0, 16);
+            document.getElementById("editEndDate").value = endDate.slice(0, 16);
+
+            document.getElementById("editStatus").checked = status;
         });
     });
+
 
     let switchInput = document.getElementById("flexSwitchCheckChecked");
     let statusText = document.getElementById("statusText");

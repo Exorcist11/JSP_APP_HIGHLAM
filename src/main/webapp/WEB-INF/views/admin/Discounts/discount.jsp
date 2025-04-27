@@ -1,6 +1,6 @@
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %> <%@ page
-contentType="text/html;charset=UTF-8" language="java" %> <%@ taglib prefix="fmt"
-uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %> <%@ taglib
+prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %> <%@ page
+contentType="text/html;charset=UTF-8" language="java" %>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -16,24 +16,19 @@ uri="http://java.sun.com/jsp/jstl/fmt" %>
     <link
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
       rel="stylesheet"
-      integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
       crossorigin="anonymous"
     />
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
     />
-    <link
-      rel="shortcut icon"
-      href="../images/favicon.png"
-      type="image/x-icon"
-    />
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
     <link rel="stylesheet" href="../css/button.css" />
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
   </head>
 
   <body class="g-sidenav-show bg-gray-100 text-sm">
     <jsp:include page="/WEB-INF/views/fragments/menuAdmin.jsp" />
+
     <main class="main-content max-height-vh-100 h-100 border-radius-lg pe-3">
       <!-- Navbar -->
       <nav
@@ -58,15 +53,16 @@ uri="http://java.sun.com/jsp/jstl/fmt" %>
         </nav>
       </nav>
       <!-- End Navbar -->
-      <h2 class="">Quản Lý Mã Giảm Giá</h2>
+
+      <h2>Quản Lý Mã Giảm Giá</h2>
 
       <div class="p-2 bd-highlight d-flex justify-content-end">
         <button
           type="button"
           class="btn btn-outline-success"
           data-bs-toggle="modal"
-          style="font-size: 14px"
           data-bs-target="#themMaGiamGia"
+          style="font-size: 14px"
         >
           <i class="fa-solid fa-circle-plus"></i> Thêm Mới
         </button>
@@ -75,13 +71,13 @@ uri="http://java.sun.com/jsp/jstl/fmt" %>
       <table class="table border rounded">
         <thead>
           <tr>
-            <th scope="col">#</th>
-            <th scope="col">Mã Giảm Giá</th>
-            <th scope="col">Phần Trăm Giảm (%)</th>
-            <th scope="col">Ngày Bắt Đầu</th>
-            <th scope="col">Ngày Kết Thúc</th>
-            <th scope="col">Trạng Thái</th>
-            <th scope="col" class="text-end">Hành Động</th>
+            <th>#</th>
+            <th>Mã Giảm Giá</th>
+            <th>Phần Trăm Giảm (%)</th>
+            <th>Ngày Bắt Đầu</th>
+            <th>Ngày Kết Thúc</th>
+            <th>Trạng Thái</th>
+            <th class="text-end">Hành Động</th>
           </tr>
         </thead>
         <tbody>
@@ -93,16 +89,15 @@ uri="http://java.sun.com/jsp/jstl/fmt" %>
               <td class="align-middle">
                 <fmt:formatDate
                   value="${d.startDate}"
-                  pattern="dd/MM/yyyy  HH:mm:ss"
+                  pattern="dd/MM/yyyy HH:mm:ss"
                 />
               </td>
-              <td>
+              <td class="align-middle">
                 <fmt:formatDate
                   value="${d.endDate}"
-                  pattern="dd/MM/yyyy  HH:mm:ss"
+                  pattern="dd/MM/yyyy HH:mm:ss"
                 />
               </td>
-
               <td class="align-middle">
                 <c:if test="${d.status == true}">
                   <span class="badge bg-success">Hoạt Động</span>
@@ -111,28 +106,29 @@ uri="http://java.sun.com/jsp/jstl/fmt" %>
                   <span class="badge bg-danger">Không Hoạt Động</span>
                 </c:if>
               </td>
-
               <td class="d-flex gap-2 justify-content-end">
                 <a
                   class="btn edit-btn mb-0"
                   data-bs-toggle="modal"
                   data-bs-target="#editModal"
-                  data-id="${ms.id}"
-                  data-name="${ms.name}"
-                  data-status="${ms.status}"
-                  data-hex="${ms.hexColor}"
+                  data-id="${d.id}"
+                  data-code="${d.code}"
+                  data-percentage="${d.percentage}"
+                  data-startdate="${d.startDate}"
+                  data-enddate="${d.endDate}"
+                  data-status="${d.status}"
                   title="Chỉnh Sửa"
-                  ><i class="fa-solid fa-pen-to-square"></i
-                ></a>
+                >
+                  <i class="fa-solid fa-pen-to-square"></i>
+                </a>
                 <a
                   onclick="return confirmDelete()"
                   class="btn delete-btn mb-0"
-                  data-toggle="tooltip"
-                  data-placement="top"
                   data-id="${d.id}"
                   title="Xóa"
-                  ><i class="fa-solid fa-trash"></i
-                ></a>
+                >
+                  <i class="fa-solid fa-trash"></i>
+                </a>
               </td>
             </tr>
           </c:forEach>
@@ -140,7 +136,7 @@ uri="http://java.sun.com/jsp/jstl/fmt" %>
       </table>
     </main>
 
-    <!-- Modal Thêm Mới Mã Giảm Giá -->
+    <!-- Modal Thêm Mã Giảm Giá -->
     <form action="/admin/discount/save" method="post">
       <div
         class="modal fade"
@@ -151,7 +147,6 @@ uri="http://java.sun.com/jsp/jstl/fmt" %>
       >
         <div class="modal-dialog">
           <div class="modal-content" style="font-size: 14px">
-            <!-- Tiêu đề -->
             <div class="modal-header">
               <h5 class="modal-title" id="themMaGiamGiaLabel">
                 Thêm Mới Mã Giảm Giá
@@ -164,9 +159,7 @@ uri="http://java.sun.com/jsp/jstl/fmt" %>
               ></button>
             </div>
 
-            <!-- Nội dung Form -->
             <div class="modal-body">
-              <!-- Mã Giảm Giá -->
               <div class="form-floating mb-3">
                 <input
                   type="text"
@@ -179,7 +172,6 @@ uri="http://java.sun.com/jsp/jstl/fmt" %>
                 <label for="code">Mã Giảm Giá</label>
               </div>
 
-              <!-- Phần Trăm Giảm -->
               <div class="form-floating mb-3">
                 <input
                   type="number"
@@ -195,7 +187,6 @@ uri="http://java.sun.com/jsp/jstl/fmt" %>
                 <label for="percentage">Phần Trăm Giảm (%)</label>
               </div>
 
-              <!-- Ngày Bắt Đầu -->
               <div class="form-floating mb-3">
                 <input
                   type="datetime-local"
@@ -207,7 +198,6 @@ uri="http://java.sun.com/jsp/jstl/fmt" %>
                 <label for="startDate">Ngày Bắt Đầu</label>
               </div>
 
-              <!-- Ngày Kết Thúc -->
               <div class="form-floating mb-3">
                 <input
                   type="datetime-local"
@@ -219,7 +209,6 @@ uri="http://java.sun.com/jsp/jstl/fmt" %>
                 <label for="endDate">Ngày Kết Thúc</label>
               </div>
 
-              <!-- Trạng Thái -->
               <div class="form-check form-switch mb-3">
                 <input
                   class="form-check-input"
@@ -232,7 +221,6 @@ uri="http://java.sun.com/jsp/jstl/fmt" %>
               </div>
             </div>
 
-            <!-- Footer -->
             <div class="modal-footer">
               <button
                 type="button"
@@ -247,9 +235,10 @@ uri="http://java.sun.com/jsp/jstl/fmt" %>
         </div>
       </div>
     </form>
-    <!-- Kết thúc Modal -->
 
-    <form id="editColorForm" method="post">
+    <!-- Modal Chỉnh Sửa Mã Giảm Giá -->
+    <form id="editDiscountForm" method="post" action="/admin/discount/update">
+      <input type="hidden" id="editDiscountId" name="id" />
       <div
         class="modal fade"
         id="editModal"
@@ -260,7 +249,9 @@ uri="http://java.sun.com/jsp/jstl/fmt" %>
         <div class="modal-dialog">
           <div class="modal-content" style="font-size: 14px">
             <div class="modal-header">
-              <h5 class="modal-title" id="editModalLabel">Chỉnh Sửa Màu Sắc</h5>
+              <h5 class="modal-title" id="editModalLabel">
+                Chỉnh Sửa Mã Giảm Giá
+              </h5>
               <button
                 type="button"
                 class="btn-close"
@@ -268,50 +259,70 @@ uri="http://java.sun.com/jsp/jstl/fmt" %>
                 aria-label="Close"
               ></button>
             </div>
+
             <div class="modal-body">
-              <!-- ID Ẩn -->
-              <input type="hidden" id="editColorId" name="id" />
+              <input type="hidden" id="editDiscountId" name="id" />
 
               <div class="form-floating mb-3">
                 <input
                   type="text"
                   class="form-control"
-                  id="colorHex"
-                  placeholder="Màu Sắc"
-                  name="hexColor"
+                  id="editCode"
+                  name="code"
                   required
                 />
-                <label for="colorHex">Màu Sắc</label>
+                <label for="editCode">Mã Giảm Giá</label>
               </div>
 
               <div class="form-floating mb-3">
                 <input
-                  type="text"
+                  type="number"
                   class="form-control"
-                  id="colorName"
-                  placeholder="Tên Màu Sắc"
-                  name="name"
+                  id="editPercentage"
+                  name="percentage"
+                  min="0"
+                  max="100"
+                  step="0.01"
                   required
                 />
-                <label for="colorName">Tên Màu Sắc</label>
+                <label for="editPercentage">Phần Trăm Giảm (%)</label>
               </div>
 
-              <div class="form-check form-switch">
+              <div class="form-floating mb-3">
+                <input
+                  type="datetime-local"
+                  class="form-control"
+                  id="editStartDate"
+                  name="startDate"
+                  required
+                />
+                <label for="editStartDate">Ngày Bắt Đầu</label>
+              </div>
+
+              <div class="form-floating mb-3">
+                <input
+                  type="datetime-local"
+                  class="form-control"
+                  id="editEndDate"
+                  name="endDate"
+                  required
+                />
+                <label for="editEndDate">Ngày Kết Thúc</label>
+              </div>
+
+              <div class="form-check form-switch mb-3">
                 <input
                   class="form-check-input"
                   type="checkbox"
-                  role="switch"
-                  id="flexSwitchCheckChecked"
+                  id="editStatus"
                   name="status"
-                  checked
-                  value="true"
                 />
-
-                <span id="statusText" class="ms-2 fw-bold text-success"
-                  >Hoạt Động</span
+                <label class="form-check-label" for="editStatus"
+                  >Kích Hoạt</label
                 >
               </div>
             </div>
+
             <div class="modal-footer">
               <button
                 type="button"
@@ -326,7 +337,7 @@ uri="http://java.sun.com/jsp/jstl/fmt" %>
         </div>
       </div>
     </form>
-  </body>
 
-  <script src="../js/actionDiscount.js"></script>
+    <script src="../js/actionDiscount.js"></script>
+  </body>
 </html>
