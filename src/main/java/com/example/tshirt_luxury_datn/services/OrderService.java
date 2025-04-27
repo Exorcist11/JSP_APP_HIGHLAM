@@ -25,6 +25,7 @@ import com.example.tshirt_luxury_datn.enums.OrderStatus;
 import com.example.tshirt_luxury_datn.repository.OrderItemRepository;
 import com.example.tshirt_luxury_datn.repository.OrderRepository;
 import com.example.tshirt_luxury_datn.repository.PaymentRepository;
+import com.example.tshirt_luxury_datn.repository.ProductDetailRepository;
 
 @Service
 public class OrderService {
@@ -39,6 +40,9 @@ public class OrderService {
 
     @Autowired
     private ProductDetailService productDetailService;
+    
+    @Autowired
+    private ProductDetailRepository productDetailRepository;
 
     public Page<Order> getListOrders(Pageable pageable) {
         Pageable sortedPageable = PageRequest.of(
@@ -80,6 +84,16 @@ public class OrderService {
                 throw new RuntimeException("Order not found for orderId: " + orderId);
             }
             Order order = orderOpt.get();
+            if (status == OrderStatus.CONFIRMED) {
+                for (OrderItem orderItem : order.getOrderItems()) {
+                    ProductDetail productDetail = orderItem.getProductDetail();
+                    if (productDetail.getQuantity() < orderItem.getQuantity()) {
+                        throw new RuntimeException("Not enough stock for product: " + productDetail.getCode());
+                    }
+                    productDetail.setQuantity(productDetail.getQuantity() - orderItem.getQuantity());
+                    productDetailRepository.save(productDetail);
+                }
+            }
             order.setStatus(status);
             return orderRepository.save(order);
         } catch (Exception e) {

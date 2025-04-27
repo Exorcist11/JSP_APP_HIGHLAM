@@ -20,7 +20,9 @@ public class DiscountService {
     public Discount getActiveDiscountByCode(String code) {
         Timestamp currentTime = Timestamp.valueOf(LocalDateTime.now());
         Optional<Discount> discountByCode = discountRepository.findByCode(code);
-
+        if (code == null || code.trim().isEmpty()) {
+            return null; 
+        }
         if (!discountByCode.isPresent()) {
             throw new RuntimeException("Không tìm thấy mã giảm giá: " + code);
         }

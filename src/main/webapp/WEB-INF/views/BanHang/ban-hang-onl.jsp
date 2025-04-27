@@ -728,6 +728,7 @@
         couponCodeHidden.value = "";
       }
     });
+  
   </script>
 </body>
 </html>
