@@ -340,7 +340,9 @@ uri="http://java.sun.com/jsp/jstl/fmt" %>
 
               <div class="col-6 col-md-4 col-lg-2">
                 <div class="status-card returned">
-                  <div class="status-count">24</div>
+                  <div class="status-count">
+                    <c:out value="${orderStatusStats.RETURNED}" />
+                  </div>
                   <div class="status-label">Đã trả hàng</div>
                 </div>
               </div>
