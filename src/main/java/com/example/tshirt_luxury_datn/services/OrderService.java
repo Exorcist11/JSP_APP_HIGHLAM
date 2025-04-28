@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 
 import com.example.tshirt_luxury_datn.dto.OrderDTO;
 import com.example.tshirt_luxury_datn.entity.CartItem;
+import com.example.tshirt_luxury_datn.entity.Discount;
 import com.example.tshirt_luxury_datn.entity.Order;
 import com.example.tshirt_luxury_datn.entity.OrderItem;
 import com.example.tshirt_luxury_datn.entity.Payment;
@@ -43,6 +44,9 @@ public class OrderService {
 
     @Autowired
     private ProductDetailRepository productDetailRepository;
+
+    @Autowired
+    private DiscountService discountService;
 
     public Page<Order> getListOrders(Pageable pageable) {
         Pageable sortedPageable = PageRequest.of(
@@ -160,11 +164,28 @@ public class OrderService {
                 throw new IllegalArgumentException("Cart null");
             }
 
+            double totalAmount = caculateTotalPos(cart);
+            double discount = 0;
+            System.out.println(request.getCouponCode());
+
+            Discount coupon = discountService.getActiveDiscountByCode(request.getCouponCode());
+            System.out.println(request.getCouponCode());
+            if (request.getCouponCode() != null && !request.getCouponCode().isEmpty()) {
+                if (coupon != null) {
+                    discount = totalAmount * (coupon.getPercentage() / 100.0);
+                }
+            }
+            totalAmount = totalAmount - discount;
+
             Order order = new Order();
             order.setOrderType("POS");
             order.setStatus(OrderStatus.SUCCESS);
-            order.setTotalAmount(cart.stream()
-                    .mapToDouble(item -> item.getProductDetail().getProduct().getPrice() * item.getQuantity()).sum());
+            if (coupon != null) {
+                order.setDiscountCode(coupon.getCode());
+            }
+            order.setDiscount(coupon);
+            order.setDiscountAmount(discount);
+            order.setTotalAmount(totalAmount);
             order.setCode(generateOrderCode());
             order.setRecipientAddress(request.getRecipientAddress());
             order.setRecipientPhone(request.getRecipientPhone());
@@ -202,5 +223,11 @@ public class OrderService {
         } catch (Exception e) {
             throw new RuntimeException("Failed to create order in store");
         }
+    }
+
+    public double caculateTotalPos(List<CartItem> cart) {
+        return cart.stream()
+                .mapToDouble(item -> item.getProductDetail().getProduct().getPrice() * item.getQuantity())
+                .sum();
     }
 }

@@ -248,10 +248,30 @@
             </c:forEach>
           </div>
 
+          <div class="d-flex justify-content-between align-items-center my-3">
+            <div class="input-group">
+              <input type="text" class="form-control" placeholder="Nhập mã giảm giá" id="couponCode" name="couponCode">
+              <button class="btn btn-outline-secondary" type="button" style="margin: 0;" id="applyCoupon">Áp dụng</button>
+            </div>
+          </div>
+          <div id="couponMessage" class="small mt-1"></div>
+
+          <div class="d-flex justify-content-between mb-2">
+            <span>Tạm tính:</span>
+            <span id="totalPrice" data-raw-value="${total}">
+              <fmt:formatNumber value="${total}" groupingUsed="true" maxFractionDigits="0" />₫
+            </span>
+          </div>
+
+          <div class="d-flex justify-content-between mb-2" id="discountSection" style="display: none;">
+            <span>Giảm giá:</span>
+            <span class="text-success" id="discountAmount">-0₫</span>
+          </div>
+
           <!-- Tổng tiền -->
           <div class="d-flex justify-content-between align-items-center py-2 border-top">
             <div class="fw-bold">Tổng cộng:</div>
-            <div class="fw-bold fs-5">
+            <div class="fw-bold fs-5" id="finalPrice">
               <fmt:formatNumber value="${total}" groupingUsed="true" maxFractionDigits="0" />đ
             </div>
           </div>
@@ -284,6 +304,7 @@
         </div>
         <form method="POST" action="/admin/pos">
           <div class="modal-body">
+            <input type="hidden" name="couponCode" id="couponCodeHidden" value="">
             <input type="hidden" name="action" value="checkout">
             <div class="mb-3">
               <label for="recipientName" class="form-label">Tên người nhận</label>
@@ -297,7 +318,7 @@
               <label for="recipientAddress" class="form-label">Địa chỉ</label>
               <input type="text" class="form-control" id="recipientAddress" name="recipientAddress" >
             </div>
-            <p>Tổng tiền: <strong>
+            <p>Tổng tiền: <strong id="modal-total-price">
                 <fmt:formatNumber value="${total}" groupingUsed="true" maxFractionDigits="0" />đ
               </strong></p>
           </div>
@@ -468,6 +489,74 @@
     });
 
   </script>
+
+  <script>
+    document.getElementById("applyCoupon").addEventListener("click", async function () {
+      const discountAmount = document.getElementById("discountAmount");
+      const discountSection = document.getElementById("discountSection");
+      const totalPriceElement = document.getElementById("totalPrice");
+      const finalPriceElement = document.getElementById("finalPrice");
+      const couponMessage = document.getElementById("couponMessage");
+      const couponCode = document.getElementById("couponCode").value.trim();
+      const couponCodeHidden = document.getElementById("couponCodeHidden");
+      const modalTotalPrice = document.getElementById("modal-total-price");
+
+      function formatCurrency(value) {
+        return value.toLocaleString('vi-VN', { maximumFractionDigits: 0 }) + '₫';
+      }
+
+      const formattedPrice = totalPriceElement.textContent || totalPriceElement.innerText;
+      const totalPrice = parseInt(formattedPrice.replace(/[^\d]/g, ""));
+
+      try {
+        if (!couponCode) {
+          couponMessage.textContent = "Vui lòng nhập mã giảm giá.";
+          couponMessage.classList.add("text-danger");
+          couponCodeHidden.value = "";
+          modalTotalPrice.textContent = formatCurrency(totalPrice);
+          return;
+        }
+
+        const response = await fetch("/api/applyCoupon?code=" + encodeURIComponent(couponCode), {
+          method: "GET"
+        });
+
+        if (!response.ok) {
+          throw new Error(`Lỗi từ server: ${response.status} - ${response.statusText}`);
+        }
+
+        const data = await response.json();
+
+        if (data && typeof data.percentage === 'number') {
+          const discount = totalPrice * (data.percentage / 100);
+          const finalTotal = totalPrice - discount;
+          discountAmount.textContent = "-" + formatCurrency(discount);
+          discountAmount.classList.add("text-success");
+          finalPriceElement.textContent = formatCurrency(totalPrice - discount);
+          discountSection.style.display = "block";
+          couponMessage.textContent = "Áp dụng mã giảm giá thành công!";
+          couponMessage.classList.remove("text-danger");
+          couponMessage.classList.add("text-success");
+          couponCodeHidden.value = couponCode;
+          modalTotalPrice.textContent = formatCurrency(finalTotal);
+        } else {
+          discountAmount.textContent = "-0₫";
+          finalPriceElement.textContent = formatCurrency(totalPrice);
+          discountSection.style.display = "block";
+          couponMessage.textContent = "Mã giảm giá không hợp lệ.";
+          couponMessage.classList.add("text-danger");
+          modalTotalPrice.textContent = formatCurrency(totalPrice);
+        }
+      } catch (error) {
+        console.error("Lỗi khi áp dụng mã giảm giá:", error);
+        couponMessage.textContent = "Có lỗi xảy ra khi áp dụng mã giảm giá. Vui lòng thử lại.";
+        couponMessage.classList.add("text-danger");
+        modalTotalPrice.textContent = formatCurrency(totalPrice);
+        discountSection.style.display = "none";
+      }
+    });
+  
+</script>
   
 
 </body>
