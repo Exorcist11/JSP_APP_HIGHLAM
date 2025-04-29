@@ -271,59 +271,43 @@
             <h4 class="mt-text mb-0">Bộ Lọc</h4>
             <ul class="navbar-nav d-flex flex-row flex-wrap">
                 <li class="nav-item dropdown mb-2">
-                    <button class="btn btn-light dropdown-toggle" type="button" data-bs-toggle="dropdown"
-                            aria-expanded="false">
+                    <button class="btn btn-light dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                         Màu Sắc
                     </button>
                     <ul class="dropdown-menu p-3">
                         <div class="d-flex flex-wrap">
-                            <label>
-                                <input type="checkbox" class="color-checkbox" id="colorRed"/>
-                                <div class="color-box" style="background-color: red"></div>
-                            </label>
-                            <label>
-                                <input type="checkbox" class="color-checkbox" id="colorBlue"/>
-                                <div class="color-box" style="background-color: blue"></div>
-                            </label>
-                            <label>
-                                <input type="checkbox" class="color-checkbox" id="colorGreen"/>
-                                <div class="color-box" style="background-color: green"></div>
-                            </label>
-                            <label>
-                                <input type="checkbox" class="color-checkbox" id="colorBlack"/>
-                                <div class="color-box" style="background-color: black"></div>
-                            </label>
-                            <label>
-                                <input type="checkbox" class="color-checkbox" id="colorWhite"/>
-                                <div class="color-box" style="background-color: white; border: 1px solid #ddd"></div>
-                            </label>
+                            <c:forEach var="color" items="${listColor}">
+                                <label>
+                                    <input type="checkbox" class="color-checkbox" id="color${color.id}" value="${color.id}" 
+                                           ${param.colors != null && param.colors.contains(color.id.toString()) ? 'checked' : ''}/>
+                                    <c:choose>
+                                        <c:when test="${color.hexColor == 'white'}">
+                                            <div class="color-box" style="background-color: ${color.hexColor}; border: 1px solid #ddd"></div>
+                                        </c:when>
+                                        <c:otherwise>
+                                            <div class="color-box" style="background-color: ${color.hexColor}"></div>
+                                        </c:otherwise>
+                                    </c:choose>
+                                </label>
+                            </c:forEach>
                         </div>
                     </ul>
                 </li>
                 <li class="nav-item dropdown mb-2">
-                    <button class="btn btn-light dropdown-toggle" type="button" data-bs-toggle="dropdown"
-                            aria-expanded="false">
+                    <button class="btn btn-light dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                         Kích Cỡ
                     </button>
                     <ul class="dropdown-menu p-3">
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" id="sizeS"/>
-                            <label class="form-check-label" for="sizeS">S</label>
-                        </div>
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" id="sizeM"/>
-                            <label class="form-check-label" for="sizeM">M</label>
-                        </div>
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" id="sizeL"/>
-                            <label class="form-check-label" for="sizeL">L</label>
-                        </div>
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" id="sizeXL"/>
-                            <label class="form-check-label" for="sizeXL">XL</label>
-                        </div>
+                        <c:forEach var="size" items="${listSize}">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="size${size.id}" value="${size.id}" 
+                                    ${param.sizes != null && param.sizes.contains(size.id.toString()) ? 'checked' : ''}/>
+                                <label class="form-check-label" for="size${size.id}">${size.name}</label>
+                            </div>
+                        </c:forEach>
                     </ul>
                 </li>
+                
                 <li class="nav-item dropdown mb-2">
                     <button class="btn btn-light dropdown-toggle" type="button" data-bs-toggle="dropdown"
                             aria-expanded="false">
@@ -424,33 +408,65 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
         crossorigin="anonymous"></script>
-<script>
-    $(document).ready(function () {
-        // Xử lý lọc theo giá
-        $('.price-filter').change(function () {
-            let minPrice = null;
-            let maxPrice = null;
-            $('.price-filter:checked').each(function () {
-                let min = $(this).data('min');
-                let max = $(this).data('max');
-                if (minPrice == null || min < minPrice) minPrice = min;
-                if (maxPrice == null || max > maxPrice) maxPrice = max;
+
+        <script>
+            $(document).ready(function () {
+                // Hàm gửi request khi thay đổi bộ lọc
+                function applyFilters() {
+                    let colors = [];
+                    let sizes = [];
+                    let minPrice = null;
+                    let maxPrice = null;
+            
+                    // Lấy ID màu được chọn
+                    $('.color-checkbox:checked').each(function () {
+                        colors.push($(this).val()); // Lấy value (ID màu)
+                    });
+            
+                    // Lấy ID kích cỡ được chọn
+                    $('.form-check-input:checked').each(function () {
+                        if ($(this).attr('id').startsWith('size')) {
+                            sizes.push($(this).val()); // Lấy value (ID kích cỡ)
+                        }
+                    });
+            
+                    // Lấy khoảng giá
+                    $('.price-filter:checked').each(function () {
+                        let min = parseFloat($(this).data('min'));
+                        let max = parseFloat($(this).data('max'));
+                        if (minPrice == null || min < minPrice) minPrice = min;
+                        if (maxPrice == null || max > maxPrice) maxPrice = max;
+                    });
+            
+                    // Tạo URL với các tham số lọc
+                    let url = '/all-products?page=0&size=${pageSize}&sort=${sort}';
+                    if (colors.length > 0) {
+                        url += '&colors=' + colors.join(',');
+                    }
+                    if (sizes.length > 0) {
+                        url += '&sizes=' + sizes.join(',');
+                    }
+                    if (minPrice != null && maxPrice != null) {
+                        url += '&minPrice=' + minPrice + '&maxPrice=' + maxPrice;
+                    }
+            
+                    // Chuyển hướng đến URL mới
+                    window.location.href = url;
+                }
+            
+                // Gắn sự kiện thay đổi cho các bộ lọc
+                $('.color-checkbox, .form-check-input, .price-filter').change(function () {
+                    applyFilters();
+                });
+            
+                // Animation cho phần sản phẩm
+                $('.product-card').each(function(i) {
+                    $(this).css('animation-delay', (i * 0.1) + 's');
+                });
+            
+                // Xử lý navbar collapse
+                $('#navbarNavDarkDropdown').addClass('show');
             });
-            let url = '/all-products?page=0&size=${pageSize}&sort=${sort}';
-            if (minPrice != null && maxPrice != null) {
-                url += '&minPrice=' + minPrice + '&maxPrice=' + maxPrice;
-            }
-            window.location.href = url;
-        });
-
-        // Animation cho phần sản phẩm
-        $('.product-card').each(function(i) {
-            $(this).css('animation-delay', (i * 0.1) + 's');
-        });
-
-        // Xử lý navbar collapse
-        $('#navbarNavDarkDropdown').addClass('show');
-    });
-</script>
+            </script>
 </body>
 </html>

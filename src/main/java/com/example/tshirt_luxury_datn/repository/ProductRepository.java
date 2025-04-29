@@ -48,4 +48,16 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
 
         List<Product> findByNameContainingAndStatusTrue(String keyword);
 
+        @Query("SELECT DISTINCT p FROM Product p " +
+                        "LEFT JOIN p.productDetails pd " +
+                        "WHERE (:colorIds IS NULL OR pd.color.id IN :colorIds) " +
+                        "AND (:sizeIds IS NULL OR pd.size.id IN :sizeIds) " +
+                        "AND (:minPrice IS NULL OR p.price >= :minPrice) " +
+                        "AND (:maxPrice IS NULL OR p.price <= :maxPrice)")
+        Page<Product> findFilteredProducts(@Param("colorIds") List<Long> colorIds,
+                        @Param("sizeIds") List<Long> sizeIds,
+                        @Param("minPrice") Double minPrice,
+                        @Param("maxPrice") Double maxPrice,
+                        Pageable pageable);
+
 }

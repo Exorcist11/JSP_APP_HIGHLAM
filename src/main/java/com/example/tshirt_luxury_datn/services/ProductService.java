@@ -71,6 +71,11 @@ public class ProductService {
     return productRepository.findAll(pageable);
   }
 
+  public Page<Product> getFilteredProducts(Pageable pageable, List<Long> colorIds, List<Long> sizeIds, Double minPrice,
+      Double maxPrice) {
+    return productRepository.findFilteredProducts(colorIds, sizeIds, minPrice, maxPrice, pageable);
+  }
+
   public Page<Product> searchProducts(String timKiemSanPham, Boolean trangThai, Pageable pageable) {
     return productRepository.searchProducts(timKiemSanPham, trangThai, pageable);
   }
@@ -159,8 +164,6 @@ public class ProductService {
         .map(ProductDTO::new)
         .collect(Collectors.toList());
   }
-
-
 
   public List<ProductDTO> getProductsByCategoryDetail(Long categoryDetailId) {
     List<Product> products = productRepository.findByCategoryDetailId(categoryDetailId);
