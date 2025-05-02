@@ -112,7 +112,9 @@ public class CartController {
     @PostMapping("/cart/add")
     public String addToCart(
             CartItemDTO cartItemDTO,
-            HttpSession session, Model model) {
+            HttpSession session,
+            Model model,
+            @RequestHeader(value = "Referer", required = false) String referer) {
 
         ProductDetail productDetail = productDetailService.getProductDetailByProductSizeColor(
                 cartItemDTO.getProductID(), cartItemDTO.getSizeID(), cartItemDTO.getColorID());
@@ -120,11 +122,12 @@ public class CartController {
         if (productDetail != null) {
             cartService.addToCart(cartItemDTO, session);
         }
+
         Cart cart = cartService.getOrCreateCart(session);
         model.addAttribute("cartItems", cartService.getCartItems(cart));
         model.addAttribute("totalPrice", cartService.caculateTotalUserCart(cart));
 
-        return "redirect:/product?id=" + cartItemDTO.getProductID();
+        return referer != null ? "redirect:" + referer : "redirect:/";
     }
 
     @PostMapping("/cart/remove")
@@ -132,7 +135,7 @@ public class CartController {
             Model model, @RequestHeader(value = "referer", required = false) String referer) {
         Cart cart = cartService.getOrCreateCart(session);
         cartService.removeFromCart(cart, productDetailId, session);
-     
+
         // Cập nhật lại dữ liệu cho giao diện
         model.addAttribute("cartItems", cartService.getCartItems(cart));
         model.addAttribute("totalPrice", cartService.caculateTotalUserCart(cart));
