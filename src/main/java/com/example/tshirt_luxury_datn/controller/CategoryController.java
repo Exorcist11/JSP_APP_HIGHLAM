@@ -1,9 +1,11 @@
 package com.example.tshirt_luxury_datn.controller;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -12,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import com.example.tshirt_luxury_datn.dto.CategoryDTO;
 import com.example.tshirt_luxury_datn.dto.CategoryDetailDTO;
 import com.example.tshirt_luxury_datn.entity.CategoryDetail;
+import com.example.tshirt_luxury_datn.services.CategoryDetailService;
 import com.example.tshirt_luxury_datn.services.CategoryService;
 
 @Controller
@@ -19,6 +22,9 @@ import com.example.tshirt_luxury_datn.services.CategoryService;
 public class CategoryController {
   @Autowired
   private CategoryService categoryService;
+
+  @Autowired
+  private CategoryDetailService categoryDetailService;
 
   @GetMapping
   public String listCategory(Model model) {
@@ -64,7 +70,7 @@ public class CategoryController {
   @ResponseBody
   public ResponseEntity<?> saveCategoryDetail(@RequestBody CategoryDetailDTO request) {
     try {
-      CategoryDetail detail = categoryService.createCategoryDetail(request);
+      CategoryDetail detail = categoryDetailService.createCategoryDetail(request);
       return ResponseEntity.ok().body(Map.of(
           "success", true,
           "detail", detail));
@@ -78,7 +84,33 @@ public class CategoryController {
   @GetMapping("/{categoryId}/details")
   @ResponseBody
   public List<CategoryDetailDTO> getCategoryDetails(@PathVariable Long categoryId) {
-    return categoryService.getAllCategoryDetail(categoryId);
+    return categoryDetailService.getAllCategoryDetail(categoryId);
   }
 
+  @PostMapping("/details/delete/{id}")
+  @ResponseBody
+  public ResponseEntity<String> deleteCategoryDetail(@PathVariable("id") Long id) {
+    try {
+      categoryDetailService.deleteCategoryDetail(id);
+
+      return ResponseEntity.ok("Xóa category detail thành công");
+    } catch (Exception e) {
+      return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+          .body("Lỗi khi xóa category detail: " + e.getMessage());
+    }
+  }
+
+  @PostMapping("/updateDetail")
+  @ResponseBody
+  public Map<String, Object> updateDetail(@RequestBody CategoryDetailDTO detailDTO) {
+    Map<String, Object> response = new HashMap<>();
+    try {
+      categoryDetailService.updateCategoryDetail(detailDTO);
+      response.put("success", true);
+    } catch (Exception e) {
+      response.put("success", false);
+      response.put("message", e.getMessage());
+    }
+    return response;
+  }
 }

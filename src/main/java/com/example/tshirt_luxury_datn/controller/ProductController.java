@@ -20,7 +20,7 @@ import com.example.tshirt_luxury_datn.dto.ProductDTO;
 import com.example.tshirt_luxury_datn.dto.ProductDetailDTO;
 import com.example.tshirt_luxury_datn.entity.Product;
 import com.example.tshirt_luxury_datn.entity.ProductDetail;
-import com.example.tshirt_luxury_datn.services.CategoryService;
+import com.example.tshirt_luxury_datn.services.CategoryDetailService;
 import com.example.tshirt_luxury_datn.services.ColorService;
 import com.example.tshirt_luxury_datn.services.ProductDetailService;
 import com.example.tshirt_luxury_datn.services.ProductService;
@@ -33,9 +33,6 @@ public class ProductController {
   private ProductService productService;
 
   @Autowired
-  private CategoryService categoryService;
-
-  @Autowired
   private ProductDetailService detailService;
 
   @Autowired
@@ -43,6 +40,8 @@ public class ProductController {
 
   @Autowired
   private ColorService colorService;
+
+  @Autowired private CategoryDetailService categoryDetailService;
 
   @GetMapping
   public String listOrSearchProducts(
@@ -79,7 +78,7 @@ public class ProductController {
     model.addAttribute("totalPages", products.getTotalPages());
     model.addAttribute("totalItems", products.getTotalElements());
     model.addAttribute("pageSize", size);
-    model.addAttribute("categories", categoryService.getAllCategoryDetail());
+    model.addAttribute("categories", categoryDetailService.getAllCategoryDetail());
     model.addAttribute("timKiemSanPham", timKiemSanPham);
     model.addAttribute("trangThai", trangThai);
 

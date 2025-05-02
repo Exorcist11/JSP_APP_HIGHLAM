@@ -327,6 +327,89 @@ contentType="text/html;charset=UTF-8" language="java" %>
       </div>
     </div>
 
+    <!-- Modal for editing category detail -->
+    <div
+      class="modal fade"
+      id="editDetailModal"
+      tabindex="-1"
+      aria-labelledby="editDetailModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog">
+        <div class="modal-content" style="font-size: 14px">
+          <div class="modal-header">
+            <h5 class="modal-title" id="editDetailModalLabel">
+              Chỉnh Sửa Danh Mục Chi Tiết
+            </h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <form id="editDetailForm">
+              <input type="hidden" id="editDetailId" name="id" />
+              <input
+                type="hidden"
+                id="editDetailCategoryId"
+                name="categoryId"
+              />
+
+              <div class="form-floating mb-3">
+                <input
+                  type="text"
+                  class="form-control"
+                  id="editDetailName"
+                  placeholder="Tên Danh Mục Chi Tiết"
+                  name="name"
+                  required
+                />
+                <label for="editDetailName"
+                  >Tên Danh Mục Chi Tiết
+                  <span class="text-danger">*</span></label
+                >
+              </div>
+
+              <div class="form-check form-switch mt-3">
+                <input
+                  class="form-check-input"
+                  type="checkbox"
+                  role="switch"
+                  id="detailStatusSwitch"
+                  name="status"
+                  checked
+                  value="true"
+                />
+                <span id="detailStatusText" class="ms-2 fw-bold text-success"
+                  >Hoạt Động</span
+                >
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal"
+              style="font-size: 14px"
+            >
+              Đóng
+            </button>
+            <button
+              type="button"
+              id="saveDetailChanges"
+              class="btn btn-primary"
+              style="font-size: 14px"
+            >
+              Cập Nhật
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <script src="../js/categoryAction.js"></script>
   </body>
 </html>

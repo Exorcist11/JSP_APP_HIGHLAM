@@ -11,15 +11,17 @@ import com.example.tshirt_luxury_datn.dto.CategoryDTO;
 import com.example.tshirt_luxury_datn.dto.ProductDTO;
 import com.example.tshirt_luxury_datn.entity.Cart;
 import com.example.tshirt_luxury_datn.services.CartService;
-import com.example.tshirt_luxury_datn.services.CategoryService;
+import com.example.tshirt_luxury_datn.services.CategoryDetailService;
 import com.example.tshirt_luxury_datn.services.ProductService;
 
 import jakarta.servlet.http.HttpSession;
 
 @ControllerAdvice
 public class HeaderController {
+  
     @Autowired
-    private CategoryService categoryService;
+    private CategoryDetailService categoryDetailService;
+
     @Autowired
     private CartService cartService;
 
@@ -28,7 +30,7 @@ public class HeaderController {
 
     @ModelAttribute("lst_categories")
     public List<CategoryDTO> getCategories() {
-        return categoryService.getAllCategoriesWithDetails();
+        return categoryDetailService.getAllCategoriesWithDetails();
     }
 
     @ModelAttribute("cartItems")

@@ -35,7 +35,7 @@ import com.example.tshirt_luxury_datn.entity.UserProfile;
 import com.example.tshirt_luxury_datn.repository.ProductDetailRepository;
 import com.example.tshirt_luxury_datn.repository.UserProfileRepository;
 import com.example.tshirt_luxury_datn.services.CartService;
-import com.example.tshirt_luxury_datn.services.CategoryService;
+import com.example.tshirt_luxury_datn.services.CategoryDetailService;
 import com.example.tshirt_luxury_datn.services.ColorService;
 import com.example.tshirt_luxury_datn.services.OrderService;
 import com.example.tshirt_luxury_datn.services.ProductService;
@@ -65,9 +65,6 @@ public class ClientController {
   private UserProfileRepository userProfileRepository;
 
   @Autowired
-  private CategoryService categoryService;
-
-  @Autowired
   private ProductDetailRepository productDetailRepository;
 
   @Autowired
@@ -75,6 +72,9 @@ public class ClientController {
 
   @Autowired
   private SizeService sizeService;
+
+  @Autowired
+  private CategoryDetailService categoryDetailService;
 
   @GetMapping
   public String homepage(Model model, HttpSession session) {
@@ -303,7 +303,7 @@ public class ClientController {
 
     // Thêm danh sách sản phẩm vào model
     model.addAttribute("products", products);
-    model.addAttribute("categoryName", categoryService.getCategoryNameById(categoryDetailId));
+    model.addAttribute("categoryName", categoryDetailService.getCategoryNameById(categoryDetailId));
     return "DanhMuc/san-pham-theo-danh-muc";
   }
 

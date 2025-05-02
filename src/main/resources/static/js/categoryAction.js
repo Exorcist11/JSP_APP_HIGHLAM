@@ -1,13 +1,14 @@
 document.addEventListener("DOMContentLoaded", function () {
     // ========== Xử lý chung ==========
     const confirmDelete = () => confirm("Bạn có chắc muốn xóa?");
+    window.confirmDelete = confirmDelete;
 
     // ========== Xử lý Category ==========
     const editCategoryForm = document.getElementById("editCategoryForm");
     const switchInput = document.getElementById("flexSwitchCheckChecked");
     const statusText = document.getElementById("statusText");
 
-    // Cập nhật trạng thái hiển thị
+    // Cập nhật trạng thái hiển thị cho category
     function updateStatus() {
         if (switchInput.checked) {
             statusText.textContent = "Hoạt Động";
@@ -54,10 +55,37 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
     // Xử lý thay đổi trạng thái
-    switchInput.addEventListener("change", updateStatus);
+    if (switchInput) {
+        switchInput.addEventListener("change", updateStatus);
+    }
 
     // ========== Xử lý Category Detail ==========
     const addDetailForm = document.getElementById("addDetailForm");
+    const editDetailModal = new bootstrap.Modal(document.getElementById('editDetailModal'), {
+        keyboard: false
+    });
+    const detailStatusSwitch = document.getElementById("detailStatusSwitch");
+    const detailStatusText = document.getElementById("detailStatusText");
+
+    // Cập nhật trạng thái hiển thị cho detail
+    function updateDetailStatus() {
+        if (detailStatusSwitch.checked) {
+            detailStatusText.textContent = "Hoạt Động";
+            detailStatusText.classList.remove("text-danger");
+            detailStatusText.classList.add("text-success");
+            detailStatusSwitch.value = "true";
+        } else {
+            detailStatusText.textContent = "Không Hoạt Động";
+            detailStatusText.classList.remove("text-success");
+            detailStatusText.classList.add("text-danger");
+            detailStatusSwitch.value = "false";
+        }
+    }
+
+    // Thêm event listener cho switch trạng thái detail
+    if (detailStatusSwitch) {
+        detailStatusSwitch.addEventListener("change", updateDetailStatus);
+    }
 
     // Xử lý submit form thêm detail
     if (addDetailForm) {
@@ -116,7 +144,7 @@ document.addEventListener("DOMContentLoaded", function () {
                             : '<span class="badge bg-danger">Không Hoạt Động</span>'}
                         </td>
                         <td class="d-flex gap-2 align-middle justify-content-end">
-                            <button class="btn edit-detail-btn mb-0" data-id="${detail.id}">
+                            <button class="btn edit-detail-btn mb-0" data-id="${detail.id}" data-name="${detail.name}" data-status="${detail.status}">
                                 <i class="fa-solid fa-pen-to-square"></i>
                             </button>
                             <button class="btn delete-detail-btn mb-0" data-id="${detail.id}">
@@ -135,6 +163,9 @@ document.addEventListener("DOMContentLoaded", function () {
                 showToast('Có lỗi khi tải danh sách chi tiết', 'error');
             });
     }
+    
+    // Expose loadCategoryDetails to the global scope
+    window.loadCategoryDetails = loadCategoryDetails;
 
     // Thêm sự kiện cho các nút trong bảng detail
     function addDetailEvents() {
@@ -142,8 +173,20 @@ document.addEventListener("DOMContentLoaded", function () {
         document.querySelectorAll('.edit-detail-btn').forEach(btn => {
             btn.addEventListener('click', function () {
                 const detailId = this.getAttribute('data-id');
-                // Triển khai logic edit detail tại đây
-                console.log('Edit detail:', detailId);
+                const detailName = this.getAttribute('data-name');
+                const detailStatus = this.getAttribute('data-status') === "true";
+                const categoryId = document.getElementById("categoryIdForDetail").value;
+                
+                // Cập nhật form edit detail
+                document.getElementById("editDetailId").value = detailId;
+                document.getElementById("editDetailCategoryId").value = categoryId;
+                document.getElementById("editDetailName").value = detailName;
+                detailStatusSwitch.checked = detailStatus;
+                updateDetailStatus();
+                
+                // Hiển thị modal
+                const editDetailModal = new bootstrap.Modal(document.getElementById('editDetailModal'));
+                editDetailModal.show();
             });
         });
 
@@ -158,10 +201,55 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
+    // Xử lý nút lưu thay đổi detail
+    const saveDetailChangesBtn = document.getElementById("saveDetailChanges");
+    if (saveDetailChangesBtn) {
+        saveDetailChangesBtn.addEventListener("click", function() {
+            const form = document.getElementById("editDetailForm");
+            const formData = {
+                id: form.id.value,
+                categoryId: form.categoryId.value,
+                name: form.name.value,
+                status: form.status.value === "true"
+            };
+
+            updateCategoryDetail(formData);
+        });
+    }
+
+    // Hàm cập nhật category detail
+    function updateCategoryDetail(formData) {
+        fetch('/admin/categories/updateDetail', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(formData)
+        })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    // Đóng modal
+                    const editDetailModal = bootstrap.Modal.getInstance(document.getElementById('editDetailModal'));
+                    editDetailModal.hide();
+                    
+                    // Tải lại danh sách
+                    loadCategoryDetails(formData.categoryId);
+                    showToast('Cập nhật danh mục chi tiết thành công!', 'success');
+                } else {
+                    showToast('Lỗi: ' + (data.message || 'Không thể cập nhật'), 'error');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                showToast('Có lỗi xảy ra khi cập nhật danh mục chi tiết', 'error');
+            });
+    }
+
     // Hàm xóa category detail
     function deleteCategoryDetail(detailId) {
         fetch(`/admin/categories/details/delete/${detailId}`, {
-            method: 'DELETE'
+            method: 'POST'
         })
             .then(response => {
                 if (response.ok) {
@@ -178,14 +266,46 @@ document.addEventListener("DOMContentLoaded", function () {
             });
     }
 
-    // Hàm hiển thị thông báo (tuỳ chọn)
+    // Hàm hiển thị thông báo
     function showToast(message, type = 'success') {
         // Triển khai toast notification của bạn ở đây
         console.log(`${type.toUpperCase()}: ${message}`);
-        // Ví dụ sử dụng Bootstrap Toast:
-        // const toast = new bootstrap.Toast(document.getElementById('liveToast'));
-        // document.getElementById('toastMessage').textContent = message;
-        // document.getElementById('liveToast').classList.add(`text-bg-${type}`);
-        // toast.show();
+        
+        // Kiểm tra xem đã có toast container chưa, nếu chưa thì tạo mới
+        // let toastContainer = document.querySelector('.toast-container');
+        // if (!toastContainer) {
+        //     toastContainer = document.createElement('div');
+        //     toastContainer.className = 'toast-container position-fixed bottom-0 end-0 p-3';
+        //     document.body.appendChild(toastContainer);
+        // }
+        
+        // // Tạo toast mới
+        // const toastId = 'toast-' + Date.now();
+        // const toast = document.createElement('div');
+        // toast.className = `toast align-items-center text-white bg-${type} border-0`;
+        // toast.setAttribute('role', 'alert');
+        // toast.setAttribute('aria-live', 'assertive');
+        // toast.setAttribute('aria-atomic', 'true');
+        // toast.setAttribute('id', toastId);
+        
+        // toast.innerHTML = `
+        //     <div class="d-flex">
+        //         <div class="toast-body">
+        //             ${message}
+        //         </div>
+        //         <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+        //     </div>
+        // `;
+        
+        // toastContainer.appendChild(toast);
+        
+        // // Hiển thị toast
+        // const bsToast = new bootstrap.Toast(toast);
+        // bsToast.show();
+        
+        // // Xóa toast sau khi đã hiển thị
+        // toast.addEventListener('hidden.bs.toast', function () {
+        //     toast.remove();
+        // });
     }
 });
