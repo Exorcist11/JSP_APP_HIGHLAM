@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.Random;
 import java.util.Set;
@@ -198,8 +199,8 @@ public class ProductService {
     dto.setStatus(pd.getStatus());
 
     // Lấy URL ảnh đầu tiên nếu có
-    if (pd.getImages() != null && !pd.getImages().isEmpty()) {
-      dto.setImageUrl(pd.getImages().get(0).getImageUrl());
+    if (pd.getImage() != null && pd.getImage().getImageUrl() != null) {
+      dto.setImageUrl(pd.getImage().getImageUrl());
     }
 
     return dto;
@@ -256,7 +257,8 @@ public class ProductService {
     List<ProductDetail> details = productDetailRepository.findByProductId(productId);
 
     return details.stream()
-        .flatMap(pd -> pd.getImages().stream())
+        .map(ProductDetail::getImage)
+        .filter(Objects::nonNull)
         .map(ProductImage::getImageUrl)
         .distinct()
         .collect(Collectors.toList());

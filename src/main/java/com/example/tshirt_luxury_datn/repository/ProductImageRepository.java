@@ -9,6 +9,7 @@ import com.example.tshirt_luxury_datn.entity.ProductImage;
 
 @Repository
 public interface ProductImageRepository extends JpaRepository<ProductImage, Long> {
-    List<ProductImage> findByProductDetailId(Long productDetailId);
+    ProductImage findByProductDetailId(Long productDetailId);
+
     List<ProductImage> findByProductDetail_Product_Id(Long productId);
 }

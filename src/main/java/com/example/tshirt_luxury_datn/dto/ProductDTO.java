@@ -29,7 +29,7 @@ public class ProductDTO {
     this.description = product.getDescription();
     this.imgUrl = product.getProductDetails().isEmpty()
         ? null
-        : product.getProductDetails().get(0).getFirstImageUrl();
+        : product.getProductDetails().get(0).getImageUrl();
 
     this.totalQuantity = product.getProductDetails().stream()
         .mapToInt(pd -> pd.getQuantity() != null ? pd.getQuantity() : 0)

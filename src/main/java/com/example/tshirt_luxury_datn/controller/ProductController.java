@@ -41,7 +41,8 @@ public class ProductController {
   @Autowired
   private ColorService colorService;
 
-  @Autowired private CategoryDetailService categoryDetailService;
+  @Autowired
+  private CategoryDetailService categoryDetailService;
 
   @GetMapping
   public String listOrSearchProducts(
@@ -61,9 +62,11 @@ public class ProductController {
 
       try {
         List<ProductDetail> lstPD = detailService.getProductDetailByProductId(productID);
+
         model.addAttribute("lstPD", lstPD);
       } catch (Exception e) {
         model.addAttribute("error", e.getMessage());
+        System.out.println("ERROR: " + e.getMessage());
       }
       return "admin/Product/san-pham-admin"; // Sử dụng cùng layout với trang sản phẩm
     }
@@ -126,6 +129,7 @@ public class ProductController {
 
     try {
       List<ProductDetail> lstPD = detailService.getProductDetailByProductId(productId);
+
       model.addAttribute("lstPD", lstPD);
     } catch (Exception e) {
       model.addAttribute("error", e.getMessage());
@@ -148,10 +152,12 @@ public class ProductController {
 
   @PostMapping("/updateDetail/{id}")
   public String updateProductDetail(@PathVariable Long id,
-      @ModelAttribute("productDetail") ProductDetailDTO productDetailDTO, Model model) {
+      @ModelAttribute("productDetail") ProductDetailDTO productDetailDTO,
+      @RequestParam(value = "images", required = false) MultipartFile image,
+      Model model) {
     try {
-      detailService.updateProductDetail(id, productDetailDTO);
-      model.addAttribute("success", "Cập nhật size thành công!");
+      detailService.updateProductDetail(id, productDetailDTO, image);
+      model.addAttribute("success", "Cập nhật sản phẩm chi tiết thành công!");
     } catch (Exception e) {
       model.addAttribute("error", e.getMessage());
     }

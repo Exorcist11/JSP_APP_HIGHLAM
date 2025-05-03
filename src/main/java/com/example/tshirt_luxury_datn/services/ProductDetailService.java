@@ -1,5 +1,6 @@
 package com.example.tshirt_luxury_datn.services;
 
+import java.io.File;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -14,9 +15,11 @@ import com.example.tshirt_luxury_datn.dto.ProductDetailDTO;
 import com.example.tshirt_luxury_datn.entity.Color;
 import com.example.tshirt_luxury_datn.entity.Product;
 import com.example.tshirt_luxury_datn.entity.ProductDetail;
+import com.example.tshirt_luxury_datn.entity.ProductImage;
 import com.example.tshirt_luxury_datn.entity.Size;
 import com.example.tshirt_luxury_datn.repository.ColorRepository;
 import com.example.tshirt_luxury_datn.repository.ProductDetailRepository;
+import com.example.tshirt_luxury_datn.repository.ProductImageRepository;
 import com.example.tshirt_luxury_datn.repository.ProductRepository;
 import com.example.tshirt_luxury_datn.repository.SizeRepository;
 
@@ -36,6 +39,9 @@ public class ProductDetailService {
 
   @Autowired
   private ImageService imageService;
+
+  @Autowired
+  private ProductImageRepository productImageRepository;
 
   public List<ProductDetailDTO> getProductDetailsByProductCode(String productCode) {
     List<ProductDetail> productDetails = productDetailRepository.findByProductCode(productCode);
@@ -123,21 +129,32 @@ public class ProductDetailService {
     }
   }
 
-  public ProductDetail updateProductDetail(Long id, ProductDetailDTO detailDTO) {
-    try {
-      Optional<ProductDetail> optProductDetail = productDetailRepository
-          .findById(id);
-      if (optProductDetail.isEmpty()) {
-        throw new RuntimeException("Không tìm thấy product detail với ID: " + optProductDetail.get().getId());
-      }
-      ProductDetail productDetail = optProductDetail.get();
-      productDetail.setQuantity(detailDTO.getQuantity());
-      productDetail.setStatus(detailDTO.getStatus());
+  public void updateProductDetail(Long id, ProductDetailDTO dto, MultipartFile imageFile) {
+    ProductDetail detail = productDetailRepository.findById(id)
+        .orElseThrow(() -> new RuntimeException("Không tìm thấy sản phẩm chi tiết"));
 
-      return productDetailRepository.save(productDetail);
-    } catch (Exception e) {
-      throw new RuntimeException("Lỗi khi cập nhật product detail: " + e.getMessage());
+    detail.setQuantity(dto.getQuantity());
+    detail.setStatus(dto.getStatus());
+
+    productDetailRepository.save(detail); // Lưu trước khi cập nhật ảnh
+
+    if (imageFile != null && !imageFile.isEmpty()) {
+      imageService.updateImage(imageFile, detail);
     }
+  }
+
+  public void deleteImagesByProductDetail(ProductDetail productDetail) {
+    ProductImage images = productImageRepository.findByProductDetailId(productDetail.getId());
+
+    try {
+      File file = new File(System.getProperty("user.dir") + images.getImageUrl());
+      if (file.exists())
+        file.delete(); // Xóa file vật lý
+      productImageRepository.delete(images); // Xóa bản ghi DB
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+
   }
 
   public void deleteProductDetail(Long id) {

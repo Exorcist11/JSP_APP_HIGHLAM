@@ -16,7 +16,7 @@ public class ProductImage {
     private Long id;
     private String imageUrl;
 
-    @ManyToOne
+    @OneToOne
     @JoinColumn(name = "product_detail_id")
     private ProductDetail productDetail;
 }

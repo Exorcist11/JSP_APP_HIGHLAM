@@ -4,8 +4,6 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.List;
 
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -51,14 +49,18 @@ public class ProductDetail {
     @Column(nullable = false)
     private Timestamp updatedAt;
 
-    @OneToMany(mappedBy = "productDetail", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    private List<ProductImage> images = new ArrayList<>();
+    @OneToOne(mappedBy = "productDetail", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private ProductImage image;
 
     @Transient
-    public String getFirstImageUrl() {
-        if (images != null && !images.isEmpty()) {
-            return images.get(0).getImageUrl();
+    public String getImageUrl() {
+        if (image != null && image.getImageUrl() != null) {
+            return image.getImageUrl();
         }
         return "/images/no-image.png";
+    }
+
+    public ProductImage getImage() {
+        return image;
     }
 }

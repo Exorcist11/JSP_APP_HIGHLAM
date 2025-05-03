@@ -49,7 +49,7 @@ public class CartItemDTO {
             }
 
             this.quantity = item.getQuantity();
-            this.imageUrl = pd.getFirstImageUrl();
+            this.imageUrl = pd.getImageUrl();
         }
     }
     

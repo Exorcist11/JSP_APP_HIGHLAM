@@ -14,7 +14,7 @@ import com.example.tshirt_luxury_datn.entity.ProductDetail;
 
 @Repository
 public interface ProductDetailRepository extends JpaRepository<ProductDetail, Long> {
-  @EntityGraph(attributePaths = { "images" })
+  @EntityGraph(attributePaths = { "image" })
   List<ProductDetail> findByProduct_Id(Long productId);
 
   Optional<ProductDetail> findByProductIdAndSizeIdAndColorId(Long productId, Long sizeId, Long colorId);
