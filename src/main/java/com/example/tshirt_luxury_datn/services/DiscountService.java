@@ -21,7 +21,7 @@ public class DiscountService {
         Timestamp currentTime = Timestamp.valueOf(LocalDateTime.now());
         Optional<Discount> discountByCode = discountRepository.findByCode(code);
         if (code == null || code.trim().isEmpty()) {
-            return null; 
+            return null;
         }
         if (!discountByCode.isPresent()) {
             throw new RuntimeException("Không tìm thấy mã giảm giá: " + code);
@@ -46,6 +46,21 @@ public class DiscountService {
 
     public List<Discount> getAllDiscounts() {
         return discountRepository.findAll();
+    }
+
+    public int updateExpiredDiscountsStatus() {
+        Timestamp currentTime = Timestamp.valueOf(LocalDateTime.now());
+        List<Discount> expiredDiscounts = discountRepository.findByStatusTrueAndEndDateBefore(currentTime);
+
+        for (Discount discount : expiredDiscounts) {
+            discount.setStatus(false);
+        }
+
+        if (!expiredDiscounts.isEmpty()) {
+            discountRepository.saveAll(expiredDiscounts);
+            return expiredDiscounts.size();
+        }
+        return 0;
     }
 
     public Discount createDiscount(DiscountDTO discountDTO) {
@@ -93,7 +108,13 @@ public class DiscountService {
             discount.setPercentage(discountDTO.getPercentage());
             discount.setStartDate(Timestamp.valueOf(discountDTO.getStartDate()));
             discount.setEndDate(Timestamp.valueOf(discountDTO.getEndDate()));
-            discount.setStatus(discountDTO.getStatus());
+
+            Timestamp currentTime = Timestamp.valueOf(LocalDateTime.now());
+            if (discount.getEndDate().before(currentTime)) {
+                discount.setStatus(false);
+            } else {
+                discount.setStatus(discountDTO.getStatus());
+            }
 
             return discountRepository.save(discount);
         } catch (Exception e) {
