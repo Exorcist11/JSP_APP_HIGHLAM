@@ -2,6 +2,8 @@ package com.example.tshirt_luxury_datn.services;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -72,7 +74,7 @@ public class ImageService {
                         "Đã lưu ảnh vào database với ID: " + savedImage.getId() + ", URL: " + savedImage.getImageUrl());
             }
         } catch (Exception e) {
-            e.printStackTrace(); // In lỗi chi tiết
+            e.printStackTrace();
             throw new RuntimeException("Lỗi khi lưu ảnh: " + e.getMessage());
         }
     }
@@ -85,20 +87,44 @@ public class ImageService {
                 throw new IllegalArgumentException("ProductDetail không hợp lệ");
             }
 
-            // Tìm ảnh hiện tại bằng product_detail_id
-            ProductImage existingImage = productImageRepository.findByProductDetailId(productDetail.getId());
+            Long productDetailId = productDetail.getId();
+            // Tìm tất cả ảnh liên quan đến product_detail_id để lấy đường dẫn file cũ
+            List<ProductImage> existingImages = productImageRepository.findAllByProductDetailId(productDetailId);
+            List<String> oldFilePaths = new ArrayList<>();
 
+            // Lưu đường dẫn file cũ
+            if (!existingImages.isEmpty()) {
+                for (ProductImage image : existingImages) {
+                    oldFilePaths.add(image.getImageUrl().replace("/uploads/", ""));
+                    System.out.println("Tìm thấy ảnh cũ với ID: " + image.getId() + ", URL: " + image.getImageUrl());
+                }
+            } else {
+                System.out.println("Không tìm thấy ảnh cũ nào cho product_detail_id: " + productDetailId);
+            }
+
+            // Xóa tất cả ảnh cũ trong database bằng phương thức tùy chỉnh
+            try {
+                int deletedCount = productImageRepository.deleteByProductDetailId(productDetailId);
+                productImageRepository.flush(); // Đảm bảo xóa ngay lập tức
+                System.out.println("Đã xóa " + deletedCount + " bản ghi cũ trong database cho product_detail_id: " + productDetailId);
+            } catch (Exception e) {
+                System.out.println("Lỗi khi xóa ảnh cũ: " + e.getMessage());
+                e.printStackTrace();
+                throw new RuntimeException("Lỗi khi xóa ảnh cũ: " + e.getMessage());
+            }
+
+            // Xử lý ảnh mới nếu có file được gửi lên
             if (file != null && !file.isEmpty()) {
                 // Validate file type
                 if (!file.getContentType().startsWith("image/")) {
                     throw new IllegalArgumentException("File phải là hình ảnh.");
                 }
 
-                // Create unique file name
+                // Tạo tên file duy nhất
                 String fileName = System.currentTimeMillis() + "_" + file.getOriginalFilename();
                 File uploadPath = new File(UPLOAD_DIR);
 
-                // Create upload directory if it doesn't exist
+                // Tạo thư mục uploads nếu chưa tồn tại
                 if (!uploadPath.exists()) {
                     boolean created = uploadPath.mkdirs();
                     if (!created) {
@@ -108,36 +134,13 @@ public class ImageService {
                     System.out.println("Đã tạo thư mục: " + UPLOAD_DIR);
                 }
 
-                // Lưu tên file và đường dẫn để sử dụng sau này
+                // Lưu file mới lên disk
                 String newImageUrl = "/uploads/" + fileName;
                 File saveFile = new File(uploadPath, fileName);
-
-                // Lưu thông tin file cũ để xóa sau khi transaction thành công
-                String oldFilePath = null;
-                if (existingImage != null) {
-                    oldFilePath = existingImage.getImageUrl().replace("/uploads/", "");
-                }
-
-                // Xóa bản ghi cũ trong database nếu tồn tại
-                if (existingImage != null) {
-                    try {
-                        // Chỉ xóa bản ghi trong database, chưa xóa file
-                        Long existingImageId = existingImage.getId();
-                        productImageRepository.deleteById(existingImageId);
-                        // Xóa từ persistence context để đảm bảo không còn cache
-                        productImageRepository.flush();
-                        System.out.println("Đã xóa record ảnh cũ trong database với ID: " + existingImageId);
-                    } catch (Exception e) {
-                        System.out.println("Lỗi khi xóa ảnh cũ: " + e.getMessage());
-                        e.printStackTrace();
-                        throw new RuntimeException("Lỗi khi xóa ảnh cũ: " + e.getMessage());
-                    }
-                }
-
-                // Save new file to disk
                 file.transferTo(saveFile);
+                System.out.println("Đã lưu file mới tại: " + saveFile.getAbsolutePath());
 
-                // Tạo và lưu ảnh mới
+                // Tạo và lưu bản ghi ảnh mới vào database
                 ProductImage newImage = new ProductImage();
                 newImage.setImageUrl(newImageUrl);
                 newImage.setProductDetail(productDetail);
@@ -145,49 +148,38 @@ public class ImageService {
                 try {
                     ProductImage savedImage = productImageRepository.save(newImage);
                     productImageRepository.flush(); // Đảm bảo lưu ngay lập tức
+                    System.out.println("Đã lưu ảnh mới vào database với ID: " + savedImage.getId() + ", URL: " + savedImage.getImageUrl());
 
-                    if (savedImage == null || savedImage.getId() == null) {
-                        throw new RuntimeException("Không thể lưu ảnh mới vào database");
-                    }
-                    System.out.println("Đã lưu ảnh mới vào database với ID: " + savedImage.getId() + ", URL: "
-                            + savedImage.getImageUrl());
-
-                    // Xóa file cũ sau khi đã cập nhật thành công
-                    if (oldFilePath != null) {
+                    // Xóa các file ảnh cũ trên disk sau khi lưu ảnh mới thành công
+                    for (String oldFilePath : oldFilePaths) {
                         File oldFile = new File(uploadPath, oldFilePath);
                         if (oldFile.exists()) {
                             boolean deleted = oldFile.delete();
-                            System.out.println("Kết quả xóa file cũ: " + (deleted ? "thành công" : "thất bại"));
+                            System.out.println("Xóa file cũ (" + oldFilePath + "): " + (deleted ? "thành công" : "thất bại"));
                         } else {
-                            System.out.println("File cũ không tồn tại tại đường dẫn: " + oldFile.getAbsolutePath());
+                            System.out.println("File cũ không tồn tại tại: " + oldFile.getAbsolutePath());
                         }
                     }
-
                 } catch (Exception e) {
-                    System.out.println("Lỗi khi lưu ảnh mới vào database: " + e.getMessage());
+                    System.out.println("Lỗi khi lưu ảnh mới: " + e.getMessage());
                     e.printStackTrace();
-                    // Xóa file mới đã lưu vì không lưu được vào DB
+                    // Xóa file mới trên disk nếu không lưu được vào database
                     if (saveFile.exists()) {
                         saveFile.delete();
-                        System.out.println("Đã xóa file mới do không lưu được vào DB");
+                        System.out.println("Đã xóa file mới do lỗi lưu database");
                     }
-                    throw new RuntimeException("Không thể lưu ảnh mới vào database: " + e.getMessage());
+                    throw new RuntimeException("Không thể lưu ảnh mới: " + e.getMessage());
                 }
             } else {
-                // No new file provided; retain existing image
-                if (existingImage == null) {
-                    System.out.println("Không có ảnh mới và không có ảnh cũ để giữ.");
-                } else {
-                    System.out.println("Giữ lại ảnh hiện tại: " + existingImage.getImageUrl());
-                }
+                System.out.println("Không có file ảnh mới được gửi lên.");
             }
         } catch (IOException e) {
+            System.out.println("Lỗi I/O: " + e.getMessage());
             e.printStackTrace();
-            System.out.println("IOException: " + e.getMessage());
             throw new RuntimeException("Lỗi I/O khi cập nhật ảnh: " + e.getMessage());
         } catch (Exception e) {
+            System.out.println("Lỗi: " + e.getMessage());
             e.printStackTrace();
-            System.out.println("Exception: " + e.getMessage());
             throw new RuntimeException("Lỗi khi cập nhật ảnh: " + e.getMessage());
         }
     }
