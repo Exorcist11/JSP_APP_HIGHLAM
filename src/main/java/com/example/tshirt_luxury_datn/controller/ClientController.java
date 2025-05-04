@@ -241,12 +241,12 @@ public class ClientController {
       User user = userService.login(loginDto);
       session.setAttribute("loggedInUser", user);
 
-      if (user.getRole() == "USER") {
-        cartService.syncCartOnLogin(session, user);
-        return "redirect:/";
+      if ("ADMIN".equals(user.getRole())) {
+        System.out.println("ROLE: " + user.getRole());
+        return "redirect:/admin/dashboard";
       }
-
-      return "redirect:/admin/dashboard";
+      cartService.syncCartOnLogin(session, user);
+      return "redirect:/";
 
     } catch (IllegalArgumentException e) {
       redirectAttributes.addFlashAttribute("errorMessage", e.getMessage());

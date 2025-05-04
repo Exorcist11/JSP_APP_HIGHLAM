@@ -131,16 +131,24 @@ public class CartController {
     }
 
     @PostMapping("/cart/remove")
-    public String removeFromCart(@RequestParam("productDetailId") Long productDetailId, HttpSession session,
-            Model model, @RequestHeader(value = "referer", required = false) String referer) {
-        Cart cart = cartService.getOrCreateCart(session);
+    public String removeFromCart(
+            @RequestParam("productDetailId") Long productDetailId,
+            HttpSession session,
+            @RequestHeader(value = "referer", required = false) String referer) {
+        User user = (User) session.getAttribute("loggedInUser");
+        Cart cart;
+        if (user != null) {
+            // Người dùng đã đăng nhập
+            cart = cartService.getOrCreateCartForUser(user.getUsername());
+        } else {
+            // Người dùng chưa đăng nhập
+            cart = cartService.getOrCreateCart(session);
+        }
+
+        // Xóa sản phẩm
         cartService.removeFromCart(cart, productDetailId, session);
 
-        // Cập nhật lại dữ liệu cho giao diện
-        model.addAttribute("cartItems", cartService.getCartItems(cart));
-        model.addAttribute("totalPrice", cartService.caculateTotalUserCart(cart));
-
+        // Chuyển hướng
         return "redirect:" + (referer != null ? referer : "/product");
     }
-
 }

@@ -124,17 +124,42 @@ public class CartService {
     public void removeFromCart(Cart cart, Long productDetailId, HttpSession session) {
         try {
             List<CartItem> cartItems = cart.getCartItems();
-            if (cartItems != null) {
-                cartItems.removeIf(item -> item.getProductDetail().getId().equals(productDetailId));
-                if (cart.getId() != null) {
-                    cartRepository.save(cart);
+            if (cartItems != null && !cartItems.isEmpty()) {
+                // Xóa CartItem khớp với productDetailId
+                boolean removed = cartItems.removeIf(item -> item.getProductDetail() != null &&
+                        productDetailId.equals(item.getProductDetail().getId()));
+
+                if (removed) {
+                    if (cart.getId() != null) {
+                        // Lưu thay đổi vào cơ sở dữ liệu nếu cart đã được lưu
+                        cartRepository.save(cart);
+                    } else {
+                        // Cập nhật session nếu cart chưa được lưu
+                        session.setAttribute("userCart", cartItems);
+                    }
                 } else {
-                    session.setAttribute("userCart", cartItems);
+                    // Log hoặc xử lý trường hợp không tìm thấy CartItem
+                    System.out.println("Không tìm thấy CartItem với productDetailId: " + productDetailId);
                 }
+            } else {
+                System.out.println("Giỏ hàng trống hoặc cartItems null");
             }
         } catch (Exception e) {
-            throw new RuntimeException("Lỗi khi xóa khỏi giỏ hàng: " + e.getMessage());
+            throw new RuntimeException("Lỗi khi xóa khỏi giỏ hàng: " + e.getMessage(), e);
         }
+    }
+    
+
+    public Cart getOrCreateCartForUser(String username) {
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+        return cartRepository.findByUser(user)
+                .orElseGet(() -> {
+                    Cart newCart = new Cart();
+                    newCart.setUser(user);
+                    newCart.setCartItems(new ArrayList<>());
+                    return cartRepository.save(newCart);
+                });
     }
 
     public double caculateTotalUserCart(Cart cart) {

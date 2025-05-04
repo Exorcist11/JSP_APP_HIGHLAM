@@ -59,13 +59,15 @@ public class CategoryDetailService {
             CategoryDTO categoryDTO = new CategoryDTO();
             categoryDTO.setId(category.getId());
             categoryDTO.setName(category.getName());
-            // Chuyển đổi danh sách CategoryDetail sang CategoryDetailDTO
-            List<CategoryDetailDTO> detailDTOs = category.getCategoryDetails().stream().map(detail -> {
-                CategoryDetailDTO detailDTO = new CategoryDetailDTO();
-                detailDTO.setId(detail.getId());
-                detailDTO.setName(detail.getName());
-                return detailDTO;
-            }).collect(Collectors.toList());
+            // Chuyển đổi danh sách CategoryDetail sang CategoryDetailDTO, lọc status = true
+            List<CategoryDetailDTO> detailDTOs = category.getCategoryDetails().stream()
+                    .filter(detail -> detail.getStatus()) // chỉ lấy những detail có status = true
+                    .map(detail -> {
+                        CategoryDetailDTO detailDTO = new CategoryDetailDTO();
+                        detailDTO.setId(detail.getId());
+                        detailDTO.setName(detail.getName());
+                        return detailDTO;
+                    }).collect(Collectors.toList());
             categoryDTO.setCategoryDetails(detailDTOs);
             return categoryDTO;
         }).collect(Collectors.toList());
