@@ -11,7 +11,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.example.tshirt_luxury_datn.dto.ProductDTO;
 import com.example.tshirt_luxury_datn.entity.Order;
+import com.example.tshirt_luxury_datn.entity.User;
 import com.example.tshirt_luxury_datn.services.DashboardService;
+
+import jakarta.servlet.http.HttpSession;
 
 @Controller
 @RequestMapping("/admin")
@@ -32,7 +35,12 @@ public class AdminController {
     }
 
     @GetMapping("/dashboard")
-    public String showDashboard(Model model) {
+    public String showDashboard(Model model, HttpSession session) {
+
+        User loggedInUser = (User) session.getAttribute("loggedInUser");
+        if (loggedInUser == null) {
+            return "redirect:/login";
+        }
 
         model.addAttribute("totalProducts", dashboardService.getTotalProducts());
         model.addAttribute("totalRevenue", formatCurrencyShort((long) dashboardService.getTotalRevenue()));

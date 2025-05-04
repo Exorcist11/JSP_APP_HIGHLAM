@@ -5,9 +5,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-
 import com.example.tshirt_luxury_datn.dto.ColorDTO;
+import com.example.tshirt_luxury_datn.entity.User;
 import com.example.tshirt_luxury_datn.services.ColorService;
+
+import jakarta.servlet.http.HttpSession;
 
 @Controller
 @RequestMapping("/admin/colors")
@@ -16,7 +18,11 @@ public class ColorController {
     private ColorService colorService;
 
     @GetMapping
-    public String listColors(Model model) {
+    public String listColors(Model model, HttpSession session) {
+        User loggedInUser = (User) session.getAttribute("loggedInUser");
+        if (loggedInUser == null) {
+            return "redirect:/login";
+        }
         model.addAttribute("colors", colorService.getAllColor());
         return "admin/MauSac/mau-sac";
     }

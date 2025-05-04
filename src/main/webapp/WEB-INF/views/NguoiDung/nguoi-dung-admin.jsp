@@ -362,16 +362,7 @@ contentType="text/html;charset=UTF-8" language="java" %>
                     />
                   </div>
 
-                  <div class="form-group">
-                    <label class="mb-1" for="password">Mật Khẩu:</label>
-                    <input
-                      type="password"
-                      class="form-control"
-                      id="passwordU"
-                      name="password"
-                      placeholder="Nhập mật khẩu"
-                    />
-                  </div>
+                 
 
                   <div class="form-group">
                     <label class="mb-1" for="role">Vai Trò:</label>

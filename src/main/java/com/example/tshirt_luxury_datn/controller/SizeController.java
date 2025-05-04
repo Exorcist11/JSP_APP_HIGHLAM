@@ -6,7 +6,10 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import com.example.tshirt_luxury_datn.dto.SizeDTO;
+import com.example.tshirt_luxury_datn.entity.User;
 import com.example.tshirt_luxury_datn.services.SizeService;
+
+import jakarta.servlet.http.HttpSession;
 
 @Controller
 @RequestMapping("/admin/sizes")
@@ -15,7 +18,11 @@ public class SizeController {
     private SizeService sizeService;
 
     @GetMapping("")
-    public String listSizes(Model model) {
+    public String listSizes(Model model, HttpSession session) {
+        User loggedInUser = (User) session.getAttribute("loggedInUser");
+        if (loggedInUser == null) {
+            return "redirect:/login";
+        }
         model.addAttribute("sizes", sizeService.getAllSize());
         return "admin/Size/size";
     }

@@ -56,7 +56,6 @@ public class UserService {
       }
       User userUpdate = user.get();
       userUpdate.setEmail(userDTO.getEmail());
-      userUpdate.setPassword(passwordEncoder.encode(userDTO.getPassword()));
       userUpdate.setRole(userDTO.getRole());
       userUpdate.setStatus(userDTO.getStatus());
 
@@ -84,14 +83,23 @@ public class UserService {
 
   public User login(UserDTO loginDto) {
     Optional<User> userOpt = userRepository.findByUsername(loginDto.getUsername());
+    System.out.println("Input Username: " + loginDto.getUsername());
+    System.out.println("Input Password: " + loginDto.getPassword());
 
     if (userOpt.isPresent()) {
       User user = userOpt.get();
-      if (passwordEncoder.matches(loginDto.getPassword(), user.getPassword())) {
-        return user; // Đăng nhập thành công
+      System.out.println("Found User: " + user.getUsername());
+      System.out.println("Stored Password (encoded): " + user.getPassword());
+      boolean passwordMatch = passwordEncoder.matches(loginDto.getPassword(), user.getPassword());
+      System.out.println("Password Match: " + passwordMatch);
+      if (passwordMatch) {
+        return user;
+      } else {
+        throw new IllegalArgumentException("Mật khẩu không đúng!");
       }
+    } else {
+      throw new IllegalArgumentException("Tài khoản không tồn tại!");
     }
-    throw new IllegalArgumentException("Sai tài khoản hoặc mật khẩu!");
   }
 
   public User register(UserDTO userDTO) {

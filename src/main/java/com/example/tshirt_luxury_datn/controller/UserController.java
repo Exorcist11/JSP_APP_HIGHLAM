@@ -13,6 +13,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.example.tshirt_luxury_datn.dto.UserDTO;
 import com.example.tshirt_luxury_datn.entity.User;
 import com.example.tshirt_luxury_datn.services.UserService;
+
+import jakarta.servlet.http.HttpSession;
+
 import org.springframework.web.bind.annotation.PostMapping;
 
 @Controller
@@ -22,10 +25,15 @@ public class UserController {
   private UserService userService;
 
   @GetMapping
-  public String listUser(@RequestParam(name = "keyword", required = false) String keyword, Model model) {
+  public String listUser(@RequestParam(name = "keyword", required = false) String keyword, Model model,
+      HttpSession session) {
+    User loggedInUser = (User) session.getAttribute("loggedInUser");
+    if (loggedInUser == null) {
+      return "redirect:/login";
+    }
     List<User> users = userService.searchUsers(keyword);
     model.addAttribute("listUser", users);
-    model.addAttribute("keyword", keyword); 
+    model.addAttribute("keyword", keyword);
     return "NguoiDung/nguoi-dung-admin";
   }
 

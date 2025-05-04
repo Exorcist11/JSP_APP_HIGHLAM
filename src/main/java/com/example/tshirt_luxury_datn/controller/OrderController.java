@@ -1,6 +1,5 @@
 package com.example.tshirt_luxury_datn.controller;
 
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -16,8 +15,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.example.tshirt_luxury_datn.entity.Order;
+import com.example.tshirt_luxury_datn.entity.User;
 import com.example.tshirt_luxury_datn.enums.OrderStatus;
 import com.example.tshirt_luxury_datn.services.OrderService;
+
+import jakarta.servlet.http.HttpSession;
 
 @Controller
 @RequestMapping("/admin/order")
@@ -32,7 +34,12 @@ public class OrderController {
             @RequestParam(required = false) Long id,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "5") int size,
-            Model model) {
+            Model model, HttpSession session) {
+                
+        User loggedInUser = (User) session.getAttribute("loggedInUser");
+        if (loggedInUser == null) {
+            return "redirect:/login";
+        }
 
         Pageable pageable = PageRequest.of(page, size);
         OrderStatus orderStatus = null;

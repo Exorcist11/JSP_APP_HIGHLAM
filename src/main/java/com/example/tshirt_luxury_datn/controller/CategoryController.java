@@ -14,8 +14,11 @@ import org.springframework.web.bind.annotation.*;
 import com.example.tshirt_luxury_datn.dto.CategoryDTO;
 import com.example.tshirt_luxury_datn.dto.CategoryDetailDTO;
 import com.example.tshirt_luxury_datn.entity.CategoryDetail;
+import com.example.tshirt_luxury_datn.entity.User;
 import com.example.tshirt_luxury_datn.services.CategoryDetailService;
 import com.example.tshirt_luxury_datn.services.CategoryService;
+
+import jakarta.servlet.http.HttpSession;
 
 @Controller
 @RequestMapping("/admin/categories")
@@ -27,7 +30,11 @@ public class CategoryController {
   private CategoryDetailService categoryDetailService;
 
   @GetMapping
-  public String listCategory(Model model) {
+  public String listCategory(Model model, HttpSession session) {
+    User loggedInUser = (User) session.getAttribute("loggedInUser");
+    if (loggedInUser == null) {
+      return "redirect:/login";
+    }
     model.addAttribute("categories", categoryService.getAllCategory());
     return "admin/Categories/danh-muc-admin";
   }

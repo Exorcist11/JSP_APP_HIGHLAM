@@ -27,6 +27,7 @@ import com.example.tshirt_luxury_datn.entity.CartItem;
 import com.example.tshirt_luxury_datn.entity.Order;
 import com.example.tshirt_luxury_datn.entity.Product;
 import com.example.tshirt_luxury_datn.entity.ProductDetail;
+import com.example.tshirt_luxury_datn.entity.User;
 import com.example.tshirt_luxury_datn.services.CartService;
 import com.example.tshirt_luxury_datn.services.OrderService;
 import com.example.tshirt_luxury_datn.services.ProductDetailService;
@@ -58,6 +59,11 @@ public class PosController {
             HttpSession session,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "6") int size) {
+                
+        User loggedInUser = (User) session.getAttribute("loggedInUser");
+        if (loggedInUser == null) {
+            return "redirect:/login";
+        }
 
         Pageable pageable = PageRequest.of(page, size);
         Page<Product> productPage;

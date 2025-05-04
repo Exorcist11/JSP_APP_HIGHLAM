@@ -239,11 +239,15 @@ public class ClientController {
     try {
       // Authentication auth = SecurityContextHolder.getContext().getAuthentication();
       User user = userService.login(loginDto);
-
-      cartService.syncCartOnLogin(session, user);
-
       session.setAttribute("loggedInUser", user);
-      return "redirect:/";
+
+      if (user.getRole() == "USER") {
+        cartService.syncCartOnLogin(session, user);
+        return "redirect:/";
+      }
+
+      return "redirect:/admin/dashboard";
+
     } catch (IllegalArgumentException e) {
       redirectAttributes.addFlashAttribute("errorMessage", e.getMessage());
       return "redirect:/login";

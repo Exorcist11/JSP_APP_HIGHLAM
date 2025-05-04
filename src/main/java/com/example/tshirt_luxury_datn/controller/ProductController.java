@@ -20,11 +20,14 @@ import com.example.tshirt_luxury_datn.dto.ProductDTO;
 import com.example.tshirt_luxury_datn.dto.ProductDetailDTO;
 import com.example.tshirt_luxury_datn.entity.Product;
 import com.example.tshirt_luxury_datn.entity.ProductDetail;
+import com.example.tshirt_luxury_datn.entity.User;
 import com.example.tshirt_luxury_datn.services.CategoryDetailService;
 import com.example.tshirt_luxury_datn.services.ColorService;
 import com.example.tshirt_luxury_datn.services.ProductDetailService;
 import com.example.tshirt_luxury_datn.services.ProductService;
 import com.example.tshirt_luxury_datn.services.SizeService;
+
+import jakarta.servlet.http.HttpSession;
 
 @Controller
 @RequestMapping("/admin/products")
@@ -51,7 +54,12 @@ public class ProductController {
       @RequestParam(value = "productID", required = false) Long productID,
       @RequestParam(defaultValue = "0") int page,
       @RequestParam(defaultValue = "10") int size,
-      Model model) {
+      Model model, HttpSession session) {
+        
+    User loggedInUser = (User) session.getAttribute("loggedInUser");
+    if (loggedInUser == null) {
+      return "redirect:/login";
+    }
     Pageable pageable = PageRequest.of(page, size);
 
     if (productID != null) {

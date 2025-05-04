@@ -7,7 +7,11 @@ import org.springframework.ui.Model;
 
 import com.example.tshirt_luxury_datn.dto.DiscountDTO;
 import com.example.tshirt_luxury_datn.entity.Discount;
+import com.example.tshirt_luxury_datn.entity.User;
 import com.example.tshirt_luxury_datn.services.DiscountService;
+
+import jakarta.servlet.http.HttpSession;
+
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -21,7 +25,11 @@ public class DiscountController {
     private DiscountService discountService;
 
     @GetMapping("/admin/discount")
-    public String listDiscount(Model model) {
+    public String listDiscount(Model model, HttpSession session) {
+        User loggedInUser = (User) session.getAttribute("loggedInUser");
+        if (loggedInUser == null) {
+            return "redirect:/login";
+        }
         model.addAttribute("discounts", discountService.getAllDiscounts());
         return "admin/Discounts/discount";
     }
