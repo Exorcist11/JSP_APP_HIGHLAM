@@ -214,7 +214,7 @@ contentType="text/html;charset=UTF-8" language="java" %>
             <div class="modal-body">
               <!-- ID Ẩn -->
               <input type="hidden" id="editColorId" name="id" />
-
+    
               <div class="form-floating mb-3">
                 <input
                   type="text"
@@ -226,7 +226,7 @@ contentType="text/html;charset=UTF-8" language="java" %>
                 />
                 <label for="colorHex">Màu Sắc</label>
               </div>
-
+    
               <div class="form-floating mb-3">
                 <input
                   type="text"
@@ -238,21 +238,13 @@ contentType="text/html;charset=UTF-8" language="java" %>
                 />
                 <label for="colorName">Tên Màu Sắc</label>
               </div>
-
-              <div class="form-check form-switch">
-                <input
-                  class="form-check-input"
-                  type="checkbox"
-                  role="switch"
-                  id="flexSwitchCheckChecked"
-                  name="status"
-                  checked
-                  value="true"
-                />
-
-                <span id="statusText" class="ms-2 fw-bold text-success"
-                  >Hoạt Động</span
-                >
+    
+              <div class="mb-3">
+                <label for="editColorStatus" class="form-label">Trạng Thái</label>
+                <select class="form-select" id="editColorStatus" name="status">
+                  <option value="true">Hoạt Động</option>
+                  <option value="false">Không Hoạt Động</option>
+                </select>
               </div>
             </div>
             <div class="modal-footer">

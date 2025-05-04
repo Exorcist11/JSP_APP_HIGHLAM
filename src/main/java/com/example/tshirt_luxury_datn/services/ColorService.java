@@ -18,6 +18,10 @@ public class ColorService {
         return colorRepository.findAll();
     }
 
+    public List<Color> getAllColorStatusTrue() {
+        return colorRepository.findByStatusTrue();
+    }
+
     public Color createColor(ColorDTO colorDTO) {
         try {
             Color color = new Color();

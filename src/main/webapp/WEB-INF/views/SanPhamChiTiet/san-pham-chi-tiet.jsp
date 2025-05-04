@@ -29,8 +29,7 @@
         }
 
         .btn-group label {
-            width: 40px;
-            height: 40px;
+            width: fit-content !important   ;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -129,12 +128,12 @@
                                     .map(String::valueOf)
                                     .collect(Collectors.joining(",")) : "";
                             %>
-                            <input type="radio" class="btn-check color-option" name="color" id="color_${item.id}"
+                            <input type="radio" class="btn-check color-option" style="width: fit-content;" name="color" id="color_${item.id}"
                                    value="${item.id}" autocomplete="off" data-name="${item.name}"
                                    data-available-sizes="<%= availableSizes %>"
                                    ${status.first ? 'checked' : ''} />
                             <label for="color_${item.id}" class="color-option"
-                                   style="background-color: ${item.colorCode};"></label>
+                                   > ${item.name}</label>
                         </c:forEach>
                     </div>
                 </div>

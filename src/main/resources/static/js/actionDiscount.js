@@ -1,5 +1,4 @@
 document.addEventListener("DOMContentLoaded", function () {
-    let form = document.getElementById("editSizeForm");
     // Lắng nghe sự kiện click vào nút "Chỉnh Sửa"
     document.querySelectorAll(".edit-btn").forEach(button => {
         button.addEventListener("click", function () {
@@ -8,39 +7,18 @@ document.addEventListener("DOMContentLoaded", function () {
             const percentage = this.getAttribute("data-percentage");
             const startDate = this.getAttribute("data-startdate");
             const endDate = this.getAttribute("data-enddate");
-            const status = this.getAttribute("data-status") === "true";
+            const status = this.getAttribute("data-status");
 
             document.getElementById("editDiscountId").value = id;
             document.getElementById("editCode").value = code;
             document.getElementById("editPercentage").value = percentage;
-
             document.getElementById("editStartDate").value = startDate.slice(0, 16);
             document.getElementById("editEndDate").value = endDate.slice(0, 16);
-
-            document.getElementById("editStatus").checked = status;
+            document.getElementById("editStatusSelect").value = status;
         });
     });
 
-
-    let switchInput = document.getElementById("flexSwitchCheckChecked");
-    let statusText = document.getElementById("statusText");
-
-    function updateStatus() {
-        if (switchInput.checked) {
-            statusText.textContent = "Hoạt Động";
-            statusText.classList.remove("text-danger");
-            statusText.classList.add("text-success");
-            switchInput.value = "true";
-        } else {
-            statusText.textContent = "Không Hoạt Động";
-            statusText.classList.remove("text-success");
-            statusText.classList.add("text-danger");
-            switchInput.value = "false";
-        }
-    }
-
-    switchInput.addEventListener("change", updateStatus);
-
+    // Xử lý nút xóa
     document.querySelectorAll(".delete-btn").forEach(button => {
         button.addEventListener("click", function () {
             let id = this.getAttribute("data-id");
@@ -49,10 +27,9 @@ document.addEventListener("DOMContentLoaded", function () {
             }
         });
     });
-
 });
 
-confirmDelete = () => {
+// Hàm xác nhận xóa
+function confirmDelete() {
     return confirm("Bạn có chắc muốn xóa ?");
-};
-
+}

@@ -209,7 +209,7 @@ contentType="text/html;charset=UTF-8" language="java" %>
             <div class="modal-body">
               <!-- ID Ẩn -->
               <input type="hidden" id="editSizeId" name="id" />
-
+    
               <div class="form-floating mb-3">
                 <input
                   type="text"
@@ -217,10 +217,11 @@ contentType="text/html;charset=UTF-8" language="java" %>
                   id="editSizeName"
                   name="name"
                   placeholder="Tên Size"
+                  required
                 />
                 <label for="editSizeName">Tên Size</label>
               </div>
-
+    
               <div class="mb-3">
                 <label for="editSizeDescription" class="form-label"
                   >Mô tả</label
@@ -232,21 +233,13 @@ contentType="text/html;charset=UTF-8" language="java" %>
                   rows="3"
                 ></textarea>
               </div>
-
-              <div class="form-check form-switch">
-                <input
-                  class="form-check-input"
-                  type="checkbox"
-                  role="switch"
-                  id="flexSwitchCheckChecked"
-                  name="status"
-                  checked
-                  value="true"
-                />
-
-                <span id="statusText" class="ms-2 fw-bold text-success"
-                  >Hoạt Động</span
-                >
+    
+              <div class="mb-3">
+                <label for="editSizeStatus" class="form-label">Trạng Thái</label>
+                <select class="form-select" id="editSizeStatus" name="status">
+                  <option value="true">Hoạt Động</option>
+                  <option value="false">Không Hoạt Động</option>
+                </select>
               </div>
             </div>
             <div class="modal-footer">

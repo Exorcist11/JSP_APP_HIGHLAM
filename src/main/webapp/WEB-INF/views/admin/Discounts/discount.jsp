@@ -310,16 +310,19 @@ contentType="text/html;charset=UTF-8" language="java" %>
                 <label for="editEndDate">Ngày Kết Thúc</label>
               </div>
 
-              <div class="form-check form-switch mb-3">
-                <input
-                  class="form-check-input"
-                  type="checkbox"
-                  id="editStatus"
-                  name="status"
-                />
-                <label class="form-check-label" for="editStatus"
-                  >Kích Hoạt</label
+              <div class="mb-3">
+                <label for="editStatusSelect" class="form-label"
+                  >Trạng Thái</label
                 >
+                <select
+                  class="form-select"
+                  id="editStatusSelect"
+                  name="status"
+                  required
+                >
+                  <option value="true">Kích Hoạt</option>
+                  <option value="false">Không Kích Hoạt</option>
+                </select>
               </div>
             </div>
 

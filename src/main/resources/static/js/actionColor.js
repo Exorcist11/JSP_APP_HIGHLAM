@@ -1,42 +1,41 @@
 document.addEventListener("DOMContentLoaded", function () {
     let form = document.getElementById("editColorForm");
-
+    
     document.querySelectorAll(".edit-btn").forEach(button => {
         button.addEventListener("click", function () {
             let id = this.getAttribute("data-id");
             let name = this.getAttribute("data-name");
-            let status = this.getAttribute("data-status")
+            let status = this.getAttribute("data-status");
             let colorHex = this.getAttribute("data-hex");
-       
-
+            
+            document.getElementById("editColorId").value = id;
             document.getElementById("colorName").value = name;
             document.getElementById("colorHex").value = colorHex;
-            document.getElementById("flexSwitchCheckChecked").checked = status;
-
+            
+            // Set dropdown value based on status
+            document.getElementById("editColorStatus").value = status;
+            
             form.action = "/admin/colors/update/" + id;
-        })
-
-    })
-
-    let switchInput = document.getElementById("flexSwitchCheckChecked");
-    let statusText = document.getElementById("statusText");
-
-    function updateStatus() {
-        if (switchInput.checked) {
-            statusText.textContent = "Hoạt Động";
-            statusText.classList.remove("text-danger");
-            statusText.classList.add("text-success");
-            switchInput.value = "true";
-        } else {
-            statusText.textContent = "Không Hoạt Động";
-            statusText.classList.remove("text-success");
-            statusText.classList.add("text-danger");
-            switchInput.value = "false";
-        }
+        });
+    });
+    
+    // Preview color khi nhập mã hex (tùy chọn)
+    const colorHexInput = document.getElementById("colorHex");
+    if (colorHexInput) {
+        colorHexInput.addEventListener("input", function() {
+            try {
+                // Thêm # nếu người dùng không nhập
+                let hexValue = this.value;
+                if (hexValue && !hexValue.startsWith('#')) {
+                    hexValue = '#' + hexValue;
+                }
+                this.style.borderColor = hexValue;
+            } catch (e) {
+                // Nếu giá trị không hợp lệ, giữ nguyên border
+            }
+        });
     }
-
-    switchInput.addEventListener("change", updateStatus);
-
+    
     document.querySelectorAll(".delete-btn").forEach(button => {
         button.addEventListener("click", function () {
             let id = this.getAttribute("data-id");
@@ -45,7 +44,7 @@ document.addEventListener("DOMContentLoaded", function () {
             }
         });
     });
-})
+});
 
 confirmDelete = () => {
     return confirm("Bạn có chắc muốn xóa ?");
