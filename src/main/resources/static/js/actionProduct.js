@@ -1,53 +1,35 @@
 document.addEventListener("DOMContentLoaded", function () {
-    let form = document.getElementById("editCategoryForm");
-
+    // Lắng nghe sự kiện click vào nút "Chỉnh Sửa"
     document.querySelectorAll(".edit-btn").forEach(button => {
         button.addEventListener("click", function () {
-            let id = this.getAttribute("data-id");
-            let code = this.getAttribute("data-code");
-            let name = this.getAttribute("data-name");
-            let price = this.getAttribute("data-price");
-            let status = this.getAttribute("data-status")
-            let description = this.getAttribute("data-description");
-            let category = this.getAttribute("data-category");
-
+            const id = this.getAttribute("data-id");
+            const code = this.getAttribute("data-code");
+            const name = this.getAttribute("data-name");
+            const price = this.getAttribute("data-price");
+            const status = this.getAttribute("data-status");
+            const description = this.getAttribute("data-description");
+            const category = this.getAttribute("data-category");
 
             document.getElementById("code").value = code;
             document.getElementById("nameP").value = name;
             document.getElementById("priceP").value = price;
-            document.getElementById("flexSwitchCheckChecked").checked = status;
             document.getElementById("descriptionP").value = description;
+
             let categorySelect = document.getElementById("categoryIdP");
             categorySelect.value = category;
-
             if (!Array.from(categorySelect.options).some(option => option.value === category)) {
                 categorySelect.value = "";
             }
 
-            form.action = "/admin/products/update/" + id;
-        })
+            // Gán giá trị dropdown status
+            let statusSelect = document.getElementById("statusSelect");
+            statusSelect.value = status;
 
-    })
+            document.getElementById("editCategoryForm").action = "/admin/products/update/" + id;
+        });
+    });
 
-    let switchInput = document.getElementById("flexSwitchCheckChecked");
-    let statusText = document.getElementById("statusText");
-
-    function updateStatus() {
-        if (switchInput.checked) {
-            statusText.textContent = "Hoạt Động";
-            statusText.classList.remove("text-danger");
-            statusText.classList.add("text-success");
-            switchInput.value = "true";
-        } else {
-            statusText.textContent = "Không Hoạt Động";
-            statusText.classList.remove("text-success");
-            statusText.classList.add("text-danger");
-            switchInput.value = "false";
-        }
-    }
-
-    switchInput.addEventListener("change", updateStatus);
-
+    // Xử lý nút xóa
     document.querySelectorAll(".delete-btn").forEach(button => {
         button.addEventListener("click", function () {
             let id = this.getAttribute("data-id");
@@ -56,8 +38,9 @@ document.addEventListener("DOMContentLoaded", function () {
             }
         });
     });
-})
+});
 
-confirmDelete = () => {
+// Hàm xác nhận xóa
+function confirmDelete() {
     return confirm("Bạn có chắc muốn xóa ?");
-};
+}

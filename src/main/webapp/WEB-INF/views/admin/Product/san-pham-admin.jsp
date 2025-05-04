@@ -435,10 +435,12 @@
                     <label for="description" class="form-label">Mô tả</label>
                     <textarea class="form-control" id="descriptionP" name="description"></textarea>
                   </div>
-                  <div class="form-check form-switch">
-                    <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckChecked"
-                      name="status" checked value="true" />
-                    <span id="statusText" class="ms-2 fw-bold text-success">Hoạt Động</span>
+                  <div class="mb-3">
+                    <label for="statusSelect" class="form-label">Trạng thái</label>
+                    <select class="form-select" id="statusSelect" name="status">
+                      <option value="true">Hoạt Động</option>
+                      <option value="false">Không Hoạt Động</option>
+                    </select>
                   </div>
                   <p style="color: red">${errorMessageSanPham}</p>
                 </div>

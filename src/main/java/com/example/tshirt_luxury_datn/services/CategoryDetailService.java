@@ -26,6 +26,10 @@ public class CategoryDetailService {
         return categoryDetailRepository.findAll();
     }
 
+    public List<CategoryDetail> getAllCategoryDetailStatusTrue() {
+        return categoryDetailRepository.findByStatusTrue();
+    }
+
     public List<CategoryDetailDTO> getAllCategoryDetail(Long id) {
         List<CategoryDetail> list = categoryDetailRepository.findByCategoryId(id);
         return list.stream()
@@ -50,7 +54,7 @@ public class CategoryDetailService {
     }
 
     public List<CategoryDTO> getAllCategoriesWithDetails() {
-        List<Category> categories = categoryRepository.findAll();
+        List<Category> categories = categoryRepository.findByStatusTrue();
         return categories.stream().map(category -> {
             CategoryDTO categoryDTO = new CategoryDTO();
             categoryDTO.setId(category.getId());

@@ -55,7 +55,7 @@ public class ProductController {
       @RequestParam(defaultValue = "0") int page,
       @RequestParam(defaultValue = "10") int size,
       Model model, HttpSession session) {
-        
+
     User loggedInUser = (User) session.getAttribute("loggedInUser");
     if (loggedInUser == null) {
       return "redirect:/login";
@@ -89,7 +89,7 @@ public class ProductController {
     model.addAttribute("totalPages", products.getTotalPages());
     model.addAttribute("totalItems", products.getTotalElements());
     model.addAttribute("pageSize", size);
-    model.addAttribute("categories", categoryDetailService.getAllCategoryDetail());
+    model.addAttribute("categories", categoryDetailService.getAllCategoryDetailStatusTrue());
     model.addAttribute("timKiemSanPham", timKiemSanPham);
     model.addAttribute("trangThai", trangThai);
 
