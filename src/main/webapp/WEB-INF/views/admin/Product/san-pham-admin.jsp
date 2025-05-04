@@ -55,7 +55,7 @@
                   <th scope="col">Màu Sắc</th>
                   <th scope="col">Số Lượng</th>
                   <th scope="col">Trạng Thái</th>
-                  <th scope="col">Hành Động</th>
+                  <!-- <th scope="col">Hành Động</th> -->
                 </tr>
               </thead>
               <tbody>
@@ -83,11 +83,11 @@
                             data-quantity="${s.quantity}" data-image="${s.image.imageUrl}">
                             <i class="fa-solid fa-pen-to-square"></i>
                           </a>
-                          <a class="btn btn-danger rounded-pill" data-toggle="tooltip" title="Xóa"
+                          <!-- <a class="btn btn-danger rounded-pill" id="deleteProductDetailBtn" data-toggle="tooltip" title="Xóa"
                             data-id="${s.id}"
-                            onclick="return confirmDelete('/admin/products/deleteProductDetail/${s.id}')">
+                          >
                             <i class="fa-solid fa-trash"></i>
-                          </a>
+                          </a> -->
                         </td>
                       </tr>
                     </c:forEach>
@@ -170,8 +170,7 @@
 
         <!-- Modal Chỉnh Sửa Sản Phẩm Chi Tiết -->
         <form id="editProductDetailForm" action="" method="post" enctype="multipart/form-data">
-          <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel"
-            aria-hidden="true">
+          <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-xl">
               <div class="modal-content" style="font-size: 14px">
                 <div class="modal-header">
@@ -191,8 +190,7 @@
                   </div>
                   <div class="row">
                     <div class="col">
-                      <label class="form-label fw-bold">Chọn Size Sản Phẩm <span
-                          class="text-danger">*</span></label>
+                      <label class="form-label fw-bold">Chọn Size Sản Phẩm <span class="text-danger">*</span></label>
                       <select class="form-select" id="sizeP" name="sizeID" disabled>
                         <c:forEach var="s" items="${sizes}">
                           <option value="${s.id}">${s.name}</option>
@@ -213,8 +211,7 @@
                   <div class="row">
                     <div class="form-group col">
                       <label class="fw-bold">Số Lượng <span class="text-danger">*</span></label>
-                      <input type="number" class="form-control" min="0" id="quantityP" placeholder="Số Lượng"
-                        name="quantity" required />
+                      <input type="number" class="form-control" min="0" id="quantityP" placeholder="Số Lượng" name="quantity" required />
                     </div>
                   </div>
                   <div class="row">
@@ -230,10 +227,14 @@
                     <input type="file" id="updateImages" name="images" accept="image/*" onchange="previewUpdateImages(event)" />
                     <div id="update-preview-container" class="mt-3 d-flex flex-wrap gap-2"></div>
                   </div>
-                  <div class="form-check form-switch">
-                    <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckChecked"
-                      name="status" checked value="true" />
-                    <span id="statusText" class="ms-2 fw-bold text-success">Hoạt Động</span>
+                  <div class="row">
+                    <div class="col">
+                      <label class="form-label fw-bold">Trạng Thái Sản Phẩm:</label>
+                      <select class="form-select" id="statusDropdown" name="status">
+                        <option value="true" selected>Đang Bán</option>
+                        <option value="false">Chưa Bán</option>
+                      </select>
+                    </div>
                   </div>
                 </div>
                 <div class="modal-footer">
@@ -244,6 +245,7 @@
             </div>
           </div>
         </form>
+        
       </c:when>
       <c:otherwise>
         <!-- Hiển thị danh sách sản phẩm -->
@@ -457,9 +459,105 @@
   </main>
 
   <script src="../js/actionProduct.js"></script>
+  <form id="editProductDetailForm" action="" method="post" enctype="multipart/form-data">
+    <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-xl">
+        <div class="modal-content" style="font-size: 14px">
+          <div class="modal-header">
+            <h5 class="modal-title" id="editModalLabel">Chỉnh Sửa Sản Phẩm Chi Tiết</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body d-flex flex-column gap-3">
+            <div class="row">
+              <div class="form-group w-50 col">
+                <label class="fw-bold">Mã Sản Phẩm:</label>
+                <input type="text" name="productID" class="form-control" readonly value="${product.id}" />
+              </div>
+              <div class="form-group w-50 col">
+                <label class="fw-bold">Tên Sản Phẩm:</label>
+                <input type="text" class="form-control" disabled readonly value="${product.name}" />
+              </div>
+            </div>
+            <div class="row">
+              <div class="col">
+                <label class="form-label fw-bold">Chọn Size Sản Phẩm <span class="text-danger">*</span></label>
+                <select class="form-select" id="sizeP" name="sizeID" disabled>
+                  <c:forEach var="s" items="${sizes}">
+                    <option value="${s.id}">${s.name}</option>
+                  </c:forEach>
+                </select>
+                <input type="hidden" name="sizeID" id="hiddenSizeId" />
+              </div>
+              <div class="col">
+                <label class="form-label fw-bold">Chọn Màu Sắc Sản Phẩm:</label>
+                <select class="form-select" id="colorP" name="colorID" disabled>
+                  <c:forEach var="s" items="${colors}">
+                    <option value="${s.id}">${s.name}</option>
+                  </c:forEach>
+                </select>
+                <input type="hidden" name="colorID" id="hiddenColorId" />
+              </div>
+            </div>
+            <div class="row">
+              <div class="form-group col">
+                <label class="fw-bold">Số Lượng <span class="text-danger">*</span></label>
+                <input type="number" class="form-control" min="0" id="quantityP" placeholder="Số Lượng" name="quantity" required />
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-12">
+                <label class="fw-bold">Hình Ảnh Hiện Tại:</label>
+                <div id="currentImageContainer" class="mt-2 d-flex flex-wrap gap-2">
+                  <img id="currentImage" src="" width="150" height="150" alt="Ảnh sản phẩm hiện tại" class="img-thumbnail" />
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <label for="updateImages" class="fw-bold">Cập nhật ảnh (bỏ trống nếu không thay đổi):</label>
+              <input type="file" id="updateImages" name="images" accept="image/*" onchange="previewUpdateImages(event)" />
+              <div id="update-preview-container" class="mt-3 d-flex flex-wrap gap-2"></div>
+            </div>
+            <div class="row">
+              <div class="col">
+                <label class="form-label fw-bold">Trạng Thái Sản Phẩm:</label>
+                <select class="form-select" id="statusDropdown" name="status">
+                  <option value="true" selected>Hoạt Động</option>
+                  <option value="false">Không Hoạt Động</option>
+                </select>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+            <button type="submit" class="btn btn-primary">Cập Nhật</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+  
   <script>
     document.addEventListener("DOMContentLoaded", function () {
       let editForm = document.getElementById("editProductDetailForm");
+
+      const deleteBtn = document.getElementById("deleteProductDetailBtn");
+
+      deleteBtn.addEventListener("click", function () {
+        const productId = this.getAttribute("data-id");
+        console.log(productId)
+        
+        // Hiển thị confirm box
+        const isConfirmed = window.confirm("Bạn có chắc chắn muốn xóa sản phẩm chi tiết này không?");
+        
+        if (isConfirmed) {
+          // Nếu người dùng xác nhận, thực hiện xóa sản phẩm chi tiết
+          window.location.href =
+                "/admin/products/deleteProductDetail/" + id;
+        } else {
+                console.error("Không tìm thấy nút Xóa với ID deleteProductDetailBtn.");
+        }
+      });
+
 
       // Handle edit button click to populate edit modal
       document.querySelectorAll(".edit-btn").forEach((button) => {
@@ -470,107 +568,57 @@
           let status = this.getAttribute("data-status");
           let quantity = this.getAttribute("data-quantity");
           let imageUrl = this.getAttribute("data-image");
-
+  
           // Set current image
           document.getElementById("currentImage").src = imageUrl || "/images/placeholder.png";
-
+  
           // Reset update image preview
           document.getElementById("update-preview-container").innerHTML = "";
           document.getElementById("updateImages").value = "";
           updateSelectedFile = null;
-
+  
           // Set size
           const sizeSelect = document.getElementById("sizeP");
           sizeSelect.value = size;
           document.getElementById("hiddenSizeId").value = size;
-
+  
           // Set color
           const colorSelect = document.getElementById("colorP");
           colorSelect.value = color;
           document.getElementById("hiddenColorId").value = color;
-
+  
           // Set status and quantity
-          document.getElementById("flexSwitchCheckChecked").checked = status === "true";
+          const statusDropdown = document.getElementById("statusDropdown");
+          statusDropdown.value = status === "true" ? "true" : "false";
           document.getElementById("quantityP").value = quantity;
-
+  
           // Set form action
           editForm.action = "/admin/products/updateDetail/" + id;
-
-          // Update status text
-          updateStatus();
         });
       });
-
-      // Handle status switch
-      let switchInput = document.getElementById("flexSwitchCheckChecked");
-      let statusText = document.getElementById("statusText");
-
-      function updateStatus() {
-        if (switchInput.checked) {
+  
+      // Handle status dropdown change
+      document.getElementById('statusDropdown').addEventListener('change', function() {
+        const statusText = document.getElementById('statusText');
+        if (this.value === "true") {
           statusText.textContent = "Hoạt Động";
           statusText.classList.remove("text-danger");
           statusText.classList.add("text-success");
-          switchInput.value = "true";
         } else {
           statusText.textContent = "Không Hoạt Động";
           statusText.classList.remove("text-success");
           statusText.classList.add("text-danger");
-          switchInput.value = "false";
         }
-      }
-
-      switchInput.addEventListener("change", updateStatus);
-
-      // Image preview for adding new product detail
-      let selectedFile = null;
-
-      window.previewImages = function(event) {
-        const previewContainer = document.getElementById("preview-container");
-        previewContainer.innerHTML = "";
-        selectedFile = null;
-
-        const file = event.target.files[0];
-        if (file) {
-          if (!file.type.startsWith("image/")) {
-            alert("Vui lòng chọn một tệp hình ảnh!");
-            event.target.value = "";
-            return;
-          }
-          selectedFile = file;
-          const reader = new FileReader();
-          reader.onload = (e) => {
-            const imgWrapper = document.createElement("div");
-            imgWrapper.className = "position-relative";
-            const img = document.createElement("img");
-            img.src = e.target.result;
-            img.className = "img-thumbnail";
-            img.style.maxWidth = "150px";
-            img.style.maxHeight = "150px";
-            const removeBtn = document.createElement("button");
-            removeBtn.innerText = "X";
-            removeBtn.type = "button";
-            removeBtn.className = "btn btn-danger btn-sm position-absolute top-0 end-0";
-            removeBtn.onclick = () => {
-              selectedFile = null;
-              imgWrapper.remove();
-              document.getElementById("images").value = "";
-            };
-            imgWrapper.appendChild(img);
-            imgWrapper.appendChild(removeBtn);
-            previewContainer.appendChild(imgWrapper);
-          };
-          reader.readAsDataURL(file);
-        }
-      };
-
+      });
+  
       // Image preview for updating product detail
       let updateSelectedFile = null;
-
+  
       window.previewUpdateImages = function(event) {
         const previewContainer = document.getElementById("update-preview-container");
         previewContainer.innerHTML = "";
         updateSelectedFile = null;
-
+  
         const file = event.target.files[0];
         if (file) {
           if (!file.type.startsWith("image/")) {
@@ -604,16 +652,7 @@
           reader.readAsDataURL(file);
         }
       };
-
-      // Handle form submission for adding new product detail
-      document.querySelector("form[action='/admin/products/detail']").addEventListener("submit", (e) => {
-        if (selectedFile) {
-          const dataTransfer = new DataTransfer();
-          dataTransfer.items.add(selectedFile);
-          document.getElementById("images").files = dataTransfer.files;
-        }
-      });
-
+  
       // Handle form submission for updating product detail
       editForm.addEventListener("submit", (e) => {
         if (updateSelectedFile) {
@@ -624,6 +663,7 @@
       });
     });
   </script>
+  
 </body>
 <script src="https://code.jquery.com/jquery-3.7.1.js"
   integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>

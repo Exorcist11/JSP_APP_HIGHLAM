@@ -205,14 +205,14 @@ contentType="text/html;charset=UTF-8" language="java" %>
                       <i class="fa-solid fa-trash"></i>
                     </a>
 
-                    <a
+                    <!-- <a
                       href="/admin/nguoi-dung-chi-tiet"
                       class="btn mb-0"
                       data-placement="top"
                       title="Xem Chi Tiết"
                     >
                       <i class="fa-solid fa-eye"></i>
-                    </a>
+                    </a> -->
                   </td>
                 </tr>
               </c:forEach>

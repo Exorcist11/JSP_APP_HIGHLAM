@@ -110,9 +110,8 @@ document.addEventListener("DOMContentLoaded", function () {
                     if (data.success) {
                         loadCategoryDetails(formData.categoryId);
                         this.reset();
-                        showToast('Thêm danh mục chi tiết thành công!', 'success');
                     } else {
-                        showToast('Lỗi: ' + data.message, 'error');
+                        alert(data.message || 'Có lỗi xảy ra khi thêm danh mục chi tiết')
                     }
                 })
                 .catch(error => {
@@ -163,7 +162,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 showToast('Có lỗi khi tải danh sách chi tiết', 'error');
             });
     }
-    
+
     // Expose loadCategoryDetails to the global scope
     window.loadCategoryDetails = loadCategoryDetails;
 
@@ -176,14 +175,14 @@ document.addEventListener("DOMContentLoaded", function () {
                 const detailName = this.getAttribute('data-name');
                 const detailStatus = this.getAttribute('data-status') === "true";
                 const categoryId = document.getElementById("categoryIdForDetail").value;
-                
+
                 // Cập nhật form edit detail
                 document.getElementById("editDetailId").value = detailId;
                 document.getElementById("editDetailCategoryId").value = categoryId;
                 document.getElementById("editDetailName").value = detailName;
                 detailStatusSwitch.checked = detailStatus;
                 updateDetailStatus();
-                
+
                 // Hiển thị modal
                 const editDetailModal = new bootstrap.Modal(document.getElementById('editDetailModal'));
                 editDetailModal.show();
@@ -204,7 +203,7 @@ document.addEventListener("DOMContentLoaded", function () {
     // Xử lý nút lưu thay đổi detail
     const saveDetailChangesBtn = document.getElementById("saveDetailChanges");
     if (saveDetailChangesBtn) {
-        saveDetailChangesBtn.addEventListener("click", function() {
+        saveDetailChangesBtn.addEventListener("click", function () {
             const form = document.getElementById("editDetailForm");
             const formData = {
                 id: form.id.value,
@@ -232,7 +231,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     // Đóng modal
                     const editDetailModal = bootstrap.Modal.getInstance(document.getElementById('editDetailModal'));
                     editDetailModal.hide();
-                    
+
                     // Tải lại danh sách
                     loadCategoryDetails(formData.categoryId);
                     showToast('Cập nhật danh mục chi tiết thành công!', 'success');
@@ -270,7 +269,7 @@ document.addEventListener("DOMContentLoaded", function () {
     function showToast(message, type = 'success') {
         // Triển khai toast notification của bạn ở đây
         console.log(`${type.toUpperCase()}: ${message}`);
-        
+
         // Kiểm tra xem đã có toast container chưa, nếu chưa thì tạo mới
         // let toastContainer = document.querySelector('.toast-container');
         // if (!toastContainer) {
@@ -278,7 +277,7 @@ document.addEventListener("DOMContentLoaded", function () {
         //     toastContainer.className = 'toast-container position-fixed bottom-0 end-0 p-3';
         //     document.body.appendChild(toastContainer);
         // }
-        
+
         // // Tạo toast mới
         // const toastId = 'toast-' + Date.now();
         // const toast = document.createElement('div');
@@ -287,7 +286,7 @@ document.addEventListener("DOMContentLoaded", function () {
         // toast.setAttribute('aria-live', 'assertive');
         // toast.setAttribute('aria-atomic', 'true');
         // toast.setAttribute('id', toastId);
-        
+
         // toast.innerHTML = `
         //     <div class="d-flex">
         //         <div class="toast-body">
@@ -296,13 +295,13 @@ document.addEventListener("DOMContentLoaded", function () {
         //         <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
         //     </div>
         // `;
-        
+
         // toastContainer.appendChild(toast);
-        
+
         // // Hiển thị toast
         // const bsToast = new bootstrap.Toast(toast);
         // bsToast.show();
-        
+
         // // Xóa toast sau khi đã hiển thị
         // toast.addEventListener('hidden.bs.toast', function () {
         //     toast.remove();

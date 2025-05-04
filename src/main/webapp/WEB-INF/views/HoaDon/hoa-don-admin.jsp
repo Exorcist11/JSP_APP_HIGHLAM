@@ -155,7 +155,7 @@
                                                         </a>
                                                     </li>
                                                     <li>
-                                                        <a class="dropdown-item" href="/admin/order/print/${hd.id}">
+                                                        <a class="dropdown-item" onClick="alert('Đang hoàn thiện!')">
                                                             <i class="fas fa-print me-2"></i>In hóa đơn
                                                         </a>
                                                     </li>
@@ -366,7 +366,7 @@
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
                                 <i class="fas fa-times me-1"></i> Đóng
                             </button>
-                            <a href="/admin/order/print/${selectedOrder.id}" class="btn btn-primary">
+                            <a onClick="alert('Đang hoàn thiện!')" class="btn btn-primary">
                                 <i class="fas fa-print me-1"></i> In hóa đơn
                             </a>
                         </div>

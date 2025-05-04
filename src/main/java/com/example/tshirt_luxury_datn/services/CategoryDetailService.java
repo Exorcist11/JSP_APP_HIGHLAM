@@ -43,6 +43,10 @@ public class CategoryDetailService {
             if (category.isEmpty()) {
                 throw new RuntimeException("Not found Category ID: " + request.getCategoryId());
             }
+            Optional<CategoryDetail> existingDetail = categoryDetailRepository.findByName(request.getName());
+            if (existingDetail.isPresent()) {
+                throw new RuntimeException("Danh mục '" + request.getName() + "' đã tồn tại");
+            }
             CategoryDetail categoryDetail = new CategoryDetail();
             categoryDetail.setName(request.getName());
             categoryDetail.setStatus(true);

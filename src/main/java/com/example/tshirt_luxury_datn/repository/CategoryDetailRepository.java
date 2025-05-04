@@ -1,6 +1,7 @@
 package com.example.tshirt_luxury_datn.repository;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
@@ -12,6 +13,8 @@ public interface CategoryDetailRepository extends JpaRepository<CategoryDetail, 
     List<CategoryDetail> findByCategoryId(Long categoryId);
 
     List<CategoryDetail> findByStatusTrue();
+
+    Optional<CategoryDetail> findByName(String name);
 
     List<CategoryDetail> findByCategoryIdAndStatusTrue(Long categoryId);
 }
