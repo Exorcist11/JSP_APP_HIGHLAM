@@ -19,6 +19,10 @@ public class SizeService {
         return sizeRepository.findAll();
     }
 
+    public List<Size> getAllSizeStatusTrue() {
+        return sizeRepository.findByStatusTrue();
+    }
+
     public Size createSize(SizeDTO sizeDTO) {
         try {
             Optional<Size> existingSize = sizeRepository.findByName(sizeDTO.getName());

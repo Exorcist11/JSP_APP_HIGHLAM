@@ -16,7 +16,7 @@ public class SecurityConfig {
         .csrf(csrf -> csrf.disable()) // Tắt CSRF để tránh lỗi khi gửi form
         .logout(logout -> logout
             .logoutUrl("/logout")
-            .logoutSuccessUrl("/")
+            .logoutSuccessUrl("/login")
             .invalidateHttpSession(true)
             .deleteCookies("JSESSIONID"))
         .formLogin(form -> form.disable()) // Tắt trang login mặc định

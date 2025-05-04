@@ -257,7 +257,7 @@ public class ClientController {
   @GetMapping("/logout")
   public String logout(HttpSession session) {
     session.invalidate();
-    return "redirect:/trang-chu";
+    return "redirect:/login";
   }
 
   @GetMapping("/profile")

@@ -64,7 +64,7 @@ public class ProductController {
 
     if (productID != null) {
       // Hiển thị chi tiết sản phẩm
-      model.addAttribute("colors", colorService.getAllColor());
+      model.addAttribute("colors", colorService.getAllColorStatusTrue());
       model.addAttribute("sizes", sizeService.getAllSize());
       model.addAttribute("product", productService.getProductByID(productID));
 

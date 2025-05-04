@@ -344,8 +344,7 @@
     }
 
     .color-option {
-        width: 30px;
-        height: 30px;
+        width: fit-content !important;
         border-radius: 50%;
         border: 1px solid #ccc;
     }
@@ -518,7 +517,8 @@
                     let color = data.colors[i];
                     let checked = i === 0 ? ' checked' : '';
                     colorOptionsHtml += '<input type="radio" class="btn-check color-option" name="color" id="color_' + color.id + '" value="' + color.id + '" data-name="' + color.name + '" data-available-sizes="' + color.availableSizeIds.join(',') + '"' + checked + '>' +
-                                       '<label for="color_' + color.id + '" class="color-option" style="background-color:' + color.colorCode + '" title="' + color.name + '"></label>';
+                    '<label for="color_' + color.id + '" class="color-option" title="' + color.name + '">' + color.name + '</label>';
+
                 }
                 document.getElementById('colorOptions').innerHTML = colorOptionsHtml;
 
