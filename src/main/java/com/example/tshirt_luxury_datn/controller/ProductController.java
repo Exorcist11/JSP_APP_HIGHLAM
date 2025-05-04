@@ -89,7 +89,7 @@ public class ProductController {
     model.addAttribute("totalPages", products.getTotalPages());
     model.addAttribute("totalItems", products.getTotalElements());
     model.addAttribute("pageSize", size);
-    model.addAttribute("categories", categoryDetailService.getAllCategoryDetailStatusTrue());
+    model.addAttribute("categories", categoryDetailService.getAllCategoryDetail());
     model.addAttribute("timKiemSanPham", timKiemSanPham);
     model.addAttribute("trangThai", trangThai);
 

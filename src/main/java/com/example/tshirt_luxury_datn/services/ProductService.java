@@ -153,7 +153,7 @@ public class ProductService {
   }
 
   public List<ProductDTO> getLastestProducts() {
-    List<Product> products = productRepository.findTop4ByOrderByCreatedAtDesc();
+    List<Product> products = productRepository.findTop4ByStatusTrueOrderByCreatedAtDesc();
     return products.stream()
         .map(ProductDTO::new)
         .collect(Collectors.toList());

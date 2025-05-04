@@ -20,7 +20,7 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
         Page<Product> searchProducts(@Param("timKiemSanPham") String timKiemSanPham,
                         @Param("trangThai") Boolean trangThai, Pageable pageable);
 
-        List<Product> findTop4ByOrderByCreatedAtDesc();
+        List<Product> findTop4ByStatusTrueOrderByCreatedAtDesc();
 
         List<Product> findByNameContainingIgnoreCase(String name);
 

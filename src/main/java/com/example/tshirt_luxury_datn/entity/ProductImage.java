@@ -9,6 +9,7 @@ import lombok.*;
 @AllArgsConstructor
 @Getter
 @Setter
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Table(name = "product_images")
 public class ProductImage {
     @Id
